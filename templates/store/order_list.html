@@ -13,7 +13,7 @@
       </tr>
     {% for order in order_list %}
       <tr>
-        <td><a href="#">{{ order.id }}</a></td>
+        <td><a href="{% url 'store:order-detail' order.id %}">{{ order.id }}</a></td>
         <td>{{ order.status }}</td>
         <td>{{ order.created_at|timesince }} ago</td>
         <td>{{ order.total_cost }}</td>

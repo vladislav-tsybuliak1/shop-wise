@@ -64,3 +64,8 @@ class OrderListView(generic.ListView):
     model = Order
     paginate_by = 5
     queryset = Order.objects.prefetch_related("order_items__product")
+
+
+class OrderDetailView(generic.DetailView):
+    model = Order
+    queryset = Order.objects.prefetch_related("order_items__product")

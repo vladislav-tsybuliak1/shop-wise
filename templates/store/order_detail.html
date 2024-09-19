@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>
+    Order ID: {{ order.id }}
+  </h1>
+  <p>Customer: {{ order.customer }}</p>
+  <p>Status: {{ order.get_status_display }}</p>
+  
+  <hr>
+  <p><strong>{{ order.order_items.count }} position{{ order.order_items.count|pluralize }}:</strong></p>
+  <table class="table">
+    <tr>
+      <th>Product name</th>
+      <th>Price</th>
+      <th>Quantity</th>
+      <th>Total cost</th>
+    </tr>
+    {% for order_item in order.order_items.all %}
+      <tr>
+        <td><a href="{% url 'store:product-detail' order_item.product.id %}">
+          {{ order_item.product.name }} {{ order_item.product.unit_value|floatformat }} {{ order_item.product.unit_name }}
+        </a></td>
+        <td>{{ order_item.product.price }}</td>
+        <td>{{ order_item.quantity }}</td>
+        <td>{{ order_item.total_cost }}</td>
+      </tr>
+    {% endfor %}
+      <tr>
+        <td colspan="3" ><strong>Total order cost</strong></td>
+        <td><strong>{{ order.total_cost }}</strong></td>
+      </tr>
+  </table>
+  
+{% endblock %}
