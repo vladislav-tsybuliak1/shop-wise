@@ -150,7 +150,7 @@ class Review(models.Model):
         ordering = ("-created_at", )
 
     def __str__(self) -> str:
-        return f"By {self.customer.name} on {self.product}"
+        return f"By {self.customer} on {self.product}"
 
 
 class ShoppingCart(models.Model):
