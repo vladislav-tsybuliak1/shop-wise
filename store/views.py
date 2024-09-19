@@ -33,3 +33,6 @@ def index(request: HttpRequest) -> HttpResponse:
 class ProductListView(generic.ListView):
     model = Product
     paginate_by = 5
+
+class ProductDetailView(generic.DetailView):
+    model = Product

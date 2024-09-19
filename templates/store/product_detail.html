@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+  
+  <h1>
+    {{ product.name }} {{ product.unit_value|floatformat }} {{ product.unit_name }}
+  </h1>
+  
+  <p>Brand: {{ product.brand }}</p>
+  <p>Category: {{ product.category }}</p>
+  <p>Product description: {{ product.description }}</p>
+  <p>Price: {{ product.price }}</p>
+  <p>Stock quantity: {{ product.stock_quantity|floatformat }}</p>
+  
+{% endblock %}
