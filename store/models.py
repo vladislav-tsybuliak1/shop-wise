@@ -14,6 +14,7 @@ class Category(models.Model):
     def __str__(self) -> str:
         return self.name
 
+
 class Product(models.Model):
     UNITS = (
         ("KG", "kilograms"),
@@ -58,8 +59,16 @@ class Order(models.Model):
         related_name="orders"
     )
     created_at = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(max_length=23, choices=STATUSES, default=STATUSES[0])
-    products = models.ManyToManyField(to=Product, related_name="orders", through="OrderItem")
+    status = models.CharField(
+        max_length=23,
+        choices=STATUSES,
+        default=STATUSES[0]
+    )
+    products = models.ManyToManyField(
+        to=Product,
+        related_name="orders",
+        through="OrderItem"
+    )
 
     class Meta:
         ordering = ("-created_at", )
@@ -69,17 +78,32 @@ class Order(models.Model):
 
     @property
     def total_cost(self) -> float:
-        return sum(order_item.total_cost for order_item in self.order_items.all())
+        return sum(
+            order_item.total_cost
+            for order_item
+            in self.order_items.all()
+        )
 
 
 class OrderItem(models.Model):
-    product = models.ForeignKey(to=Product, on_delete=models.CASCADE, related_name="order_items")
-    order = models.ForeignKey(to=Order, on_delete=models.CASCADE, related_name="order_items")
+    product = models.ForeignKey(
+        to=Product,
+        on_delete=models.CASCADE,
+        related_name="order_items"
+    )
+    order = models.ForeignKey(
+        to=Order,
+        on_delete=models.CASCADE,
+        related_name="order_items"
+    )
     quantity = models.FloatField(default=1.0)
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=["product", "order"], name="unique_order_product"),
+            models.UniqueConstraint(
+                fields=["product", "order"],
+                name="unique_order_product"
+            ),
         ]
 
     @property
