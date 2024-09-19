@@ -12,4 +12,18 @@
   <p>Price: {{ product.price }}</p>
   <p>Stock quantity: {{ product.stock_quantity|floatformat }}</p>
   
+  <h1>Reviews:</h1>
+  <p><strong>{{ product.reviews.count }} review{{ product.reviews.count|pluralize }}</strong></p>
+  
+  {% if product.reviews.all %}
+    {% for review in product.reviews.all %}
+      <div>
+        <h4>{{ review.customer }} {{ review.created_at|timesince }} ago</h4>
+        <p>{{ review.content }}</p>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p><i>No reviews yet.</i></p>
+  {% endif %}
+  
 {% endblock %}
