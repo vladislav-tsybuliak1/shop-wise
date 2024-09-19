@@ -22,7 +22,7 @@ class Brand(models.Model):
     description = models.TextField(null=True, blank=True)
 
     class Meta:
-        ordering = ("name",)
+        ordering = ("name", )
 
     def __str__(self) -> str:
         return self.name
