@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{% load cart_filters %}
+
 {% block content %}
   <h1>
     Product list
@@ -18,7 +20,13 @@
         <td><a href="{% url 'store:product-detail' product.id %}">{{ product.name }}</a></td>
         <td>{{ product.unit_value|floatformat }} {{ product.unit_name }}</td>
         <td>{{ product.price }}</td>
-        <td><a href="{% url 'store:cart-add-product' product.id %}">Add</a></td>
+        <td>
+          {% if product|in_cart_exists:user.shopping_cart %}
+            In cart: {{ product|in_cart_amount:user.shopping_cart|floatformat }}, <a href="{% url 'store:cart-add-product' product.id %}">add more</a>
+          {% else %}
+            <a href="{% url 'store:cart-add-product' product.id %}">Add</a>
+          {% endif %}
+        </td>
       </tr>
     {% endfor %}
     </table>
