@@ -1,3 +1,5 @@
+from itertools import product
+
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
@@ -32,11 +34,15 @@ class CustomerAdmin(UserAdmin):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ["pk", "customer", "total_cost"]
+    list_display = ["pk", "customer", "total_cost", "created_at", "status", ]
     search_fields = ["customer__username", "customer__first_name", "customer__last_name", ]
+
+
+@admin.register(Review)
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = ["customer", "product", "content", "created_at", ]
 
 
 admin.site.register(Category)
 admin.site.register(Brand)
-admin.site.register(Review)
 admin.site.register(OrderItem)
