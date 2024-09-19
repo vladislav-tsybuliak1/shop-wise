@@ -112,7 +112,7 @@ class OrderItem(models.Model):
         on_delete=models.CASCADE,
         related_name="order_items"
     )
-    quantity = models.FloatField(default=1.0)
+    quantity = models.FloatField(default=0)
 
     class Meta:
         constraints = [
@@ -177,7 +177,7 @@ class CartItem(models.Model):
         on_delete=models.CASCADE,
         related_name="cart_items"
     )
-    quantity = models.FloatField(default=1.0)
+    quantity = models.FloatField(default=0)
 
     class Meta:
         constraints = [
