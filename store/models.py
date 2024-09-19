@@ -69,11 +69,11 @@ class Order(models.Model):
 
     @property
     def total_cost(self) -> float:
-        return sum(product.total_cost for product in self.products.all())
+        return sum(order_item.total_cost for order_item in self.order_items.all())
 
 
 class OrderItem(models.Model):
-    product = models.ForeignKey(to=Product, on_delete=models.CASCADE, related_name="items")
+    product = models.ForeignKey(to=Product, on_delete=models.CASCADE, related_name="order_items")
     order = models.ForeignKey(to=Order, on_delete=models.CASCADE, related_name="order_items")
     quantity = models.FloatField(default=1.0)
 
@@ -109,3 +109,47 @@ class Review(models.Model):
 
     def __str__(self) -> str:
         return f"By {self.customer.name} on {self.product}"
+
+
+class ShoppingCart(models.Model):
+    customer = models.OneToOneField(
+        to=settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="shopping_cart"
+    )
+
+    def __str__(self) -> str:
+        return f"Shopping cart of {self.customer}"
+
+    @property
+    def total_cost(self) -> float:
+        return sum(cart_item.total_cost for cart_item in self.cart_items.all())
+
+
+class CartItem(models.Model):
+    shopping_cart = models.ForeignKey(
+        to=ShoppingCart,
+        on_delete=models.CASCADE,
+        related_name="cart_items"
+    )
+    product = models.ForeignKey(
+        to=Product,
+        on_delete=models.CASCADE,
+        related_name="cart_items"
+    )
+    quantity = models.FloatField(default=1.0)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["shopping_cart", "product"],
+                name="unique_cart_product"
+            )
+        ]
+
+    @property
+    def total_cost(self) -> Decimal:
+        return self.product.price * self.quantity
+
+    def __str__(self) -> str:
+        return f"{self.product}: {self.quantity}"
