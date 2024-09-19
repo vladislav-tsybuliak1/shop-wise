@@ -1,5 +1,3 @@
-from decimal import Decimal
-
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
@@ -125,8 +123,8 @@ class OrderItem(models.Model):
         ]
 
     @property
-    def total_cost(self) -> Decimal:
-        return self.product.price * self.quantity
+    def total_cost(self) -> float:
+        return float(self.product.price) * self.quantity
 
     def __str__(self) -> str:
         return f"{self.product}: {self.quantity}"
@@ -190,8 +188,8 @@ class CartItem(models.Model):
         ]
 
     @property
-    def total_cost(self) -> Decimal:
-        return self.product.price * self.quantity
+    def total_cost(self) -> float:
+        return float(self.product.price) * self.quantity
 
     def __str__(self) -> str:
         return f"{self.product}: {self.quantity}"
