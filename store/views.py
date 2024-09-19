@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
+from django.views import generic
 
 from store.models import (
     Product,
@@ -27,3 +28,7 @@ def index(request: HttpRequest) -> HttpResponse:
     }
 
     return render(request, "store/index.html", context=context)
+
+
+class ProductListView(generic.ListView):
+    model = Product
