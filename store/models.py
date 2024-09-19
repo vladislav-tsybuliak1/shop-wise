@@ -6,7 +6,7 @@ from django.db import models
 
 class Category(models.Model):
     name = models.CharField(max_length=63, unique=True)
-    description = models.TextField(null=True)
+    description = models.TextField(null=True, blank=True)
 
     class Meta:
         ordering = ("name", )
@@ -25,7 +25,7 @@ class Product(models.Model):
     )
 
     name = models.CharField(max_length=255)
-    description = models.TextField(null=True)
+    description = models.TextField(null=True, blank=True)
     unit_value = models.FloatField()
     unit_name = models.CharField(max_length=3, choices=UNITS)
     stock_quantity = models.FloatField(default=0)
@@ -59,8 +59,6 @@ class Order(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=23, choices=STATUSES, default=STATUSES[0])
-    successfully_delivered = models.BooleanField()
-    delivered_time = models.DateTimeField(null=True)
     products = models.ManyToManyField(to=Product, related_name="orders", through="OrderItem")
 
     class Meta:
@@ -75,8 +73,8 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
-    product = models.ForeignKey(to=Product, on_delete=models.CASCADE)
-    order = models.ForeignKey(to=Order, on_delete=models.CASCADE)
+    product = models.ForeignKey(to=Product, on_delete=models.CASCADE, related_name="items")
+    order = models.ForeignKey(to=Order, on_delete=models.CASCADE, related_name="order_items")
     quantity = models.FloatField(default=1.0)
 
     class Meta:
@@ -87,6 +85,9 @@ class OrderItem(models.Model):
     @property
     def total_cost(self) -> Decimal:
         return self.product.price * self.quantity
+
+    def __str__(self) -> str:
+        return f"{self.product}: {self.quantity}"
 
 
 class Review(models.Model):
@@ -105,3 +106,6 @@ class Review(models.Model):
 
     class Meta:
         ordering = ("-created_at", )
+
+    def __str__(self) -> str:
+        return f"By {self.customer.name} on {self.product}"
