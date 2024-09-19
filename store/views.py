@@ -36,3 +36,4 @@ class ProductListView(generic.ListView):
 
 class ProductDetailView(generic.DetailView):
     model = Product
+    queryset = Product.objects.select_related("brand", "category").prefetch_related("reviews")
