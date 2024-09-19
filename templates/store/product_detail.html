@@ -14,7 +14,7 @@
   <p>Price: {{ product.price }}</p>
   <p>Stock quantity: {{ product.stock_quantity|floatformat }}</p>
   
-  <h1>Reviews:</h1>
+  <hr>
   <p><strong>{{ product.reviews.count }} review{{ product.reviews.count|pluralize }}</strong></p>
   
   {% if product.reviews.all %}
@@ -26,6 +26,16 @@
     {% endfor %}
   {% else %}
     <p><i>No reviews yet.</i></p>
+  {% endif %}
+  
+  {% if user.is_authenticated %}
+    <hr>
+    <p>Add a new review:</p>
+    <form action="" method="post" novalidate>
+      {% csrf_token %}
+      {{ review_form.as_p }}
+      <input class="btn btn-primary" type="submit" value="Add comment">
+    </form>
   {% endif %}
   
 {% endblock %}
