@@ -3,7 +3,7 @@ from itertools import product
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from store.models import Product, Category, Brand, Customer, Order, OrderItem, Review
+from store.models import Product, Category, Brand, Customer, Order, OrderItem, Review, ShoppingCart, CartItem
 
 
 @admin.register(Product)
@@ -46,3 +46,5 @@ class ReviewAdmin(admin.ModelAdmin):
 admin.site.register(Category)
 admin.site.register(Brand)
 admin.site.register(OrderItem)
+admin.site.register(ShoppingCart)
+admin.site.register(CartItem)
