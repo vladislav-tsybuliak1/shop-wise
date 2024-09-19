@@ -32,9 +32,11 @@ class CustomerAdmin(UserAdmin):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    search_fields = ["customer__username", ]
+    list_display = ["pk", "customer", "total_cost"]
+    search_fields = ["customer__username", "customer__first_name", "customer__last_name", ]
 
 
 admin.site.register(Category)
 admin.site.register(Brand)
 admin.site.register(Review)
+admin.site.register(OrderItem)
