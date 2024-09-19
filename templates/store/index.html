@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+  
+    <h1>Shop Wise Home</h1>
+    <p>Welcome to the best shop ever!</p>
+    <p>We already have:</p>
+  
+    <ul>
+      <li><strong>Registered customers:</strong> {{ num_customers }}</li>
+      <li><strong>Listed products:</strong> {{ num_products }}</li>
+      <li><strong>Listed brands:</strong> {{ num_brands }}</li>
+      <li><strong>Placed orders:</strong> {{ num_orders }}</li>
+    </ul>
+
+    <p>You have visited this page {{ num_visits }} time{{ num_visits|pluralize }}.</p>
+
+{% endblock %}
