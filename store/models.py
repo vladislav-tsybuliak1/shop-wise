@@ -87,3 +87,21 @@ class OrderItem(models.Model):
     @property
     def total_cost(self) -> Decimal:
         return self.product.price * self.quantity
+
+
+class Review(models.Model):
+    customer = models.ForeignKey(
+        to=settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="reviews"
+    )
+    product = models.ForeignKey(
+        to=Product,
+        on_delete=models.CASCADE,
+        related_name="reviews"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    content = models.TextField()
+
+    class Meta:
+        ordering = ("-created_at", )
