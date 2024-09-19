@@ -10,6 +10,7 @@
         <th>Name</th>
         <th>Unit</th>
         <th>Price</th>
+        <th>Add to cart</th>
       </tr>
     {% for product in product_list %}
       <tr>
@@ -17,6 +18,7 @@
         <td><a href="{% url 'store:product-detail' product.id %}">{{ product.name }}</a></td>
         <td>{{ product.unit_value|floatformat }} {{ product.unit_name }}</td>
         <td>{{ product.price }}</td>
+        <td><a href="{% url 'store:cart-add-product' product.id %}">Add</a></td>
       </tr>
     {% endfor %}
     </table>
