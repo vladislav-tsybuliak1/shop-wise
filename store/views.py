@@ -8,6 +8,7 @@ from store.models import (
     Product,
     Order,
     Brand,
+    ShoppingCart,
 )
 
 
@@ -69,3 +70,15 @@ class OrderListView(generic.ListView):
 class OrderDetailView(generic.DetailView):
     model = Order
     queryset = Order.objects.prefetch_related("order_items__product")
+
+
+def cart_detail(request: HttpRequest) -> HttpResponse:
+    cart, created = ShoppingCart.objects.get_or_create(customer=request.user)
+    cart_items = cart.cart_items.select_related("product")
+    total_cost = sum(item.quantity * float(item.product.price) for item in cart_items)
+    context = {
+        "cart": cart,
+        "cart_items": cart_items,
+        "total_cost": total_cost,
+    }
+    return render(request, "store/cart_detail.html", context=context)
