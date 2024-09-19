@@ -17,6 +17,17 @@ class Category(models.Model):
         return self.name
 
 
+class Brand(models.Model):
+    name = models.CharField(max_length=63, unique=True)
+    description = models.TextField(null=True, blank=True)
+
+    class Meta:
+        ordering = ("name",)
+
+    def __str__(self) -> str:
+        return self.name
+
+
 class Product(models.Model):
     UNITS = (
         ("KG", "kilograms"),
@@ -33,6 +44,11 @@ class Product(models.Model):
     unit_name = models.CharField(max_length=3, choices=UNITS)
     stock_quantity = models.FloatField(default=0)
     price = models.DecimalField(max_digits=9, decimal_places=2)
+    brand = models.ForeignKey(
+        to=Brand,
+        on_delete=models.CASCADE,
+        related_name="products"
+    )
     category = models.ForeignKey(
         to=Category,
         on_delete=models.CASCADE,
