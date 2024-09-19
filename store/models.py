@@ -1,6 +1,7 @@
 from decimal import Decimal
 
 from django.conf import settings
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
@@ -178,3 +179,14 @@ class CartItem(models.Model):
 
     def __str__(self) -> str:
         return f"{self.product}: {self.quantity}"
+
+
+class Customer(AbstractUser):
+    phone_number = models.CharField(max_length=15)
+    address = models.CharField(max_length=255)
+
+    class Meta:
+        ordering = ("username", )
+
+    def __str__(self) -> str:
+        return f"{self.username} ({self.first_name} {self.last_name})"
