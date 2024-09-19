@@ -35,6 +35,7 @@ class ProductListView(generic.ListView):
     model = Product
     paginate_by = 5
 
+
 class ProductDetailView(generic.DetailView):
     model = Product
     queryset = Product.objects.select_related("brand", "category").prefetch_related("reviews")
@@ -57,3 +58,8 @@ class ProductDetailView(generic.DetailView):
         context = self.get_context_data()
         context["review_form"] = review_form
         return self.render_to_response(context)
+
+
+class OrderListView(generic.ListView):
+    model = Order
+    paginate_by = 5

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>
+    Order list
+  </h1>
+  {% if order_list %}
+    <table class="table">
+      <tr>
+        <th>ID</th>
+        <th>Status</th>
+        <th>Date of creation</th>
+      </tr>
+    {% for order in order_list %}
+      <tr>
+        <td><a href="#">{{ order.id }}</a></td>
+        <td>{{ order.status }}</td>
+        <td>{{ order.created_at|timesince }} ago</td>
+      </tr>
+    {% endfor %}
+    </table>
+    {% else %}
+      <p>There are no orders.</p>
+    {% endif %}
+{% endblock %}
