@@ -8,7 +8,9 @@
   
   <p>Brand: {{ product.brand }}</p>
   <p>Category: {{ product.category }}</p>
-  <p>Product description: {{ product.description }}</p>
+  {% if product.description %}
+    <p>Product description: {{ product.description }}</p>
+  {% endif %}
   <p>Price: {{ product.price }}</p>
   <p>Stock quantity: {{ product.stock_quantity|floatformat }}</p>
   
