@@ -38,7 +38,7 @@ class ProductListView(generic.ListView):
 
 class ProductDetailView(generic.DetailView):
     model = Product
-    queryset = Product.objects.select_related("brand", "category").prefetch_related("reviews")
+    queryset = Product.objects.select_related("brand", "category").prefetch_related("reviews__customer")
 
     def get_context_data(self, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
