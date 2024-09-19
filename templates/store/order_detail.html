@@ -22,7 +22,7 @@
           {{ order_item.product.name }} {{ order_item.product.unit_value|floatformat }} {{ order_item.product.unit_name }}
         </a></td>
         <td>{{ order_item.product.price }}</td>
-        <td>{{ order_item.quantity }}</td>
+        <td>{{ order_item.quantity|floatformat }}</td>
         <td>{{ order_item.total_cost }}</td>
       </tr>
     {% endfor %}
