@@ -1,6 +1,7 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
 
-from store.models import Product, Category, Brand
+from store.models import Product, Category, Brand, Customer
 
 
 @admin.register(Product)
@@ -18,6 +19,15 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields = ["name", ]
     list_per_page = 10
 
+
+@admin.register(Customer)
+class CustomerAdmin(UserAdmin):
+    list_display = UserAdmin.list_display + (
+        "phone_number",
+        "address",
+    )
+    fieldsets = UserAdmin.fieldsets + (("Additional info", {"fields": ("phone_number", "address",)}),)
+    add_fieldsets = UserAdmin.add_fieldsets + (("Additional info", {"fields": ("phone_number", "address",)}),)
 
 admin.site.register(Category)
 admin.site.register(Brand)
