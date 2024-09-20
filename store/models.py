@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import MinValueValidator
 from django.db import models
 
 from store.validators import validate_username, validate_name
@@ -40,10 +41,10 @@ class Product(models.Model):
 
     name = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
-    unit_value = models.FloatField()
+    unit_value = models.FloatField(validators=[MinValueValidator(0)])
     unit_name = models.CharField(max_length=3, choices=UNITS)
-    stock_quantity = models.FloatField(default=0)
-    price = models.DecimalField(max_digits=9, decimal_places=2)
+    stock_quantity = models.FloatField(default=0, validators=[MinValueValidator(0)])
+    price = models.DecimalField(max_digits=9, decimal_places=2, validators=[MinValueValidator(0)])
     brand = models.ForeignKey(
         to=Brand,
         on_delete=models.CASCADE,
@@ -96,10 +97,12 @@ class Order(models.Model):
 
     @property
     def total_cost(self) -> float:
-        return sum(
+        return round(sum(
             order_item.total_cost
             for order_item
             in self.order_items.all()
+        ),
+            2
         )
 
 
@@ -114,7 +117,7 @@ class OrderItem(models.Model):
         on_delete=models.CASCADE,
         related_name="order_items"
     )
-    quantity = models.FloatField(default=0)
+    quantity = models.FloatField(default=0, validators=[MinValueValidator(0)])
 
     class Meta:
         constraints = [
@@ -126,7 +129,7 @@ class OrderItem(models.Model):
 
     @property
     def total_cost(self) -> float:
-        return float(self.product.price) * self.quantity
+        return round(float(self.product.price) * self.quantity, 2)
 
     def __str__(self) -> str:
         return f"{self.product}: {self.quantity}"
@@ -165,7 +168,7 @@ class ShoppingCart(models.Model):
 
     @property
     def total_cost(self) -> float:
-        return sum(cart_item.total_cost for cart_item in self.cart_items.all())
+        return round(sum(cart_item.total_cost for cart_item in self.cart_items.all()), 2)
 
 
 class CartItem(models.Model):
@@ -179,7 +182,7 @@ class CartItem(models.Model):
         on_delete=models.CASCADE,
         related_name="cart_items"
     )
-    quantity = models.FloatField(default=0)
+    quantity = models.FloatField(default=0, validators=[MinValueValidator(0)])
 
     class Meta:
         constraints = [
@@ -191,7 +194,7 @@ class CartItem(models.Model):
 
     @property
     def total_cost(self) -> float:
-        return float(self.product.price) * self.quantity
+        return round(float(self.product.price) * self.quantity, 2)
 
     def __str__(self) -> str:
         return f"{self.product}: {self.quantity}"
