@@ -1,5 +1,3 @@
-from idlelib.editor import keynames
-
 from django.contrib.auth import get_user_model
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -103,6 +101,12 @@ class BrandListView(generic.ListView):
     model = Brand
     paginate_by = 5
     queryset = Brand.objects.prefetch_related("products")
+
+
+class BrandCreateView(generic.CreateView):
+    model = Brand
+    fields = "__all__"
+    success_url = reverse_lazy("store:brand-list")
 
 
 class CustomerListView(generic.ListView):
