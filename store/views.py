@@ -64,6 +64,14 @@ class ProductDetailView(generic.DetailView):
         return self.render_to_response(context)
 
 
+class ProductCreateView(generic.CreateView):
+    model = Product
+    fields = "__all__"
+
+    def get_success_url(self) -> str:
+        return reverse("store:product-detail", args=[self.object.pk])
+
+
 class OrderListView(generic.ListView):
     model = Order
     paginate_by = 5
