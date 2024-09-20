@@ -3,6 +3,12 @@
 {% block content %}
   <h1>
     Customer: {{ customer }}
+    <a href="{% url 'store:customer-delete' customer.id %}" class="btn btn-danger link-to-page">
+      Delete
+    </a>
+    <a href="{% url 'store:customer-update' customer.id %}" class="btn btn-secondary link-to-page">
+      Update
+    </a>
   </h1>
   
   <h2>Total orders: {{ order_list.count }}</h2>
