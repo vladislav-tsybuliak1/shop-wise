@@ -18,5 +18,5 @@
   <li class="list-group-item"><a href="{% url 'store:customer-list' %}">All customers</a></li>
   <li class="list-group-item"><a href="{% url 'store:product-list' %}">All products</a></li>
   <li class="list-group-item"><a href="{% url 'store:order-list' %}">All orders</a></li>
-  <li class="list-group-item"><a href="{% url 'store:cart-detail' %}">My shopping cart</a></li>
+  <li class="list-group-item "><a class="btn btn-light border-success" href="{% url 'store:cart-detail' %}">🛒 ({{ user.shopping_cart.cart_items.count }})</a></li>
 </ul>
