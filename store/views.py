@@ -82,6 +82,11 @@ class CategoryListView(generic.ListView):
     paginate_by = 5
 
 
+class CategoryCreateView(generic.CreateView):
+    model = Category
+    fields = "__all__"
+
+
 class BrandListView(generic.ListView):
     model = Brand
     paginate_by = 5
