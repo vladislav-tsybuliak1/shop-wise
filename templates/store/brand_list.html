@@ -9,12 +9,25 @@
         <th>Name</th>
         <th>Description</th>
         <th>Listed positions</th>
+        <th>Update</th>
+        <th>Delete</th>
       </tr>
     {% for brand in brand_list %}
       <tr>
         <td>{{ brand.name }}</td>
-        <td>{{ brand.description }}</td>
+        <td>{% if brand.description %}{{ brand.description }}{% else %}No description{% endif %}</td>
         <td>{{ brand.products.count }}</td>
+      <td>
+          <a href="{% url 'store:brand-update' brand.id %}">
+            Update
+          </a>
+        </td>
+        <td>
+          <a style="color: red"
+            href="{% url 'store:brand-delete' brand.id %}">
+            Delete
+          </a>
+        </td>
       </tr>
     {% endfor %}
     </table>
