@@ -2,6 +2,7 @@ from http.client import HTTPResponse
 
 from django.contrib import messages
 from django.contrib.auth import get_user_model
+from django.db import transaction
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
@@ -251,13 +252,18 @@ def update_order_status(request: HttpRequest, pk: int) -> HTTPResponse:
 def create_order_from_cart(request: HttpRequest) -> HTTPResponse:
     shopping_cart = get_object_or_404(ShoppingCart, customer=request.user)
     cart_items = CartItem.objects.filter(shopping_cart=shopping_cart)
-    order = Order.objects.create(customer=request.user)
-    for cart_item in cart_items:
-        OrderItem.objects.create(
-            order=order,
-            product=cart_item.product,
-            quantity=cart_item.quantity,
-        )
-    cart_items.delete()
+    if not cart_items.exists():
+        messages.warning(request, "Your cart is empty. Please add items to your cart before placing an order.")
+        return redirect("store:cart")
+
+    with transaction.atomic():
+        order = Order.objects.create(customer=request.user)
+        for cart_item in cart_items:
+            OrderItem.objects.create(
+                order=order,
+                product=cart_item.product,
+                quantity=cart_item.quantity,
+            )
+        cart_items.delete()
     messages.success(request, "Order is placed.")
     return redirect("store:order-detail", pk=order.id)
