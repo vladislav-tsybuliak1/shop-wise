@@ -226,6 +226,7 @@ def delete_from_cart(request: HttpRequest, product_id: int) -> HttpResponse:
             cart_item.delete()
         else:
             cart_item.save()
+    messages.success(request, "Product deleted from cart.")
     return redirect(request.META.get("HTTP_REFERER", reverse_lazy("store:index")))
 
 
