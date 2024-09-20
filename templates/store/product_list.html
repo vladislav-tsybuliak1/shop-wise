@@ -15,6 +15,7 @@
         <th>Name</th>
         <th>Unit</th>
         <th>Price</th>
+        <th>Quantity in stock</th>
         <th>Shopping cart</th>
       </tr>
     {% for product in product_list %}
@@ -23,6 +24,7 @@
         <td><a href="{% url 'store:product-detail' product.id %}">{{ product.name }}</a></td>
         <td>{{ product.unit_value|floatformat }} {{ product.unit_name }}</td>
         <td>{{ product.price }}</td>
+        <td>{{ product.quantity }}</td>
         <td>
           {% if product|in_cart_amount:user.shopping_cart > 0 %}
             <a href="{% url 'store:cart-delete-product' product.id %}" class="btn btn-light">➖</a>
