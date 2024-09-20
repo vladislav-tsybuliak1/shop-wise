@@ -1,5 +1,3 @@
-from http.client import HTTPResponse
-
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.db import transaction
@@ -238,7 +236,7 @@ def empty_cart(request: HttpRequest) -> HttpResponse:
     return redirect("store:cart-detail")
 
 
-def update_order_status(request: HttpRequest, pk: int) -> HTTPResponse:
+def update_order_status(request: HttpRequest, pk: int) -> HttpResponse:
     order = get_object_or_404(Order, pk=pk)
     if request.method == "POST":
         form = OrderStatusForm(request.POST, instance=order)
@@ -249,7 +247,7 @@ def update_order_status(request: HttpRequest, pk: int) -> HTTPResponse:
     return redirect("store:order-list")
 
 
-def create_order_from_cart(request: HttpRequest) -> HTTPResponse:
+def create_order_from_cart(request: HttpRequest) -> HttpResponse:
     shopping_cart = get_object_or_404(ShoppingCart, customer=request.user)
     cart_items = CartItem.objects.filter(shopping_cart=shopping_cart)
     if not cart_items.exists():
