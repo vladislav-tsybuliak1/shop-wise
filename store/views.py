@@ -94,6 +94,11 @@ class CategoryUpdateView(generic.UpdateView):
     success_url = reverse_lazy("store:category-list")
 
 
+class CategoryDeleteView(generic.DeleteView):
+    model = Category
+    success_url = reverse_lazy("store:category-list")
+
+
 class BrandListView(generic.ListView):
     model = Brand
     paginate_by = 5
