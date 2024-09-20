@@ -1,0 +1,24 @@
+.messages {
+    list-style: none;
+    padding: 0;
+}
+
+.messages li {
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.messages .success {
+    background-color: #dff0d8; /* Light green */
+    color: #3c763d; /* Dark green */
+}
+
+.messages .warning {
+    background-color: #fcf8e3; /* Light yellow */
+    color: #8a6d3b; /* Dark yellow */
+}
+
+.messages .error {
+    background-color: #f2dede; /* Light red */
+    color: #a94442; /* Dark red */
+}
