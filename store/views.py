@@ -1,5 +1,6 @@
 from http.client import HTTPResponse
 
+from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -200,8 +201,13 @@ def add_to_cart(request: HttpRequest, product_id: int) -> HttpResponse:
     product = get_object_or_404(Product, id=product_id)
     shopping_cart, created = ShoppingCart.objects.get_or_create(customer=request.user)
     cart_item, created = CartItem.objects.get_or_create(shopping_cart=shopping_cart, product=product)
-    cart_item.quantity += 1
-    cart_item.save()
+    if cart_item.quantity < product.stock_quantity:
+        cart_item.quantity += 1
+        cart_item.save()
+        messages.success(request, "Product added to cart.")
+    else:
+        messages.warning(request, "Cannot add more of this product; not enough stock available.")
+
     return redirect(request.META.get("HTTP_REFERER", reverse_lazy("store:index")))
 
 
