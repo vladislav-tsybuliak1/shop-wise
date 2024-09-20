@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>
+    Customer: {{ customer }}
+  </h1>
+  
+  <h2>Total orders: {{ order_list.count }}</h2>
+  
+  {% if order_list %}
+    <table class="table">
+      <tr>
+        <th>ID</th>
+        <th>Status</th>
+        <th>Date of creation</th>
+        <th>Total cost</th>
+      </tr>
+    {% for order in order_list %}
+      <tr>
+        <td><a href="{% url 'store:order-detail' order.id %}">{{ order.id }}</a></td>
+        <td>{{ order.status }}</td>
+        <td>{{ order.created_at|timesince }} ago</td>
+        <td>{{ order.total_cost }}</td>
+      </tr>
+    {% endfor %}
+    </table>
+    {% else %}
+      <p>There are no orders.</p>
+    {% endif %}
+  
+{% endblock %}

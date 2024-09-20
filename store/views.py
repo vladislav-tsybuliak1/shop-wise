@@ -1,3 +1,5 @@
+from idlelib.editor import keynames
+
 from django.contrib.auth import get_user_model
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -90,6 +92,16 @@ class CustomerListView(generic.ListView):
     model = get_user_model()
     paginate_by = 5
     queryset = get_user_model().objects.prefetch_related("orders")
+
+
+class CustomerDetailView(generic.DetailView):
+    model = get_user_model()
+
+    def get_context_data(self, **kwargs) -> dict:
+        context = super().get_context_data(**kwargs)
+        context["order_list"] = self.get_object().orders.all()
+        return context
+
 
 
 def cart_detail(request: HttpRequest) -> HttpResponse:
