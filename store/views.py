@@ -172,6 +172,11 @@ class CustomerUpdateView(generic.UpdateView):
         return reverse("store:customer-detail", args=[self.object.pk])
 
 
+class CustomerDeleteView(generic.DeleteView):
+    model = get_user_model()
+    success_url = reverse_lazy("store:customer-list")
+
+
 def cart_detail(request: HttpRequest) -> HttpResponse:
     shopping_cart, created = ShoppingCart.objects.get_or_create(customer=request.user)
     cart_items = shopping_cart.cart_items.select_related("product")
