@@ -21,12 +21,12 @@
         </a></td>
         <td>{{ cart_item.product.price }}</td>
         <td>{{ cart_item.quantity|floatformat }}</td>
-        <td>{{ cart_item.total_cost }}</td>
+        <td >{{ cart_item.total_cost|floatformat:2 }}</td>
       </tr>
     {% endfor %}
       <tr>
         <td colspan="3" ><strong>Total cost for positions in the cart</strong></td>
-        <td><strong>{{ total_cost }}</strong></td>
+        <td><strong>{{ total_cost|floatformat:2 }}</strong></td>
       </tr>
   </table>
   {% else %}
