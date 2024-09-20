@@ -80,6 +80,11 @@ class ProductUpdateView(generic.UpdateView):
         return reverse("store:product-detail", args=[self.object.pk])
 
 
+class ProductDeleteView(generic.DeleteView):
+    model = Product
+    success_url = reverse_lazy("store:product-list")
+
+
 class OrderListView(generic.ListView):
     model = Order
     paginate_by = 5
