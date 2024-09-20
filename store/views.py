@@ -109,6 +109,12 @@ class BrandCreateView(generic.CreateView):
     success_url = reverse_lazy("store:brand-list")
 
 
+class BrandUpdateView(generic.UpdateView):
+    model = Brand
+    fields = "__all__"
+    success_url = reverse_lazy("store:brand-list")
+
+
 class CustomerListView(generic.ListView):
     model = get_user_model()
     paginate_by = 5
