@@ -189,7 +189,7 @@ def cart_detail(request: HttpRequest) -> HttpResponse:
     cart_items = shopping_cart.cart_items.select_related("product")
     total_cost = sum(item.quantity * float(item.product.price) for item in cart_items)
     context = {
-        "cart": shopping_cart,
+        "shopping_cart": shopping_cart,
         "cart_items": cart_items,
         "total_cost": total_cost,
     }

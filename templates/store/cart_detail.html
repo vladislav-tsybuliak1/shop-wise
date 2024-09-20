@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load cart_filters %}
 
 {% block content %}
 
@@ -20,7 +21,12 @@
           {{ cart_item.product.name }} {{ cart_item.product.unit_value|floatformat }} {{ cart_item.product.unit_name }}
         </a></td>
         <td>{{ cart_item.product.price }}</td>
-        <td>{{ cart_item.quantity|floatformat }}</td>
+        <td>
+            <a href="{% url 'store:cart-delete-product' cart_item.product.id %}" class="btn btn-light">➖</a>
+            {{ cart_item.product|in_cart_amount:user.shopping_cart|floatformat }}
+            <a href="{% url 'store:cart-add-product' cart_item.product.id %}" class="btn btn-light">➕</a>
+            <a href="{% url 'store:cart-delete-product' cart_item.product.id %}?full_delete=true" class="btn btn-light">❌</a>
+        </td>
         <td >{{ cart_item.total_cost|floatformat:2 }}</td>
       </tr>
     {% endfor %}
