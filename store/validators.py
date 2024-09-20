@@ -20,8 +20,7 @@ def validate_username(username: str) -> None:
         raise ValidationError(f"{username} cannot start or end with an underscore")
 
 
-def phone_number_validation() -> RegexValidator:
-    return RegexValidator(
+validate_phone_number = RegexValidator(
     regex=r"^\+380\d{9}$",
     message="Phone number must be entered in the format: '+380XXXXXXXXX'."
 )

@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 
 from store.models import Review, Order
+from store.validators import validate_phone_number
 
 
 class ReviewForm(forms.ModelForm):
@@ -22,6 +23,12 @@ class ReviewForm(forms.ModelForm):
 
 
 class CustomerCreationForm(UserCreationForm):
+    phone_number = forms.CharField(
+        validators=[validate_phone_number],
+        max_length=13,
+        widget=forms.TextInput(attrs={"placeholder": "+380XXXXXXXXX"})
+    )
+
     class Meta:
         model = get_user_model()
         fields = (
