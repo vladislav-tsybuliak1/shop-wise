@@ -9,7 +9,9 @@ from store.models import (
     Product,
     Order,
     Brand,
-    ShoppingCart, CartItem,
+    ShoppingCart,
+    CartItem,
+    Category,
 )
 
 
@@ -71,6 +73,11 @@ class OrderListView(generic.ListView):
 class OrderDetailView(generic.DetailView):
     model = Order
     queryset = Order.objects.prefetch_related("order_items__product")
+
+
+class CategoryListView(generic.ListView):
+    model = Category
+    paginate_by = 5
 
 
 def cart_detail(request: HttpRequest) -> HttpResponse:
