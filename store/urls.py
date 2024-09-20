@@ -24,6 +24,7 @@ from store.views import (
     BrandDeleteView,
     cart_detail,
     add_to_cart,
+    delete_from_cart,
     update_order_status,
 )
 
@@ -53,6 +54,7 @@ urlpatterns = [
     path("brands/<int:pk>/delete/", BrandDeleteView.as_view(), name="brand-delete"),
     path("cart/", cart_detail, name="cart-detail"),
     path("cart/add/<int:product_id>/", add_to_cart, name="cart-add-product"),
+    path("cart/delete/<int:product_id>/", delete_from_cart, name="cart-delete-product"),
 ]
 
 app_name = "store"

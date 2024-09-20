@@ -24,7 +24,8 @@
         <td>{{ product.unit_value|floatformat }} {{ product.unit_name }}</td>
         <td>{{ product.price }}</td>
         <td>
-          {% if product|in_cart_exists:user.shopping_cart %}
+          {% if product|in_cart_amount:user.shopping_cart > 0 %}
+            <a href="{% url 'store:cart-delete-product' product.id %}" class="btn btn-light">➖</a>
             {{ product|in_cart_amount:user.shopping_cart|floatformat }}
             <a href="{% url 'store:cart-add-product' product.id %}" class="btn btn-light">➕</a>
           {% else %}
