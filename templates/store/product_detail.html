@@ -1,7 +1,8 @@
 {% extends "base.html" %}
+{% load cart_filters %}
 
 {% block content %}
-  
+
   <h1>
     {{ product.name }} {{ product.unit_value|floatformat }} {{ product.unit_name }}
     <a href="{% url 'store:product-delete' product.id %}" class="btn btn-danger link-to-page">
@@ -11,8 +12,18 @@
     <a href="{% url 'store:product-update' product.id %}" class="btn btn-secondary link-to-page">
       Update
     </a>
+    <span style="float: right;">
+      {% if product|in_cart_amount:user.shopping_cart > 0 %}
+        <a href="{% url 'store:cart-delete-product' product.id %}" class="btn btn-light">➖</a>
+        {{ product|in_cart_amount:user.shopping_cart|floatformat }}
+        <a href="{% url 'store:cart-add-product' product.id %}" class="btn btn-light">➕</a>
+        <a href="{% url 'store:cart-delete-product' product.id %}?full_delete=true" class="btn btn-light">❌</a>
+      {% else %}
+        <a href="{% url 'store:cart-add-product' product.id %}" class="btn btn-light">🛒</a>
+      {% endif %}
+    </span>
   </h1>
-  
+
   <p>Brand: {{ product.brand }}</p>
   <p>Category: {{ product.category }}</p>
   {% if product.description %}
@@ -20,10 +31,10 @@
   {% endif %}
   <p>Price: {{ product.price }}</p>
   <p>Stock quantity: {{ product.stock_quantity|floatformat }}</p>
-  
+
   <hr>
   <p><strong>{{ product.reviews.count }} review{{ product.reviews.count|pluralize }}</strong></p>
-  
+
   {% if product.reviews.all %}
     {% for review in product.reviews.all %}
       <div>
@@ -34,7 +45,7 @@
   {% else %}
     <p><i>No reviews yet.</i></p>
   {% endif %}
-  
+
   {% if user.is_authenticated %}
     <hr>
     <p>Add a new review:</p>
@@ -44,5 +55,5 @@
       <input class="btn btn-primary" type="submit" value="Add comment">
     </form>
   {% endif %}
-  
+
 {% endblock %}
