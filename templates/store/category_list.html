@@ -11,11 +11,24 @@
       <tr>
         <th>Name</th>
         <th>Description</th>
+        <th>Update</th>
+        <th>Delete</th>
       </tr>
     {% for category in category_list %}
       <tr>
         <td>{{ category.name }}</td>
         <td>{{ category.description }}</td>
+        <td>
+          <a href="{% url 'store:category-update' category.id %}">
+            Update
+          </a>
+        </td>
+        <td>
+          <a style="color: red"
+            href="{% url 'store:category-delete' category.id %}">
+            Delete
+          </a>
+        </td>
       </tr>
     {% endfor %}
     </table>
