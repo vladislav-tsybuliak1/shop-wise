@@ -262,6 +262,8 @@ def create_order_from_cart(request: HttpRequest) -> HttpResponse:
                 product=cart_item.product,
                 quantity=cart_item.quantity,
             )
+            cart_item.product.stock_quantity -= cart_item.quantity
+            cart_item.product.save()
         cart_items.delete()
     messages.success(request, "Order is placed.")
     return redirect("store:order-detail", pk=order.id)
