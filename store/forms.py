@@ -32,7 +32,7 @@ class CustomerCreationForm(UserCreationForm):
     address = forms.CharField(
         validators=[validate_address],
         max_length=255,
-        widget=forms.Textarea(attrs={'placeholder': 'Enter address'})
+        widget=forms.TextInput(attrs={'placeholder': 'Enter address'})
     )
 
     class Meta:
