@@ -78,7 +78,7 @@ class Order(models.Model):
     status = models.CharField(
         max_length=23,
         choices=STATUSES,
-        default=STATUSES[0]
+        default="PENDING"
     )
     products = models.ManyToManyField(
         to=Product,
