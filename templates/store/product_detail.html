@@ -4,6 +4,13 @@
   
   <h1>
     {{ product.name }} {{ product.unit_value|floatformat }} {{ product.unit_name }}
+    <a href="{% url 'store:product-delete' product.id %}" class="btn btn-danger link-to-page">
+      Delete
+    </a>
+
+    <a href="{% url 'store:product-update' product.id %}" class="btn btn-secondary link-to-page">
+      Update
+    </a>
   </h1>
   
   <p>Brand: {{ product.brand }}</p>
