@@ -28,8 +28,9 @@
             <a href="{% url 'store:cart-delete-product' product.id %}" class="btn btn-light">➖</a>
             {{ product|in_cart_amount:user.shopping_cart|floatformat }}
             <a href="{% url 'store:cart-add-product' product.id %}" class="btn btn-light">➕</a>
+            <a href="{% url 'store:cart-delete-product' product.id %}?full_delete=true" class="btn btn-light">❌</a>
           {% else %}
-            <a href="{% url 'store:cart-add-product' product.id %}">Add to cart</a>
+            <a href="{% url 'store:cart-add-product' product.id %}" class="btn btn-light">🛒</a>
           {% endif %}
         </td>
       </tr>

@@ -209,11 +209,17 @@ def delete_from_cart(request: HttpRequest, product_id: int) -> HttpResponse:
     product = get_object_or_404(Product, id=product_id)
     shopping_cart = ShoppingCart.objects.get(customer=request.user)
     cart_item = CartItem.objects.get(shopping_cart=shopping_cart, product=product)
-    cart_item.quantity -= 1
-    if cart_item.quantity == 0:
+
+    full_delete = request.GET.get("full_delete")
+
+    if full_delete:
         cart_item.delete()
     else:
-        cart_item.save()
+        cart_item.quantity -= 1
+        if cart_item.quantity == 0:
+            cart_item.delete()
+        else:
+            cart_item.save()
     return redirect(request.META.get("HTTP_REFERER", reverse_lazy("store:index")))
 
 
