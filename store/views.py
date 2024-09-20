@@ -85,6 +85,13 @@ class BrandListView(generic.ListView):
     paginate_by = 5
     queryset = Brand.objects.prefetch_related("products")
 
+
+class CustomerListView(generic.ListView):
+    model = get_user_model()
+    paginate_by = 5
+    queryset = get_user_model().objects.prefetch_related("orders")
+
+
 def cart_detail(request: HttpRequest) -> HttpResponse:
     shopping_cart, created = ShoppingCart.objects.get_or_create(customer=request.user)
     cart_items = shopping_cart.cart_items.select_related("product")
