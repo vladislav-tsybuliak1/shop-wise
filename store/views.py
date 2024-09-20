@@ -1,10 +1,12 @@
+from http.client import HTTPResponse
+
 from django.contrib.auth import get_user_model
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views import generic
 
-from store.forms import ReviewForm, CustomerCreationForm
+from store.forms import ReviewForm, CustomerCreationForm, OrderStatusForm
 from store.models import (
     Product,
     Order,
@@ -89,6 +91,11 @@ class OrderListView(generic.ListView):
     model = Order
     paginate_by = 5
     queryset = Order.objects.prefetch_related("order_items__product")
+
+    def get_context_data(self, **kwargs) -> dict:
+        context = super().get_context_data(**kwargs)
+        context["status_form"] = OrderStatusForm()
+        return context
 
 
 class OrderDetailView(generic.DetailView):
@@ -196,3 +203,13 @@ def add_to_cart(request: HttpRequest, product_id: int) -> HttpResponse:
     cart_item.quantity += 1
     cart_item.save()
     return redirect(request.META.get("HTTP_REFERER", reverse_lazy("store:index")))
+
+
+def update_order_status(request: HttpRequest, pk: int) -> HTTPResponse:
+    order = get_object_or_404(Order, pk=pk)
+    if request.method == "POST":
+        form = OrderStatusForm(request.POST, instance=order)
+        if form.is_valid():
+            form.save()
+            return redirect("store:order-list")
+    return redirect("store:order-list")

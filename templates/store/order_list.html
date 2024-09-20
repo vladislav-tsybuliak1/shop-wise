@@ -8,6 +8,7 @@
       <tr>
         <th>ID</th>
         <th>Status</th>
+        <th>Update order status</th>
         <th>Date of creation</th>
         <th>Total cost</th>
       </tr>
@@ -15,6 +16,13 @@
       <tr>
         <td><a href="{% url 'store:order-detail' order.id %}">{{ order.id }}</a></td>
         <td>{{ order.status }}</td>
+        <td>
+          <form method="post" action="{% url 'store:order-update' order.id %}">
+            {% csrf_token %}
+              {{ status_form.status }}
+            <button type="submit" class="btn btn-primary">Update</button>
+          </form>
+            </td>
         <td>{{ order.created_at|timesince }} ago</td>
         <td>{{ order.total_cost }}</td>
       </tr>

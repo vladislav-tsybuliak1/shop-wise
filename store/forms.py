@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 
-from store.models import Review
+from store.models import Review, Order
 
 
 class ReviewForm(forms.ModelForm):
@@ -40,3 +40,9 @@ class CustomerCreationForm(UserCreationForm):
             field.widget.attrs.update({"class": "form-control"})
             if self.errors.get(field_name):
                 field.widget.attrs["class"] += " is-invalid"
+
+
+class OrderStatusForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = ("status",)
