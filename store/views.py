@@ -223,6 +223,15 @@ def delete_from_cart(request: HttpRequest, product_id: int) -> HttpResponse:
     return redirect(request.META.get("HTTP_REFERER", reverse_lazy("store:index")))
 
 
+def empty_cart(request: HttpRequest) -> HttpResponse:
+    shopping_cart = ShoppingCart.objects.get(customer=request.user)
+
+    for cart_item in shopping_cart.cart_items.all():
+        cart_item.delete()
+
+    return redirect("store:cart-detail")
+
+
 def update_order_status(request: HttpRequest, pk: int) -> HTTPResponse:
     order = get_object_or_404(Order, pk=pk)
     if request.method == "POST":

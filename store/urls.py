@@ -23,6 +23,7 @@ from store.views import (
     BrandUpdateView,
     BrandDeleteView,
     cart_detail,
+    empty_cart,
     add_to_cart,
     delete_from_cart,
     update_order_status,
@@ -53,6 +54,7 @@ urlpatterns = [
     path("brands/<int:pk>/update/", BrandUpdateView.as_view(), name="brand-update"),
     path("brands/<int:pk>/delete/", BrandDeleteView.as_view(), name="brand-delete"),
     path("cart/", cart_detail, name="cart-detail"),
+    path("cart/empty", empty_cart, name="cart-empty"),
     path("cart/add/<int:product_id>/", add_to_cart, name="cart-add-product"),
     path("cart/delete/<int:product_id>/", delete_from_cart, name="cart-delete-product"),
 ]
