@@ -2,6 +2,9 @@
 {% block content %}
   <h1>
     Brand list
+    <a href="{% url 'store:brand-create' %}" class="btn btn-primary link-to-page">
+      Create
+    </a>
   </h1>
   {% if brand_list %}
     <table class="table">
