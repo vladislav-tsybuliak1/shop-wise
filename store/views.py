@@ -233,6 +233,7 @@ def delete_from_cart(request: HttpRequest, product_id: int) -> HttpResponse:
 def empty_cart(request: HttpRequest) -> HttpResponse:
     shopping_cart = ShoppingCart.objects.get(customer=request.user)
     shopping_cart.cart_items.all().delete()
+    messages.success(request, "Shopping Cart was emptied.")
     return redirect("store:cart-detail")
 
 
@@ -242,6 +243,7 @@ def update_order_status(request: HttpRequest, pk: int) -> HTTPResponse:
         form = OrderStatusForm(request.POST, instance=order)
         if form.is_valid():
             form.save()
+            messages.success(request, "Order status updated.")
             return redirect("store:order-list")
     return redirect("store:order-list")
 
@@ -257,4 +259,5 @@ def create_order_from_cart(request: HttpRequest) -> HTTPResponse:
             quantity=cart_item.quantity,
         )
     cart_items.delete()
+    messages.success(request, "Order is placed.")
     return redirect("store:order-detail", pk=order.id)
