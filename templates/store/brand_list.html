@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>
+    Brand list
+  </h1>
+  {% if brand_list %}
+    <table class="table">
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Listed positions</th>
+      </tr>
+    {% for brand in brand_list %}
+      <tr>
+        <td>{{ brand.name }}</td>
+        <td>{{ brand.description }}</td>
+        <td>{{ brand.products.count }}</td>
+      </tr>
+    {% endfor %}
+    </table>
+    {% else %}
+      <p>There are no brands.</p>
+    {% endif %}
+{% endblock %}
