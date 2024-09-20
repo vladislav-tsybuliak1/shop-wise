@@ -156,6 +156,13 @@ class CustomerDetailView(generic.DetailView):
         return context
 
 
+class CustomerCreateView(generic.CreateView):
+    model = get_user_model()
+    fields = "__all__"
+
+    def get_success_url(self) -> str:
+        return reverse("store:customer-detail", args=[self.object.pk])
+
 
 def cart_detail(request: HttpRequest) -> HttpResponse:
     shopping_cart, created = ShoppingCart.objects.get_or_create(customer=request.user)
