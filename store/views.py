@@ -115,6 +115,11 @@ class BrandUpdateView(generic.UpdateView):
     success_url = reverse_lazy("store:brand-list")
 
 
+class BrandDeleteView(generic.DeleteView):
+    model = Brand
+    success_url = reverse_lazy("store:brand-list")
+
+
 class CustomerListView(generic.ListView):
     model = get_user_model()
     paginate_by = 5
