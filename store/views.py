@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views import generic
 
-from store.forms import ReviewForm
+from store.forms import ReviewForm, CustomerCreationForm
 from store.models import (
     Product,
     Order,
@@ -158,7 +158,7 @@ class CustomerDetailView(generic.DetailView):
 
 class CustomerCreateView(generic.CreateView):
     model = get_user_model()
-    fields = "__all__"
+    form_class = CustomerCreationForm
 
     def get_success_url(self) -> str:
         return reverse("store:customer-detail", args=[self.object.pk])
