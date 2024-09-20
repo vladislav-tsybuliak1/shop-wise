@@ -13,7 +13,7 @@ from store.models import (
     Brand,
     ShoppingCart,
     CartItem,
-    Category,
+    Category, OrderItem,
 )
 
 
@@ -225,10 +225,7 @@ def delete_from_cart(request: HttpRequest, product_id: int) -> HttpResponse:
 
 def empty_cart(request: HttpRequest) -> HttpResponse:
     shopping_cart = ShoppingCart.objects.get(customer=request.user)
-
-    for cart_item in shopping_cart.cart_items.all():
-        cart_item.delete()
-
+    shopping_cart.cart_items.all().delete()
     return redirect("store:cart-detail")
 
 
@@ -240,3 +237,17 @@ def update_order_status(request: HttpRequest, pk: int) -> HTTPResponse:
             form.save()
             return redirect("store:order-list")
     return redirect("store:order-list")
+
+
+def create_order_from_cart(request: HttpRequest, customer_id: int) -> HTTPResponse:
+    shopping_cart = get_object_or_404(ShoppingCart, customer=request.user)
+    cart_items = CartItem.objects.filter(shopping_cart=shopping_cart)
+    order = Order.objects.create(customer=request.user)
+    for cart_item in cart_items:
+        OrderItem.objects.create(
+            order=order,
+            product=cart_item.product,
+            quantity=cart_item.quantity,
+        )
+    cart_items.delete()
+    return redirect("store:order-detail", order_id=order.id)

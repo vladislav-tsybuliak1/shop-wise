@@ -27,6 +27,7 @@ from store.views import (
     add_to_cart,
     delete_from_cart,
     update_order_status,
+    create_order_from_cart,
 )
 
 
@@ -40,6 +41,7 @@ urlpatterns = [
     path("orders/", OrderListView.as_view(), name="order-list"),
     path("orders/<int:pk>/", OrderDetailView.as_view(), name="order-detail"),
     path("orders/<int:pk>/update/", update_order_status, name="order-update"),
+    path("orders/create/<int:customer_id>/", create_order_from_cart, name="order-create"),
     path("customers/", CustomerListView.as_view(), name="customer-list"),
     path("customers/<int:pk>/", CustomerDetailView.as_view(), name="customer-detail"),
     path("customers/create/", CustomerCreateView.as_view(), name="customer-create"),
