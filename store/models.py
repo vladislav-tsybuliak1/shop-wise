@@ -2,6 +2,8 @@ from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+from store.validators import validate_username, validate_name
+
 
 class Category(models.Model):
     name = models.CharField(max_length=63, unique=True)
@@ -196,10 +198,13 @@ class CartItem(models.Model):
 
 
 class Customer(AbstractUser):
+    username = models.CharField(
+        max_length=50, unique=True, validators=[validate_username]
+    )
     phone_number = models.CharField(max_length=15)
     address = models.CharField(max_length=255)
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
+    first_name = models.CharField(max_length=50, validators=[validate_name])
+    last_name = models.CharField(max_length=50, validators=[validate_name])
 
     class Meta:
         ordering = ("username", )
