@@ -134,3 +134,5 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Define user model
 AUTH_USER_MODEL = "store.Customer"
+
+LOGIN_REDIRECT_URL = "/"
