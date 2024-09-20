@@ -40,8 +40,8 @@
 
   {% else %}
     <p>No added items.
-      <a href="{% url 'store:product-list' %}">Go for products</a>
     </p>
+    <a href="{% url 'store:product-list' %}" class="btn btn-primary">Go for products</a>
   {% endif %}
 
 {% endblock %}
