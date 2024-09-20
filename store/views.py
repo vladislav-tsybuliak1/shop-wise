@@ -85,6 +85,13 @@ class CategoryListView(generic.ListView):
 class CategoryCreateView(generic.CreateView):
     model = Category
     fields = "__all__"
+    success_url = reverse_lazy("store:category-list")
+
+
+class CategoryUpdateView(generic.UpdateView):
+    model = Category
+    fields = "__all__"
+    success_url = reverse_lazy("store:category-list")
 
 
 class BrandListView(generic.ListView):
