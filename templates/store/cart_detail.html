@@ -35,11 +35,13 @@
         <td><strong>{{ total_cost|floatformat:2 }}</strong></td>
       </tr>
   </table>
-    
-  <a href="{% url 'store:cart-empty'%}" class="btn btn-danger">Empty cart</a>
-    
+
+  <a href="{% url 'store:cart-empty'%}" class="btn btn-danger" style="float: right">Empty cart</a>
+
   {% else %}
-    <p>No added items.</p>
+    <p>No added items.
+      <a href="{% url 'store:product-list' %}">Go for products</a>
+    </p>
   {% endif %}
 
 {% endblock %}
