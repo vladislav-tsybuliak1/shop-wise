@@ -24,3 +24,8 @@ validate_phone_number = RegexValidator(
     regex=r"^\+380\d{9}$",
     message="Phone number must be entered in the format: '+380XXXXXXXXX'."
 )
+
+validate_address = RegexValidator(
+    regex=r"^[\w\s,.-]+$",
+    message="Address can only contain letters, numbers, spaces, and the following symbols: , . -"
+)
