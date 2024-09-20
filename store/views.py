@@ -239,7 +239,7 @@ def update_order_status(request: HttpRequest, pk: int) -> HTTPResponse:
     return redirect("store:order-list")
 
 
-def create_order_from_cart(request: HttpRequest, customer_id: int) -> HTTPResponse:
+def create_order_from_cart(request: HttpRequest) -> HTTPResponse:
     shopping_cart = get_object_or_404(ShoppingCart, customer=request.user)
     cart_items = CartItem.objects.filter(shopping_cart=shopping_cart)
     order = Order.objects.create(customer=request.user)
@@ -250,4 +250,4 @@ def create_order_from_cart(request: HttpRequest, customer_id: int) -> HTTPRespon
             quantity=cart_item.quantity,
         )
     cart_items.delete()
-    return redirect("store:order-detail", order_id=order.id)
+    return redirect("store:order-detail", pk=order.id)

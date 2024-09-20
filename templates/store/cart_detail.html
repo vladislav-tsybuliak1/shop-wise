@@ -35,7 +35,8 @@
         <td><strong>{{ total_cost|floatformat:2 }}</strong></td>
       </tr>
   </table>
-
+    
+  <a href="{% url 'store:order-create' %}" class="btn btn-success">Order</a>
   <a href="{% url 'store:cart-empty'%}" class="btn btn-danger" style="float: right">Empty cart</a>
 
   {% else %}
