@@ -15,7 +15,7 @@
         <th>Name</th>
         <th>Unit</th>
         <th>Price</th>
-        <th>Add to cart</th>
+        <th>Shopping cart</th>
       </tr>
     {% for product in product_list %}
       <tr>
@@ -25,9 +25,10 @@
         <td>{{ product.price }}</td>
         <td>
           {% if product|in_cart_exists:user.shopping_cart %}
-            In cart: {{ product|in_cart_amount:user.shopping_cart|floatformat }}, <a href="{% url 'store:cart-add-product' product.id %}">add more</a>
+            {{ product|in_cart_amount:user.shopping_cart|floatformat }}
+            <a href="{% url 'store:cart-add-product' product.id %}" class="btn btn-light">➕</a>
           {% else %}
-            <a href="{% url 'store:cart-add-product' product.id %}">Add</a>
+            <a href="{% url 'store:cart-add-product' product.id %}">Add to cart</a>
           {% endif %}
         </td>
       </tr>
