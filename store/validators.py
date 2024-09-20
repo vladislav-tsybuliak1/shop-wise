@@ -1,6 +1,7 @@
 import re
 
 from django.core.exceptions import ValidationError
+from django.core.validators import RegexValidator
 
 
 def validate_name(name: str) -> None:
@@ -17,3 +18,10 @@ def validate_username(username: str) -> None:
         )
     if username.startswith('_') or username.endswith('_'):
         raise ValidationError(f"{username} cannot start or end with an underscore")
+
+
+def phone_number_validation() -> RegexValidator:
+    return RegexValidator(
+    regex=r"^\+380\d{9}$",
+    message="Phone number must be entered in the format: '+380XXXXXXXXX'."
+)
