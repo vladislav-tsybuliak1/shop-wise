@@ -199,14 +199,20 @@ def cart_detail(request: HttpRequest) -> HttpResponse:
 def add_to_cart(request: HttpRequest, product_id: int) -> HttpResponse:
     product = get_object_or_404(Product, id=product_id)
     shopping_cart, created = ShoppingCart.objects.get_or_create(customer=request.user)
-    cart_item, created = CartItem.objects.get_or_create(shopping_cart=shopping_cart, product=product)
-    if cart_item.quantity < product.stock_quantity:
-        cart_item.quantity += 1
-        cart_item.save()
-        messages.success(request, "Product added to cart.")
+    cart_item = CartItem.objects.filter(shopping_cart=shopping_cart, product=product).first()
+    if cart_item:
+        if cart_item.quantity < product.stock_quantity:
+            cart_item.quantity += 1
+            cart_item.save()
+            messages.success(request, "Product quantity updated in the cart.")
+        else:
+            messages.warning(request, "Cannot add more of this product; not enough stock available.")
     else:
-        messages.warning(request, "Cannot add more of this product; not enough stock available.")
-
+        if product.stock_quantity > 0:
+            CartItem.objects.create(shopping_cart=shopping_cart, product=product, quantity=1)
+            messages.success(request, "Product added to cart.")
+        else:
+            messages.warning(request, "This product is out of stock.")
     return redirect(request.META.get("HTTP_REFERER", reverse_lazy("store:index")))
 
 
@@ -219,13 +225,15 @@ def delete_from_cart(request: HttpRequest, product_id: int) -> HttpResponse:
 
     if full_delete:
         cart_item.delete()
+        messages.success(request, "Product deleted from the cart.")
     else:
         cart_item.quantity -= 1
         if cart_item.quantity == 0:
             cart_item.delete()
+            messages.success(request, "Product deleted from the cart.")
         else:
             cart_item.save()
-    messages.success(request, "Product deleted from cart.")
+            messages.success(request, "Product quantity updated in the cart.")
     return redirect(request.META.get("HTTP_REFERER", reverse_lazy("store:index")))
 
 
@@ -249,21 +257,31 @@ def update_order_status(request: HttpRequest, pk: int) -> HttpResponse:
 
 def create_order_from_cart(request: HttpRequest) -> HttpResponse:
     shopping_cart = get_object_or_404(ShoppingCart, customer=request.user)
-    cart_items = CartItem.objects.filter(shopping_cart=shopping_cart)
+    cart_items = CartItem.objects.prefetch_related("product").filter(shopping_cart=shopping_cart)
     if not cart_items.exists():
         messages.warning(request, "Your cart is empty. Please add items to your cart before placing an order.")
         return redirect("store:cart")
 
     with transaction.atomic():
         order = Order.objects.create(customer=request.user)
+        added_items = 0
         for cart_item in cart_items:
-            OrderItem.objects.create(
-                order=order,
-                product=cart_item.product,
-                quantity=cart_item.quantity,
-            )
-            cart_item.product.stock_quantity -= cart_item.quantity
-            cart_item.product.save()
+            if cart_item.quantity > cart_item.product.stock_quantity:
+                cart_item.quantity = cart_item.product.stock_quantity
+                messages.warning(request, f"The quantity {cart_item.quantity} of {cart_item.product.name} is available.")
+            if cart_item.quantity > 0:
+                OrderItem.objects.create(
+                    order=order,
+                    product=cart_item.product,
+                    quantity=cart_item.quantity,
+                )
+                cart_item.product.stock_quantity -= cart_item.quantity
+                cart_item.product.save()
+                added_items += 1
         cart_items.delete()
+        if added_items == 0:
+            order.delete()
+            messages.warning(request, f"Order wasn't placed because no product from the list is available is stock.")
+            return redirect("store:cart-detail")
     messages.success(request, "Order is placed.")
     return redirect("store:order-detail", pk=order.id)
