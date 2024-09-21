@@ -7,6 +7,7 @@
     <table class="table">
       <tr>
         <th>ID</th>
+        <th>Customer</th>
         <th>Status</th>
         <th>Update order status</th>
         <th>Date of creation</th>
@@ -16,6 +17,7 @@
     {% for order in order_list %}
       <tr>
         <td>{{ order.id }}</td>
+        <td>{{ order.customer.get_full_name }}</td>
         <td>{{ order.status }}</td>
         <td>
           <form method="post" action="{% url 'store:order-update' order.id %}">
