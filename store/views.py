@@ -51,6 +51,12 @@ class ProductListView(generic.ListView):
             }
         )
         context["filter_form"] = ProductFilterForm(self.request.GET)
+        context["cart_items"] = {
+            item.product_id: item.quantity
+            for item
+            in self.request.user.shopping_cart.cart_items.all()
+        }
+
         return context
 
     def get_queryset(self) -> QuerySet:
@@ -60,7 +66,7 @@ class ProductListView(generic.ListView):
                 default=0,
                 output_field=IntegerField(),
             )
-        ).order_by("-available", "name")
+        ).select_related("brand", "category").order_by("-available", "name")
 
         search_form = ProductSearchForm(self.request.GET)
         filter_form = ProductFilterForm(self.request.GET)
@@ -130,7 +136,7 @@ class ProductDeleteView(generic.DeleteView):
 class OrderListView(generic.ListView):
     model = Order
     paginate_by = 5
-    queryset = Order.objects.prefetch_related("order_items__product")
+    queryset = Order.objects.prefetch_related("order_items__product", "customer")
 
     def get_context_data(self, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
@@ -197,9 +203,10 @@ class CustomerListView(generic.ListView):
 class CustomerDetailView(generic.DetailView):
     model = get_user_model()
 
+
     def get_context_data(self, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
-        context["order_list"] = self.get_object().orders.all()
+        context["order_list"] = self.get_object().orders.select_related("customer").prefetch_related("order_items__product")
         return context
 
 
