@@ -8,10 +8,14 @@
       Create
     </a>
   </h1>
-  <form method="get" action="" class="form-inline">
-    {{ search_form.name }}
+  <form method="get" action="" class="form-control">
+    <div>
+      {{ search_form.name }} {{ filter_form.brand }} {{ filter_form.category }}
+    </div>
     <input type="submit" value="🔍" class="btn btn-secondary">
+    <a href="{% url "store:product-list" %}" class="btn btn-secondary">Reset</a>
   </form>
+  
   {% if product_list %}
     <table class="table">
       <tr>
