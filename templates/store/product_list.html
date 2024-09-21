@@ -15,7 +15,7 @@
     <input type="submit" value="🔍" class="btn btn-secondary">
     <a href="{% url "store:product-list" %}" class="btn btn-secondary">Reset</a>
   </form>
-  
+
   {% if product_list %}
     <table class="table">
       <tr>
@@ -34,14 +34,16 @@
         <td>{{ product.price }}</td>
         <td>{{ product.stock_quantity|floatformat:0 }}</td>
         <td>
-          {% if product|in_cart_amount:user.shopping_cart > 0 %}
+          {% with cart_item=cart_items|get_item:product.id %}
+          {% if cart_item %}
             <a href="{% url 'store:cart-delete-product' product.id %}" class="btn btn-light">➖</a>
-            {{ product|in_cart_amount:user.shopping_cart|floatformat }}
+            {{ cart_item|floatformat }}
             <a href="{% url 'store:cart-add-product' product.id %}" class="btn btn-light">➕</a>
             <a href="{% url 'store:cart-delete-product' product.id %}?full_delete=true" class="btn btn-light">❌</a>
           {% else %}
             <a href="{% url 'store:cart-add-product' product.id %}" class="btn btn-light">🛒</a>
           {% endif %}
+        {% endwith %}
         </td>
       </tr>
     {% endfor %}
