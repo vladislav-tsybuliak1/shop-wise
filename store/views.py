@@ -96,6 +96,11 @@ class ProductDetailView(generic.DetailView):
         context = super().get_context_data(**kwargs)
         if self.request.user.is_authenticated:
             context["review_form"] = ReviewForm()
+        context["cart_items"] = {
+            item.product_id: item.quantity
+            for item
+            in self.request.user.shopping_cart.cart_items.all()
+        }
         return context
 
     def post(self, request, *args, **kwargs) -> HttpResponse:
@@ -146,7 +151,7 @@ class OrderListView(generic.ListView):
 
 class OrderDetailView(generic.DetailView):
     model = Order
-    queryset = Order.objects.prefetch_related("order_items__product")
+    queryset = Order.objects.prefetch_related("order_items__product", "customer")
 
 
 class CategoryListView(generic.ListView):

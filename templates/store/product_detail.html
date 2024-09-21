@@ -13,14 +13,16 @@
       Update
     </a>
     <span style="float: right;">
-      {% if product|in_cart_amount:user.shopping_cart > 0 %}
-        <a href="{% url 'store:cart-delete-product' product.id %}" class="btn btn-light">➖</a>
-        {{ product|in_cart_amount:user.shopping_cart|floatformat }}
-        <a href="{% url 'store:cart-add-product' product.id %}" class="btn btn-light">➕</a>
-        <a href="{% url 'store:cart-delete-product' product.id %}?full_delete=true" class="btn btn-light">❌</a>
-      {% else %}
-        <a href="{% url 'store:cart-add-product' product.id %}" class="btn btn-light">🛒</a>
-      {% endif %}
+      {% with cart_item=cart_items|get_item:product.id %}
+        {% if cart_item %}
+          <a href="{% url 'store:cart-delete-product' product.id %}" class="btn btn-light">➖</a>
+          {{ cart_item|floatformat }}
+          <a href="{% url 'store:cart-add-product' product.id %}" class="btn btn-light">➕</a>
+          <a href="{% url 'store:cart-delete-product' product.id %}?full_delete=true" class="btn btn-light">❌</a>
+        {% else %}
+          <a href="{% url 'store:cart-add-product' product.id %}" class="btn btn-light">🛒</a>
+        {% endif %}
+      {% endwith %}
     </span>
   </h1>
 
