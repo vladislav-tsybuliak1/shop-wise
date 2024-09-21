@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 
-from store.models import Review, Order
+from store.models import Review, Order, Brand, Category
 from store.validators import validate_phone_number, validate_address
 
 
@@ -71,4 +71,17 @@ class ProductSearchForm(forms.Form):
                 "placeholder": "Search by name..."
             }
         )
+    )
+
+
+class ProductFilterForm(forms.Form):
+    brand = forms.ModelChoiceField(
+        queryset=Brand.objects.all(),
+        required=False,
+        empty_label="All Brands"
+    )
+    category = forms.ModelChoiceField(
+        queryset=Category.objects.all(),
+        required=False,
+        empty_label="All Categories"
     )
