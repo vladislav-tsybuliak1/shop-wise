@@ -1,13 +1,13 @@
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.db import transaction
-from django.db.models import Case, When, IntegerField
+from django.db.models import Case, When, IntegerField, QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views import generic
 
-from store.forms import ReviewForm, CustomerCreationForm, OrderStatusForm
+from store.forms import ReviewForm, CustomerCreationForm, OrderStatusForm, ProductSearchForm
 from store.models import (
     Product,
     Order,
@@ -41,13 +41,31 @@ def index(request: HttpRequest) -> HttpResponse:
 class ProductListView(generic.ListView):
     model = Product
     paginate_by = 5
-    queryset = Product.objects.annotate(
-        available=Case(
-            When(stock_quantity__gt=0, then=1),
-            default=0,
-            output_field=IntegerField(),
+
+    def get_context_data(self, *, object_list=None, **kwargs) -> dict:
+        context = super().get_context_data(**kwargs)
+        name = self.request.GET.get("name", "")
+        context["search_form"] = ProductSearchForm(
+            initial={
+                "name": name,
+            }
         )
-    ).order_by("-available", "name")
+        return context
+
+    def get_queryset(self) -> QuerySet:
+        queryset = Product.objects.annotate(
+            available=Case(
+                When(stock_quantity__gt=0, then=1),
+                default=0,
+                output_field=IntegerField(),
+            )
+        ).order_by("-available", "name")
+        form = ProductSearchForm(self.request.GET)
+        if form.is_valid():
+            return queryset.filter(
+                name__icontains=form.cleaned_data["name"]
+            )
+        return queryset
 
 
 class ProductDetailView(generic.DetailView):
