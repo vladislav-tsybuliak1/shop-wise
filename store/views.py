@@ -7,7 +7,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views import generic
 
-from store.forms import ReviewForm, CustomerCreationForm, OrderStatusForm, ProductSearchForm
+from store.forms import ReviewForm, CustomerCreationForm, OrderStatusForm, ProductSearchForm, ProductFilterForm
 from store.models import (
     Product,
     Order,
@@ -45,11 +45,12 @@ class ProductListView(generic.ListView):
     def get_context_data(self, *, object_list=None, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
         name = self.request.GET.get("name", "")
-        context["search_form"] = ProductSearchForm(
+        context["search_form"] = ProductSearchForm(self.request.GET,
             initial={
                 "name": name,
             }
         )
+        context["filter_form"] = ProductFilterForm(self.request.GET)
         return context
 
     def get_queryset(self) -> QuerySet:
@@ -60,11 +61,24 @@ class ProductListView(generic.ListView):
                 output_field=IntegerField(),
             )
         ).order_by("-available", "name")
-        form = ProductSearchForm(self.request.GET)
-        if form.is_valid():
-            return queryset.filter(
-                name__icontains=form.cleaned_data["name"]
+
+        search_form = ProductSearchForm(self.request.GET)
+        filter_form = ProductFilterForm(self.request.GET)
+
+        if search_form.is_valid():
+            queryset = queryset.filter(
+                name__icontains=search_form.cleaned_data["name"]
             )
+
+        if filter_form.is_valid():
+            brand = filter_form.cleaned_data.get("brand")
+            category = filter_form.cleaned_data.get("category")
+
+            if brand:
+                queryset = queryset.filter(brand=brand)
+            if category:
+                queryset = queryset.filter(category=category)
+
         return queryset
 
 
