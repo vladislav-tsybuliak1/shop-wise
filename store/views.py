@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.db import transaction
+from django.db.models import Case, When, IntegerField
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
@@ -40,6 +41,13 @@ def index(request: HttpRequest) -> HttpResponse:
 class ProductListView(generic.ListView):
     model = Product
     paginate_by = 5
+    queryset = Product.objects.annotate(
+        available=Case(
+            When(stock_quantity__gt=0, then=1),
+            default=0,
+            output_field=IntegerField(),
+        )
+    ).order_by("-available", "name")
 
 
 class ProductDetailView(generic.DetailView):
