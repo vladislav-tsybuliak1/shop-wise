@@ -217,7 +217,7 @@ class CustomerDetailView(LoginRequiredMixin, generic.DetailView):
         return context
 
 
-class CustomerCreateView(LoginRequiredMixin, generic.CreateView):
+class CustomerCreateView(generic.CreateView):
     model = get_user_model()
     form_class = CustomerCreationForm
 
