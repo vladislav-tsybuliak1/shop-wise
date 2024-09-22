@@ -1,0 +1,58 @@
+{% load static %}
+<nav class="navbar navbar-light bg-light fixed-top">
+  <div class="container">
+
+    <div class="d-lg-inline-flex mr-2>">
+      <ul class="nav nav-tabs">
+        <li>
+          <a class="nav-link" href="{% url 'store:index' %}">
+            <img src="{% static 'logo.png' %}" width="30" height="25" class="d-inline-block align-top" alt="logo">
+            Home
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'store:product-list' %}">Products</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'store:category-list' %}">Categories</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'store:brand-list' %}">Brands</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'store:customer-list' %}">Customers</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'store:order-list' %}">Orders</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="d-lg-inline-flex mr-2" >
+      {% if user.is_authenticated %}
+        <div class="dropdown">
+          <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+           {{ user.get_full_name }}
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="{% url 'store:customer-detail' user.id %}">My orders</a>
+            <a class="dropdown-item" href="{% url 'store:customer-update' user.id %}">Update my info</a>
+            <a class="dropdown-item" href="{% url 'store:customer-delete' user.id %}">Delete my account</a>
+            <div class="dropdown-divider"></div>
+            <form method="POST" action="{% url 'logout' %}">
+              {% csrf_token %}
+              <input class="dropdown-item" type="submit" value="Logout">
+            </form>
+          </div>
+        </div>
+        <a class="btn btn-light" href="{% url 'store:cart-detail' %}">
+          <img src="{% static 'img/shopping_cart.png' %}" width="30" height="22" class="d-inline-block align-top" alt="shopping_cart">
+          ({{ user.shopping_cart.cart_items.count }})
+        </a>
+      {% else %}
+        <a class="btn btn-secondary" href="{% url 'login' %}">Login</a>
+      {% endif %}
+    </div>
+  </div>
+</nav>

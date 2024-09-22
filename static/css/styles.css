@@ -22,3 +22,8 @@
     background-color: #f2dede; /* Light red */
     color: #a94442; /* Dark red */
 }
+
+body {
+    margin: 5px;
+}
+
