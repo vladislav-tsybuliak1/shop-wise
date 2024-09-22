@@ -17,13 +17,15 @@
     </tr>
     {% for cart_item in cart_items %}
       <tr>
-        <td><a href="{% url 'store:product-detail' cart_item.product.id %}">
-          {{ cart_item.product.name }} {{ cart_item.product.unit_value|floatformat }} {{ cart_item.product.unit_name }}
-        </a></td>
+        <td>
+          <a href="{% url 'store:product-detail' cart_item.product.id %}">
+            {{ cart_item.product.name }} {{ cart_item.product.unit_value|floatformat }} {{ cart_item.product.unit_name }}
+          </a>
+        </td>
         <td>{{ cart_item.product.price }}</td>
         <td>
             <a href="{% url 'store:cart-delete-product' cart_item.product.id %}" class="btn btn-light">➖</a>
-            {{ cart_item.product|in_cart_amount:user.shopping_cart|floatformat }}
+            {{ cart_item.quantity|floatformat }}
             <a href="{% url 'store:cart-add-product' cart_item.product.id %}" class="btn btn-light">➕</a>
             <a href="{% url 'store:cart-delete-product' cart_item.product.id %}?full_delete=true" class="btn btn-light">❌</a>
         </td>
