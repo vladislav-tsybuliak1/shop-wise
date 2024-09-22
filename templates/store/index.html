@@ -16,43 +16,37 @@
   <section class="features-icons bg-light text-center">
     <div class="container">
       <div class="row">
-        <div class="col-lg-4">
+        <div class="col-lg-3">
           <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
-            <div class="features-icons-icon d-flex"><i class="bi-window m-auto text-primary"></i></div>
-            <h3>{{ num_customers }}</h3>
-            <p class="lead mb-0">Registered customers</p>
+            <div class="features-icons-icon d-flex"><i class="bi-person m-auto text-primary display-1"></i></div>
+            <h1>{{ num_customers }}</h1>
+            <p class="lead mb-0">registered customers</p>
           </div>
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-3">
           <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
-            <div class="features-icons-icon d-flex"><i class="bi-layers m-auto text-primary"></i></div>
-            <h3>Bootstrap 5 Ready</h3>
-            <p class="lead mb-0">Featuring the latest build of the new Bootstrap 5 framework!</p>
+            <div class="features-icons-icon d-flex"><i class="bi-cup-straw m-auto text-primary display-1"></i></div>
+            <h1>{{ num_products }}</h1>
+            <p class="lead mb-0">listed products</p>
           </div>
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-3">
           <div class="features-icons-item mx-auto mb-0 mb-lg-3">
-            <div class="features-icons-icon d-flex"><i class="bi-terminal m-auto text-primary"></i></div>
-            <h3>Easy to Use</h3>
-            <p class="lead mb-0">Ready to use with your own content, or customize the source files!</p>
+            <div class="features-icons-icon d-flex"><i class="bi-building m-auto text-primary display-1"></i></div>
+            <h1>{{ num_brands }}</h1>
+            <p class="lead mb-0">listed brands</p>
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <div class="features-icons-item mx-auto mb-0 mb-lg-3">
+            <div class="features-icons-icon d-flex"><i class="bi-list-ol m-auto text-primary display-1"></i></div>
+            <h1>{{ num_orders }}</h1>
+            <p class="lead mb-0">placed orders</p>
           </div>
         </div>
       </div>
     </div>
   </section>
-
-
-
-  <h1>Shop Wise Home</h1>
-  <p>Welcome to the best shop ever!</p>
-  <p>We already have:</p>
-
-  <ul>
-    <li><strong>Registered customers:</strong> {{ num_customers }}</li>
-    <li><strong>Listed products:</strong> {{ num_products }}</li>
-    <li><strong>Listed brands:</strong> {{ num_brands }}</li>
-    <li><strong>Placed orders:</strong> {{ num_orders }}</li>
-  </ul>
 
   <p>You have visited this page {{ num_visits }} time{{ num_visits|pluralize }}.</p>
 
