@@ -19,15 +19,18 @@
 </head>
 
 <body>
-{% include "includes/navigation.html" %}
-<div class="container">
-    {% include "includes/messages.html" %}
+
+<div class="container-fluid d-flex flex-column vh-100">
+  {% include "includes/navigation.html" %}
+  <div class="flex-fill pt-5">
+  {% include "includes/messages.html" %}
     {% block content %}
     {% endblock %}
     {% block pagination %}
-      {% include "includes/pagination.html" %}
-    {% endblock %}
-    {% include 'includes/footer.html' %}
+    {% include "includes/pagination.html" %}
+  {% endblock %}
+  </div>
+  {% include 'includes/footer.html' %}
 </div>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
