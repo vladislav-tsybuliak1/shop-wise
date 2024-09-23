@@ -1,13 +1,28 @@
-{% extends "base.html" %}
-{% block content %}
-  <h1>
-    Brand list
-    <a href="{% url 'store:brand-create' %}" class="btn btn-primary link-to-page">
-      Create
-    </a>
-  </h1>
+{% extends "base_list.html" %}
+{% load crispy_forms_filters %}
+{% block search_filter %}
+  <nav class="nav flex-column">
+    <form method="get" action="" class="form-control">
+    <div>
+      {{ search_form|crispy }}
+    </div>
+      <button type="submit" class="btn btn-outline-success container mb-1">Search</button>
+    <div>
+      <a href="{% url "store:brand-list" %}" class="btn btn-outline-danger container">Reset</a>
+    </div>
+    </form>
+  </nav>
+{% endblock %}
+{% block list %}
+  <div class="d-flex justify-content-between align-items-center">
+    <h1>Brand list</h1>
+      <a class="btn btn-primary" href="{% url 'store:brand-create' %}" >
+        Add a new brand
+      </a>
+  </div>
+  {% include "includes/pagination.html" %}
   {% if brand_list %}
-    <table class="table">
+    <table class="table table-hover">
       <tr>
         <th>Name</th>
         <th>Description</th>
@@ -22,13 +37,13 @@
         <td>{{ brand.products.count }}</td>
       <td>
           <a href="{% url 'store:brand-update' brand.id %}">
-            Update
+            <i class="bi-pen h3"></i>
           </a>
         </td>
         <td>
           <a style="color: red"
             href="{% url 'store:brand-delete' brand.id %}">
-            Delete
+            <i class="bi-x-square h3"></i>
           </a>
         </td>
       </tr>
