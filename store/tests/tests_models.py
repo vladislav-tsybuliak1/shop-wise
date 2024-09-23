@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from store.models import Category, Brand
+from store.models import Category, Brand, Product
 
 
 class TestCategoryModel(TestCase):
@@ -13,6 +13,7 @@ class TestCategoryModel(TestCase):
             f"{category.name}"
         )
 
+
 class TestBrandModel(TestCase):
     def test_str(self) -> None:
         brand = Brand.objects.create(
@@ -22,3 +23,15 @@ class TestBrandModel(TestCase):
             str(brand),
             f"{brand.name}"
         )
+
+
+class TestProductModel(TestCase):
+    fixtures = ["store/fixtures/shop_wise_db_data.json", ]
+
+    def test_str(self) -> None:
+        product = Product.objects.get(pk=1)
+        self.assertEqual(
+            str(product),
+            f"{product.name} - {product.unit_value} {product.unit_name}"
+        )
+
