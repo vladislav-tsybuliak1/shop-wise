@@ -143,12 +143,27 @@ class ProductDeleteView(LoginRequiredMixin, generic.DeleteView):
 class OrderListView(LoginRequiredMixin, generic.ListView):
     model = Order
     paginate_by = 5
-    queryset = Order.objects.prefetch_related("order_items__product", "customer")
 
-    def get_context_data(self, **kwargs) -> dict:
+    def get_context_data(self, *, object_list=None, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
+        name = self.request.GET.get("name", "")
+        context["search_form"] = SearchForm(
+            self.request.GET,
+            initial={
+                "name": name,
+            }
+        )
         context["status_form"] = OrderStatusForm()
         return context
+
+    def get_queryset(self) -> QuerySet:
+        queryset = Order.objects.prefetch_related("order_items__product", "customer")
+        search_form = SearchForm(self.request.GET)
+        if search_form.is_valid():
+            queryset = queryset.filter(
+                customer__username__icontains=search_form.cleaned_data["name"]
+            )
+        return queryset
 
 
 class OrderDetailView(LoginRequiredMixin, generic.DetailView):
