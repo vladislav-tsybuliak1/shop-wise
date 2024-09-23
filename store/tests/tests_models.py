@@ -84,7 +84,7 @@ class TestReviewModel(FixtureMixin, TestCase):
         )
 
 
-class TestShoppingCartModel(FixtureMixin, TestCase):
+class TestCartItemModel(FixtureMixin, TestCase):
     def setUp(self) -> None:
         self.shopping_cart = ShoppingCart.objects.get(pk=1)
         self.cart_item = CartItem.objects.create(
@@ -106,3 +106,23 @@ class TestShoppingCartModel(FixtureMixin, TestCase):
         )
 
 
+class TestShoppingCartModel(FixtureMixin, TestCase):
+    def setUp(self) -> None:
+        self.shopping_cart = ShoppingCart.objects.get(pk=1)
+        self.cart_item = CartItem.objects.create(
+            shopping_cart=self.shopping_cart,
+            product_id=1,
+            quantity=3
+        )
+
+    def test_str(self) -> None:
+        self.assertEqual(
+            str(self.shopping_cart),
+            f"Shopping cart of {self.shopping_cart.customer}"
+        )
+
+    def test_total_cost(self) -> None:
+        self.assertEqual(
+            self.shopping_cart.total_cost,
+            round(sum(cart_item.total_cost for cart_item in self.shopping_cart.cart_items.all()), 2)
+        )
