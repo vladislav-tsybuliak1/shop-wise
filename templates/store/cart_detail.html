@@ -1,50 +1,78 @@
 {% extends "base.html" %}
 {% load cart_filters %}
-
 {% block content %}
+  <section>
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-lg-8 col-xl-10">
+          <div class="card border-top border-bottom border-3">
+            <div class="card-body p-5">
+              <div class="align-items-center">
+                <p class="lead fw-bold mb-5">{{ shopping_cart }}</p>
+                <p><strong>{{ cart_items.count }} position{{ cart_items.count|pluralize }}:</strong></p>
+              </div>
+              {% if cart_items %}
+                <div class="mx-n5 px-5 py-4" style="background-color: #f2f2f2;">
+                  <div class="row">
+                    <div class="col-md-8 col-lg-5 fw-bold">
+                      <p>Product name</p>
+                    </div>
+                    <div class="col-md-4 col-lg-2 fw-bold">
+                      <p>Price</p>
+                    </div>
+                    <div class="col-md-4 col-lg-3 fw-bold">
+                      <p>Quantity</p>
+                    </div>
+                    <div class="col-md-4 col-lg-2 fw-bold">
+                      <p>Total price</p>
+                    </div>
+                  </div>
+                  {% for cart_item in cart_items %}
+                    <div class="row">
+                      <div class="col-md-8 col-lg-5">
+                        <a href="{% url 'store:product-detail' cart_item.product.id %}">
+                          {{ cart_item.product.name }} {{ cart_item.product.unit_value|floatformat }} {{ cart_item.product.unit_name }}
+                        </a>
 
-  <h1>{{ shopping_cart }}</h1>
-  <hr>
+                      </div>
+                      <div class="col-md-4 col-lg-2">
+                        <p>{{ cart_item.product.price }}</p>
+                      </div>
+                      <div class="col-md-4 col-lg-3">
+                        <a href="{% url 'store:cart-delete-product' cart_item.product.id %}" class="btn btn-outline-primary">➖</a>
+                        {{ cart_item.quantity|floatformat }}
+                        <a href="{% url 'store:cart-add-product' cart_item.product.id %}" class="btn btn-outline-primary">➕</a>
+                        <a href="{% url 'store:cart-delete-product' cart_item.product.id %}?full_delete=true"
+                           class="btn btn-outline-danger">❌</a>
+                      </div>
+                      <div class="col-md-4 col-lg-2">
+                        <p>{{ cart_item.total_cost|floatformat:2 }}</p>
+                      </div>
+                    </div>
+                  {% endfor %}
+                </div>
 
-  {% if cart_items %}
-    <p><strong>{{ cart_items.count }} position{{ cart_items.count|pluralize }}:</strong></p>
-  <table class="table">
-    <tr>
-      <th>Product name</th>
-      <th>Price</th>
-      <th>Quantity</th>
-      <th>Total cost</th>
-    </tr>
-    {% for cart_item in cart_items %}
-      <tr>
-        <td>
-          <a href="{% url 'store:product-detail' cart_item.product.id %}">
-            {{ cart_item.product.name }} {{ cart_item.product.unit_value|floatformat }} {{ cart_item.product.unit_name }}
-          </a>
-        </td>
-        <td>{{ cart_item.product.price }}</td>
-        <td>
-            <a href="{% url 'store:cart-delete-product' cart_item.product.id %}" class="btn btn-light">➖</a>
-            {{ cart_item.quantity|floatformat }}
-            <a href="{% url 'store:cart-add-product' cart_item.product.id %}" class="btn btn-light">➕</a>
-            <a href="{% url 'store:cart-delete-product' cart_item.product.id %}?full_delete=true" class="btn btn-light">❌</a>
-        </td>
-        <td >{{ cart_item.total_cost|floatformat:2 }}</td>
-      </tr>
-    {% endfor %}
-      <tr>
-        <td colspan="3" ><strong>Total cost for positions in the cart</strong></td>
-        <td><strong>{{ total_cost|floatformat:2 }}</strong></td>
-      </tr>
-  </table>
-    
-  <a href="{% url 'store:order-create' %}" class="btn btn-success">Order</a>
-  <a href="{% url 'store:cart-empty'%}" class="btn btn-danger" style="float: right">Empty cart</a>
-
-  {% else %}
-    <p>No added items.
-    </p>
-    <a href="{% url 'store:product-list' %}" class="btn btn-primary">Go for products</a>
-  {% endif %}
-
+                <div class="row my-4">
+                <div class="col-md-8 col-lg-9">
+                  <p class="lead fw-bold mb-0">Total cost</p>
+                </div>
+                <div class="col-md-8 col-lg-3">
+                  <p class="lead fw-bold mb-0">{{ total_cost|floatformat:2 }}</p>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                  <a href="{% url 'store:order-create' %}" class="btn btn-success">Order</a>
+                  <a href="{% url 'store:cart-empty' %}" class="btn btn-outline-danger" style="float: right">Empty cart</a>
+                </div>
+              {% else %}
+                <p>No added items.
+                </p>
+                <a href="{% url 'store:product-list' %}" class="btn btn-primary">Go for products</a>
+              {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 {% endblock %}
