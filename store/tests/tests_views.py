@@ -1,7 +1,9 @@
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
-from store.tests.mixins import FixtureMixin
+from store.models import Product, Brand, Order
+from store.tests.mixins import FixtureMixin, LoginUserMixin
 
 ID=1
 
@@ -162,3 +164,25 @@ class PublicTest(FixtureMixin, TestCase):
     def test_cart_delete_product_login_required(self) -> None:
         response = self.client.get(CART_DELETE_PRODUCT_URL)
         self.assertNotEqual(response.status_code, 200)
+
+
+class PrivateIndexTest(LoginUserMixin, FixtureMixin, TestCase):
+    def test_count_objects(self) -> None:
+        num_customers = get_user_model().objects.count()
+        num_products = Product.objects.count()
+        num_brands = Brand.objects.count()
+        num_orders = Order.objects.count()
+
+        response = self.client.get(INDEX_URL)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["num_customers"], num_customers)
+        self.assertEqual(response.context["num_products"], num_products)
+        self.assertEqual(response.context["num_brands"], num_brands)
+        self.assertEqual(response.context["num_orders"], num_orders)
+
+    def test_count_visits(self) -> None:
+        visits = 5
+        for num_visits in range(1, visits + 1):
+            response = self.client.get(INDEX_URL)
+            self.assertEqual(response.context["num_visits"], num_visits)
