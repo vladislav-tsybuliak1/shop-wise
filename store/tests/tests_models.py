@@ -1,6 +1,7 @@
 from django.test import TestCase
 
 from store.models import Category, Brand, Product, Order
+from store.tests.mixins import FixtureMixin
 
 
 class TestCategoryModel(TestCase):
@@ -25,9 +26,7 @@ class TestBrandModel(TestCase):
         )
 
 
-class TestProductModel(TestCase):
-    fixtures = ["store/fixtures/shop_wise_db_data.json", ]
-
+class TestProductModel(FixtureMixin, TestCase):
     def test_str(self) -> None:
         product = Product.objects.get(pk=1)
         self.assertEqual(
@@ -36,9 +35,7 @@ class TestProductModel(TestCase):
         )
 
 
-class TestOrderModel(TestCase):
-    fixtures = ["store/fixtures/shop_wise_db_data.json", ]
-
+class TestOrderModel(FixtureMixin, TestCase):
     def setUp(self) -> None:
         self.order = Order.objects.get(pk=1)
 
