@@ -129,7 +129,7 @@ class ProductCreateView(LoginRequiredMixin, generic.CreateView):
 
 class ProductUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Product
-    fields = "__all__"
+    fields = ("stock_quantity", "price")
 
     def get_success_url(self) -> str:
         return reverse("store:product-detail", args=[self.object.pk])
