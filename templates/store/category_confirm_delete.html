@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Delete category?</h1>
+  <h1>Delete category {{ category.name }}?</h1>
   <form action="" method="post">
     {% csrf_token %}
     <a class="btn btn-secondary" href="{% url 'store:category-list' %}">Cancel</a>
