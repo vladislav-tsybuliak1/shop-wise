@@ -1,11 +1,22 @@
-{% extends "base.html" %}
-{% block content %}
+{% extends "base_list.html" %}
+{% block search_filter %}
+<form method="get" action="" class="form-control">
+    <div>
+      {{ search_form.name }}
+    </div>
+    <input type="submit" value="🔍" class="btn btn-secondary">
+    <a href="{% url "store:category-list" %}" class="btn btn-secondary">Reset</a>
+  </form>
+{% endblock %}
+
+{% block list %}
   <h1>
     Category list
     <a href="{% url 'store:category-create' %}" class="btn btn-primary link-to-page">
       Create
     </a>
   </h1>
+        {% include "includes/pagination.html" %}
   {% if category_list %}
     <table class="table">
       <tr>
