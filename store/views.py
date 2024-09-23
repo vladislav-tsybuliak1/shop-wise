@@ -47,6 +47,9 @@ class ProductListView(LoginRequiredMixin, generic.ListView):
     def get_context_data(self, *, object_list=None, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
         name = self.request.GET.get("name", "")
+
+        shopping_cart, created = ShoppingCart.objects.get_or_create(customer=self.request.user)
+
         context["search_form"] = SearchForm(self.request.GET,
             initial={
                 "name": name,
@@ -56,7 +59,7 @@ class ProductListView(LoginRequiredMixin, generic.ListView):
         context["cart_items"] = {
             item.product_id: item.quantity
             for item
-            in self.request.user.shopping_cart.cart_items.all()
+            in shopping_cart.cart_items.all()
         }
 
         return context
@@ -98,10 +101,11 @@ class ProductDetailView(LoginRequiredMixin, generic.DetailView):
         context = super().get_context_data(**kwargs)
         if self.request.user.is_authenticated:
             context["review_form"] = ReviewForm()
+        shopping_cart, created = ShoppingCart.objects.get_or_create(customer=self.request.user)
         context["cart_items"] = {
             item.product_id: item.quantity
             for item
-            in self.request.user.shopping_cart.cart_items.all()
+            in shopping_cart.cart_items.all()
         }
         return context
 

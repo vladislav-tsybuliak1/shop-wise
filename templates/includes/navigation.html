@@ -47,7 +47,7 @@
           </div>
         </div>
         <a class="btn btn-light" href="{% url 'store:cart-detail' %}">
-          <i class="bi bi-basket"></i> ({{ user.shopping_cart.cart_items.count }})
+          <i class="bi bi-basket"></i>{% if user.shopping_cart %}({{ user.shopping_cart.cart_items.count }}){% endif %}
         </a>
       {% else %}
         <a class="btn btn-secondary" href="{% url 'login' %}">Login</a>
