@@ -1,8 +1,11 @@
 from django.test import TestCase
 from django.urls import reverse
 
+from store.tests.mixins import FixtureMixin
+
 ID=1
 
+# Index
 INDEX_URL = reverse("store:index")
 
 # Products
@@ -44,3 +47,118 @@ CART_ADD_PRODUCT_URL = reverse("store:cart-add-product", args=[ID])
 CART_DELETE_PRODUCT_URL = reverse("store:cart-delete-product", args=[ID])
 
 
+class PublicTest(FixtureMixin, TestCase):
+    # Index
+    def test_index_login_not_required(self) -> None:
+        response = self.client.get(INDEX_URL)
+        self.assertEqual(response.status_code, 200)
+
+    # Products
+    def test_product_list_login_required(self) -> None:
+        response = self.client.get(PRODUCT_LIST_URL)
+        self.assertNotEqual(response.status_code, 200)
+
+    def test_product_detail_login_required(self) -> None:
+        response = self.client.get(PRODUCT_DETAIL_URL)
+        self.assertNotEqual(response.status_code, 200)
+
+    def test_product_create_login_required(self) -> None:
+        response = self.client.get(PRODUCT_CREATE_URL)
+        self.assertNotEqual(response.status_code, 200)
+
+    def test_product_update_login_required(self) -> None:
+        response = self.client.get(PRODUCT_UPDATE_URL)
+        self.assertNotEqual(response.status_code, 200)
+
+    def test_product_delete_login_required(self) -> None:
+        response = self.client.get(PRODUCT_DELETE_URL)
+        self.assertNotEqual(response.status_code, 200)
+
+    # Orders
+    def test_order_list_login_required(self) -> None:
+        response = self.client.get(ORDER_LIST_URL)
+        self.assertNotEqual(response.status_code, 200)
+
+    def test_order_detail_login_required(self) -> None:
+        response = self.client.get(ORDER_DETAIL_URL)
+        self.assertNotEqual(response.status_code, 200)
+
+    def test_order_update_login_required(self) -> None:
+        response = self.client.get(ORDER_UPDATE_URL)
+        self.assertNotEqual(response.status_code, 200)
+
+    def test_order_create_login_required(self) -> None:
+        response = self.client.get(ORDER_CREATE_URL)
+        self.assertNotEqual(response.status_code, 200)
+
+    # Customers
+    def test_customer_list_login_required(self) -> None:
+        response = self.client.get(CUSTOMER_LIST_URL)
+        self.assertNotEqual(response.status_code, 200)
+
+    def test_customer_detail_login_required(self) -> None:
+        response = self.client.get(CUSTOMER_DETAIL_URL)
+        self.assertNotEqual(response.status_code, 200)
+
+    def test_customer_create_login_not_required(self) -> None:
+        response = self.client.get(CUSTOMER_CREATE_URL)
+        self.assertEqual(response.status_code, 200)
+
+    def test_customer_update_login_required(self) -> None:
+        response = self.client.get(CUSTOMER_UPDATE_URL)
+        self.assertNotEqual(response.status_code, 200)
+
+    def test_customer_delete_login_required(self) -> None:
+        response = self.client.get(CUSTOMER_DELETE_URL)
+        self.assertNotEqual(response.status_code, 200)
+
+    # Categories
+    def test_category_list_login_required(self) -> None:
+        response = self.client.get(CATEGORY_LIST_URL)
+        self.assertNotEqual(response.status_code, 200)
+
+    def test_category_create_login_required(self) -> None:
+        response = self.client.get(CATEGORY_CREATE_URL)
+        self.assertNotEqual(response.status_code, 200)
+
+    def test_category_update_login_required(self) -> None:
+        response = self.client.get(CATEGORY_UPDATE_URL)
+        self.assertNotEqual(response.status_code, 200)
+
+    def test_category_delete_login_required(self) -> None:
+        response = self.client.get(CATEGORY_DELETE_URL)
+        self.assertNotEqual(response.status_code, 200)
+
+    # Brands
+    def test_brand_list_login_required(self) -> None:
+        response = self.client.get(BRAND_LIST_URL)
+        self.assertNotEqual(response.status_code, 200)
+
+    def test_brand_create_login_required(self) -> None:
+        response = self.client.get(BRAND_CREATE_URL)
+        self.assertNotEqual(response.status_code, 200)
+
+    def test_brand_update_login_required(self) -> None:
+        response = self.client.get(BRAND_UPDATE_URL)
+        self.assertNotEqual(response.status_code, 200)
+
+    def test_brand_delete_login_required(self) -> None:
+        response = self.client.get(BRAND_DELETE_URL)
+        self.assertNotEqual(response.status_code, 200)
+
+    # Cart
+    def test_cart_detail_login_required(self) -> None:
+        response = self.client.get(CART_DETAIL_URL)
+        self.assertNotEqual(response.status_code, 200)
+
+    def test_cart_empty_login_required(self) -> None:
+        response = self.client.get(CART_EMPTY_URL)
+        self.assertNotEqual(response.status_code, 200)
+
+    def test_cart_add_product_login_required(self) -> None:
+        response = self.client.get(CART_ADD_PRODUCT_URL)
+        self.assertNotEqual(response.status_code, 200)
+
+    def test_cart_delete_product_login_required(self) -> None:
+        response = self.client.get(CART_DELETE_PRODUCT_URL)
+        self.assertNotEqual(response.status_code, 200)
