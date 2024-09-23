@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from store.models import Category, Brand, Product, Order, OrderItem
+from store.models import Category, Brand, Product, Order, OrderItem, Review
 from store.tests.mixins import FixtureMixin
 
 
@@ -58,7 +58,7 @@ class TestOrderModel(FixtureMixin, TestCase):
         )
 
 
-class TestOrderItem(FixtureMixin, TestCase):
+class TestOrderItemModel(FixtureMixin, TestCase):
     def setUp(self) -> None:
         self.order_item = OrderItem.objects.get(pk=1)
 
@@ -75,3 +75,10 @@ class TestOrderItem(FixtureMixin, TestCase):
         )
 
 
+class TestReviewModel(FixtureMixin, TestCase):
+    def test_str(self) -> None:
+        review = Review.objects.get(pk=1)
+        self.assertEqual(
+            str(review),
+            f"By {review.customer} on {review.product}"
+        )
