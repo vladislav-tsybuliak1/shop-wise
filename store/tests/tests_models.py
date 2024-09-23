@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from store.models import Category, Brand, Product, Order
+from store.models import Category, Brand, Product, Order, OrderItem
 from store.tests.mixins import FixtureMixin
 
 
@@ -58,5 +58,20 @@ class TestOrderModel(FixtureMixin, TestCase):
         )
 
 
+class TestOrderItem(FixtureMixin, TestCase):
+    def setUp(self) -> None:
+        self.order_item = OrderItem.objects.get(pk=1)
+
+    def test_str(self) -> None:
+        self.assertEqual(
+            str(self.order_item),
+            f"{self.order_item.product}: {self.order_item.quantity}"
+        )
+
+    def test_total_cost(self) -> None:
+        self.assertEqual(
+            self.order_item.total_cost,
+            round(float(self.order_item.product.price) * self.order_item.quantity, 2)
+        )
 
 
