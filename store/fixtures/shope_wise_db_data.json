@@ -1,0 +1,1867 @@
+[
+  {
+    "model": "store.category",
+    "pk": 1,
+    "fields": {
+      "name": "Soft drink",
+      "description": "A soft drink is any water-based flavored drink, usually but not necessarily carbonated, and typically including added sweetener. Flavors used can be natural or artificial. The sweetener may be a sugar, high-fructose corn syrup, fruit juice, a sugar substitute (in the case of diet sodas), or some combination of these. Soft drinks may also contain caffeine, colorings, preservatives and other ingredients."
+    }
+  },
+  {
+    "model": "store.category",
+    "pk": 2,
+    "fields": {
+      "name": "Mineral water",
+      "description": "Mineral water is water from a mineral spring that contains various minerals, such as salts and sulfur compounds. It is usually still, but may be sparkling (carbonated/effervescent)."
+    }
+  },
+  {
+    "model": "store.category",
+    "pk": 3,
+    "fields": {
+      "name": "Chocolate bar",
+      "description": "A chocolate bar is a confection containing chocolate, which may also contain layerings or mixtures that include nuts, fruit, caramel, nougat, and wafers."
+    }
+  },
+  {
+    "model": "store.category",
+    "pk": 4,
+    "fields": {
+      "name": "Cereal",
+      "description": "A cereal is a grass cultivated for its edible grain. Cereals are the world's largest crops, and are therefore staple foods. They include rice, wheat, rye, oats, barley, millet, and maize."
+    }
+  },
+  {
+    "model": "store.category",
+    "pk": 5,
+    "fields": {
+      "name": "Sauce",
+      "description": "In cooking, a sauce is a liquid, cream, or semi-solid food, served on or used in preparing other foods. Most sauces are not normally consumed by themselves; they add flavor, texture , and visual appeal to a dish."
+    }
+  },
+  {
+    "model": "store.category",
+    "pk": 7,
+    "fields": {
+      "name": "Beer",
+      "description": "Beer is an alcoholic beverage produced by the brewing and fermentation of starches from cereal grains�most commonly malted barley, although wheat, maize (corn), rice, and oats are also used. The fermentation of the starch sugars in the wort produces ethanol and carbonation in the beer."
+    }
+  },
+  {
+    "model": "store.brand",
+    "pk": 1,
+    "fields": {
+      "name": "Morshynska",
+      "description": ""
+    }
+  },
+  {
+    "model": "store.brand",
+    "pk": 2,
+    "fields": {
+      "name": "Coca-Cola",
+      "description": ""
+    }
+  },
+  {
+    "model": "store.brand",
+    "pk": 3,
+    "fields": {
+      "name": "Schweppes",
+      "description": "Schweppes is a soft drink brand that originated in the Republic of Geneva; it is made, bottled, and distributed worldwide by multiple international conglomerates, depending on licensing and region, that manufacture and sell soft drinks. Schweppes was one of the earliest forms of a soft drink, originally being regular soda water created in 1783."
+    }
+  },
+  {
+    "model": "store.brand",
+    "pk": 4,
+    "fields": {
+      "name": "Pepsi",
+      "description": ""
+    }
+  },
+  {
+    "model": "store.brand",
+    "pk": 5,
+    "fields": {
+      "name": "Fanta",
+      "description": ""
+    }
+  },
+  {
+    "model": "store.brand",
+    "pk": 6,
+    "fields": {
+      "name": "Milka",
+      "description": ""
+    }
+  },
+  {
+    "model": "store.brand",
+    "pk": 7,
+    "fields": {
+      "name": "Roshen",
+      "description": ""
+    }
+  },
+  {
+    "model": "store.brand",
+    "pk": 9,
+    "fields": {
+      "name": "Khutorok",
+      "description": ""
+    }
+  },
+  {
+    "model": "store.brand",
+    "pk": 10,
+    "fields": {
+      "name": "World's Rice",
+      "description": ""
+    }
+  },
+  {
+    "model": "store.brand",
+    "pk": 11,
+    "fields": {
+      "name": "Chumak",
+      "description": ""
+    }
+  },
+  {
+    "model": "store.brand",
+    "pk": 12,
+    "fields": {
+      "name": "Heinz",
+      "description": ""
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 1,
+    "fields": {
+      "name": "Morshynska Non-carbonated Drink with Apple Flavor",
+      "description": "",
+      "unit_value": 1.5,
+      "unit_name": "L",
+      "stock_quantity": 40.0,
+      "price": "34.19",
+      "brand": 1,
+      "category": 1
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 2,
+    "fields": {
+      "name": "Coca-Cola Carbonated Drink",
+      "description": "A lot of sugar product!",
+      "unit_value": 1.75,
+      "unit_name": "L",
+      "stock_quantity": 56.0,
+      "price": "46.99",
+      "brand": 2,
+      "category": 1
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 3,
+    "fields": {
+      "name": "Coca-Cola Zero Sugar Carbonated Drink",
+      "description": "",
+      "unit_value": 1.25,
+      "unit_name": "L",
+      "stock_quantity": 0.0,
+      "price": "39.29",
+      "brand": 2,
+      "category": 1
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 4,
+    "fields": {
+      "name": "Pepsi Carbonated Drink",
+      "description": "",
+      "unit_value": 2.0,
+      "unit_name": "L",
+      "stock_quantity": 79.0,
+      "price": "53.99",
+      "brand": 4,
+      "category": 1
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 5,
+    "fields": {
+      "name": "Fanta Orange Sugar-Free Carbonated Drink",
+      "description": "",
+      "unit_value": 1.25,
+      "unit_name": "L",
+      "stock_quantity": 0.0,
+      "price": "39.29",
+      "brand": 5,
+      "category": 1
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 6,
+    "fields": {
+      "name": "Morshynska Light Carbonated Mineral Water",
+      "description": "",
+      "unit_value": 1.5,
+      "unit_name": "L",
+      "stock_quantity": 84.0,
+      "price": "22.39",
+      "brand": 1,
+      "category": 2
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 7,
+    "fields": {
+      "name": "Morshynska Non-Carbonated Mineral Water",
+      "description": "",
+      "unit_value": 0.75,
+      "unit_name": "L",
+      "stock_quantity": 143.0,
+      "price": "17.39",
+      "brand": 1,
+      "category": 2
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 8,
+    "fields": {
+      "name": "Milka Milk Chocolate",
+      "description": "",
+      "unit_value": 90.0,
+      "unit_name": "G",
+      "stock_quantity": 81.0,
+      "price": "44.99",
+      "brand": 6,
+      "category": 3
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 9,
+    "fields": {
+      "name": "Roshen Milk Chocolate",
+      "description": "",
+      "unit_value": 90.0,
+      "unit_name": "G",
+      "stock_quantity": 34.0,
+      "price": "50.99",
+      "brand": 7,
+      "category": 3
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 10,
+    "fields": {
+      "name": "Roshen Dark Chocolate 56%",
+      "description": "",
+      "unit_value": 85.0,
+      "unit_name": "G",
+      "stock_quantity": 3.0,
+      "price": "35.99",
+      "brand": 7,
+      "category": 3
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 11,
+    "fields": {
+      "name": "Roshen Lacmi Milk Chocolate with Whole Hazelnuts",
+      "description": "",
+      "unit_value": 90.0,
+      "unit_name": "G",
+      "stock_quantity": 33.0,
+      "price": "70.99",
+      "brand": 7,
+      "category": 3
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 13,
+    "fields": {
+      "name": "Khutorok Polished Round Rice",
+      "description": "",
+      "unit_value": 800.0,
+      "unit_name": "G",
+      "stock_quantity": 79.0,
+      "price": "68.99",
+      "brand": 9,
+      "category": 4
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 14,
+    "fields": {
+      "name": "Khutorok Long Grain Polished Rice",
+      "description": "",
+      "unit_value": 800.0,
+      "unit_name": "G",
+      "stock_quantity": 79.0,
+      "price": "59.99",
+      "brand": 9,
+      "category": 4
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 15,
+    "fields": {
+      "name": "World's Rice India Basmati Rice",
+      "description": "",
+      "unit_value": 1.0,
+      "unit_name": "KG",
+      "stock_quantity": 5.0,
+      "price": "249.00",
+      "brand": 10,
+      "category": 4
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 16,
+    "fields": {
+      "name": "Chumak Delicate Ketchup",
+      "description": "",
+      "unit_value": 280.0,
+      "unit_name": "G",
+      "stock_quantity": 0.0,
+      "price": "32.99",
+      "brand": 11,
+      "category": 5
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 17,
+    "fields": {
+      "name": "Heinz Lagodny Ketchup",
+      "description": "",
+      "unit_value": 570.0,
+      "unit_name": "G",
+      "stock_quantity": 0.0,
+      "price": "159.00",
+      "brand": 12,
+      "category": 5
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 18,
+    "fields": {
+      "name": "Heinz Tomato Ketchup",
+      "description": "",
+      "unit_value": 342.0,
+      "unit_name": "G",
+      "stock_quantity": 0.0,
+      "price": "99.00",
+      "brand": 12,
+      "category": 5
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 19,
+    "fields": {
+      "name": "Morshynska Lemonada Mojito Carbonated Drink",
+      "description": "",
+      "unit_value": 0.33,
+      "unit_name": "L",
+      "stock_quantity": 23.0,
+      "price": "21.99",
+      "brand": 1,
+      "category": 1
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 1,
+    "fields": {
+      "customer": 1,
+      "created_at": "2024-09-19T14:50:18.162Z",
+      "status": "RETURNED"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 2,
+    "fields": {
+      "customer": 1,
+      "created_at": "2024-09-19T14:55:39.221Z",
+      "status": "PENDING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 3,
+    "fields": {
+      "customer": 2,
+      "created_at": "2024-09-19T15:02:28.379Z",
+      "status": "PENDING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 4,
+    "fields": {
+      "customer": 1,
+      "created_at": "2024-09-19T19:58:46.778Z",
+      "status": "PROCESSING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 5,
+    "fields": {
+      "customer": 1,
+      "created_at": "2024-09-20T15:22:27.244Z",
+      "status": "PENDING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 6,
+    "fields": {
+      "customer": 1,
+      "created_at": "2024-09-20T15:23:15.935Z",
+      "status": "PENDING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 7,
+    "fields": {
+      "customer": 1,
+      "created_at": "2024-09-20T15:24:43.499Z",
+      "status": "PENDING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 8,
+    "fields": {
+      "customer": 1,
+      "created_at": "2024-09-20T15:28:52.934Z",
+      "status": "PENDING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 9,
+    "fields": {
+      "customer": 1,
+      "created_at": "2024-09-20T15:30:09.919Z",
+      "status": "PENDING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 10,
+    "fields": {
+      "customer": 1,
+      "created_at": "2024-09-20T15:39:07.182Z",
+      "status": "PENDING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 11,
+    "fields": {
+      "customer": 1,
+      "created_at": "2024-09-20T18:14:41.168Z",
+      "status": "PENDING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 12,
+    "fields": {
+      "customer": 1,
+      "created_at": "2024-09-21T11:38:03.434Z",
+      "status": "PENDING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 13,
+    "fields": {
+      "customer": 2,
+      "created_at": "2024-09-21T13:29:13.551Z",
+      "status": "PENDING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 14,
+    "fields": {
+      "customer": 1,
+      "created_at": "2024-09-21T13:29:26.594Z",
+      "status": "PENDING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 15,
+    "fields": {
+      "customer": 2,
+      "created_at": "2024-09-21T13:58:47.149Z",
+      "status": "PENDING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 16,
+    "fields": {
+      "customer": 1,
+      "created_at": "2024-09-21T13:58:58.824Z",
+      "status": "PENDING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 17,
+    "fields": {
+      "customer": 2,
+      "created_at": "2024-09-21T14:01:41.305Z",
+      "status": "PENDING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 18,
+    "fields": {
+      "customer": 1,
+      "created_at": "2024-09-21T14:01:57.710Z",
+      "status": "PENDING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 19,
+    "fields": {
+      "customer": 2,
+      "created_at": "2024-09-21T14:05:10.234Z",
+      "status": "PENDING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 20,
+    "fields": {
+      "customer": 1,
+      "created_at": "2024-09-21T14:05:29.837Z",
+      "status": "PENDING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 21,
+    "fields": {
+      "customer": 2,
+      "created_at": "2024-09-21T14:07:52.336Z",
+      "status": "PENDING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 22,
+    "fields": {
+      "customer": 1,
+      "created_at": "2024-09-21T14:08:01.128Z",
+      "status": "PENDING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 23,
+    "fields": {
+      "customer": 2,
+      "created_at": "2024-09-21T14:08:38.224Z",
+      "status": "PENDING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 24,
+    "fields": {
+      "customer": 1,
+      "created_at": "2024-09-21T14:09:11.627Z",
+      "status": "PENDING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 25,
+    "fields": {
+      "customer": 2,
+      "created_at": "2024-09-21T14:11:06.359Z",
+      "status": "PENDING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 27,
+    "fields": {
+      "customer": 2,
+      "created_at": "2024-09-21T14:19:30.063Z",
+      "status": "PENDING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 28,
+    "fields": {
+      "customer": 1,
+      "created_at": "2024-09-21T14:19:44.728Z",
+      "status": "PENDING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 29,
+    "fields": {
+      "customer": 1,
+      "created_at": "2024-09-21T14:47:42.432Z",
+      "status": "PENDING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 30,
+    "fields": {
+      "customer": 1,
+      "created_at": "2024-09-21T14:48:20.558Z",
+      "status": "PENDING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 31,
+    "fields": {
+      "customer": 1,
+      "created_at": "2024-09-22T14:26:46.481Z",
+      "status": "PENDING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 32,
+    "fields": {
+      "customer": 1,
+      "created_at": "2024-09-22T15:03:43.562Z",
+      "status": "PENDING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 33,
+    "fields": {
+      "customer": 1,
+      "created_at": "2024-09-22T23:31:26.934Z",
+      "status": "PENDING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 34,
+    "fields": {
+      "customer": 1,
+      "created_at": "2024-09-23T02:07:55.315Z",
+      "status": "PENDING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 35,
+    "fields": {
+      "customer": 1,
+      "created_at": "2024-09-23T04:57:17.863Z",
+      "status": "PENDING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 36,
+    "fields": {
+      "customer": 1,
+      "created_at": "2024-09-23T05:18:22.315Z",
+      "status": "PENDING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 37,
+    "fields": {
+      "customer": 1,
+      "created_at": "2024-09-23T05:19:34.518Z",
+      "status": "PENDING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 38,
+    "fields": {
+      "customer": 1,
+      "created_at": "2024-09-23T05:25:54.845Z",
+      "status": "PENDING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 39,
+    "fields": {
+      "customer": 1,
+      "created_at": "2024-09-23T08:07:47.693Z",
+      "status": "PROCESSING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 40,
+    "fields": {
+      "customer": 3,
+      "created_at": "2024-09-23T08:35:05.504Z",
+      "status": "PENDING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 41,
+    "fields": {
+      "customer": 3,
+      "created_at": "2024-09-23T08:35:28.659Z",
+      "status": "PENDING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 42,
+    "fields": {
+      "customer": 3,
+      "created_at": "2024-09-23T08:36:08.918Z",
+      "status": "PENDING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 43,
+    "fields": {
+      "customer": 4,
+      "created_at": "2024-09-23T08:48:49.662Z",
+      "status": "PENDING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 44,
+    "fields": {
+      "customer": 4,
+      "created_at": "2024-09-23T08:49:00.960Z",
+      "status": "PENDING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 45,
+    "fields": {
+      "customer": 4,
+      "created_at": "2024-09-23T08:49:15.994Z",
+      "status": "PENDING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 46,
+    "fields": {
+      "customer": 5,
+      "created_at": "2024-09-23T08:51:14.966Z",
+      "status": "PENDING"
+    }
+  },
+  {
+    "model": "store.order",
+    "pk": 47,
+    "fields": {
+      "customer": 5,
+      "created_at": "2024-09-23T08:51:39.324Z",
+      "status": "PENDING"
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 1,
+    "fields": {
+      "product": 16,
+      "order": 1,
+      "quantity": 3.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 2,
+    "fields": {
+      "product": 2,
+      "order": 1,
+      "quantity": 2.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 3,
+    "fields": {
+      "product": 8,
+      "order": 2,
+      "quantity": 2.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 4,
+    "fields": {
+      "product": 5,
+      "order": 2,
+      "quantity": 2.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 5,
+    "fields": {
+      "product": 1,
+      "order": 3,
+      "quantity": 2.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 6,
+    "fields": {
+      "product": 10,
+      "order": 3,
+      "quantity": 2.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 7,
+    "fields": {
+      "product": 9,
+      "order": 3,
+      "quantity": 1.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 8,
+    "fields": {
+      "product": 14,
+      "order": 4,
+      "quantity": 4.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 9,
+    "fields": {
+      "product": 6,
+      "order": 4,
+      "quantity": 3.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 10,
+    "fields": {
+      "product": 9,
+      "order": 4,
+      "quantity": 3.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 11,
+    "fields": {
+      "product": 5,
+      "order": 4,
+      "quantity": 1.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 12,
+    "fields": {
+      "product": 15,
+      "order": 4,
+      "quantity": 2.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 13,
+    "fields": {
+      "product": 3,
+      "order": 5,
+      "quantity": 2.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 14,
+    "fields": {
+      "product": 3,
+      "order": 7,
+      "quantity": 3.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 15,
+    "fields": {
+      "product": 5,
+      "order": 7,
+      "quantity": 5.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 16,
+    "fields": {
+      "product": 2,
+      "order": 8,
+      "quantity": 1.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 17,
+    "fields": {
+      "product": 17,
+      "order": 8,
+      "quantity": 7.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 18,
+    "fields": {
+      "product": 2,
+      "order": 9,
+      "quantity": 3.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 19,
+    "fields": {
+      "product": 5,
+      "order": 9,
+      "quantity": 3.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 20,
+    "fields": {
+      "product": 5,
+      "order": 10,
+      "quantity": 1.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 21,
+    "fields": {
+      "product": 3,
+      "order": 10,
+      "quantity": 3.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 22,
+    "fields": {
+      "product": 17,
+      "order": 11,
+      "quantity": 7.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 23,
+    "fields": {
+      "product": 2,
+      "order": 12,
+      "quantity": 3.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 24,
+    "fields": {
+      "product": 5,
+      "order": 13,
+      "quantity": 4.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 25,
+    "fields": {
+      "product": 5,
+      "order": 14,
+      "quantity": 3.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 26,
+    "fields": {
+      "product": 10,
+      "order": 15,
+      "quantity": 5.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 27,
+    "fields": {
+      "product": 10,
+      "order": 16,
+      "quantity": 2.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 28,
+    "fields": {
+      "product": 15,
+      "order": 17,
+      "quantity": 5.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 29,
+    "fields": {
+      "product": 15,
+      "order": 18,
+      "quantity": 5.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 30,
+    "fields": {
+      "product": 16,
+      "order": 19,
+      "quantity": 19.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 31,
+    "fields": {
+      "product": 16,
+      "order": 20,
+      "quantity": 19.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 32,
+    "fields": {
+      "product": 5,
+      "order": 21,
+      "quantity": 2.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 33,
+    "fields": {
+      "product": 5,
+      "order": 22,
+      "quantity": 1.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 34,
+    "fields": {
+      "product": 17,
+      "order": 23,
+      "quantity": 3.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 35,
+    "fields": {
+      "product": 17,
+      "order": 24,
+      "quantity": 2.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 36,
+    "fields": {
+      "product": 10,
+      "order": 25,
+      "quantity": 3.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 37,
+    "fields": {
+      "product": 15,
+      "order": 27,
+      "quantity": 3.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 38,
+    "fields": {
+      "product": 9,
+      "order": 28,
+      "quantity": 2.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 39,
+    "fields": {
+      "product": 16,
+      "order": 29,
+      "quantity": 3.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 40,
+    "fields": {
+      "product": 3,
+      "order": 29,
+      "quantity": 3.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 41,
+    "fields": {
+      "product": 3,
+      "order": 30,
+      "quantity": 6.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 42,
+    "fields": {
+      "product": 2,
+      "order": 31,
+      "quantity": 1.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 43,
+    "fields": {
+      "product": 5,
+      "order": 31,
+      "quantity": 3.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 44,
+    "fields": {
+      "product": 17,
+      "order": 31,
+      "quantity": 2.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 45,
+    "fields": {
+      "product": 18,
+      "order": 31,
+      "quantity": 2.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 46,
+    "fields": {
+      "product": 13,
+      "order": 31,
+      "quantity": 1.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 47,
+    "fields": {
+      "product": 18,
+      "order": 32,
+      "quantity": 3.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 48,
+    "fields": {
+      "product": 18,
+      "order": 33,
+      "quantity": 1.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 49,
+    "fields": {
+      "product": 18,
+      "order": 34,
+      "quantity": 1.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 50,
+    "fields": {
+      "product": 17,
+      "order": 34,
+      "quantity": 1.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 51,
+    "fields": {
+      "product": 2,
+      "order": 34,
+      "quantity": 1.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 52,
+    "fields": {
+      "product": 13,
+      "order": 34,
+      "quantity": 1.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 53,
+    "fields": {
+      "product": 8,
+      "order": 35,
+      "quantity": 3.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 54,
+    "fields": {
+      "product": 13,
+      "order": 35,
+      "quantity": 1.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 55,
+    "fields": {
+      "product": 14,
+      "order": 35,
+      "quantity": 1.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 56,
+    "fields": {
+      "product": 19,
+      "order": 35,
+      "quantity": 4.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 57,
+    "fields": {
+      "product": 7,
+      "order": 35,
+      "quantity": 1.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 58,
+    "fields": {
+      "product": 18,
+      "order": 36,
+      "quantity": 1.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 59,
+    "fields": {
+      "product": 2,
+      "order": 36,
+      "quantity": 1.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 60,
+    "fields": {
+      "product": 13,
+      "order": 37,
+      "quantity": 6.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 61,
+    "fields": {
+      "product": 2,
+      "order": 38,
+      "quantity": 4.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 62,
+    "fields": {
+      "product": 10,
+      "order": 38,
+      "quantity": 1.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 63,
+    "fields": {
+      "product": 18,
+      "order": 39,
+      "quantity": 1.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 64,
+    "fields": {
+      "product": 2,
+      "order": 39,
+      "quantity": 3.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 65,
+    "fields": {
+      "product": 13,
+      "order": 39,
+      "quantity": 2.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 66,
+    "fields": {
+      "product": 14,
+      "order": 39,
+      "quantity": 1.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 67,
+    "fields": {
+      "product": 2,
+      "order": 40,
+      "quantity": 2.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 68,
+    "fields": {
+      "product": 14,
+      "order": 40,
+      "quantity": 1.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 69,
+    "fields": {
+      "product": 8,
+      "order": 40,
+      "quantity": 1.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 70,
+    "fields": {
+      "product": 19,
+      "order": 40,
+      "quantity": 1.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 71,
+    "fields": {
+      "product": 8,
+      "order": 41,
+      "quantity": 1.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 72,
+    "fields": {
+      "product": 14,
+      "order": 41,
+      "quantity": 2.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 73,
+    "fields": {
+      "product": 19,
+      "order": 41,
+      "quantity": 1.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 74,
+    "fields": {
+      "product": 2,
+      "order": 42,
+      "quantity": 4.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 75,
+    "fields": {
+      "product": 19,
+      "order": 42,
+      "quantity": 2.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 76,
+    "fields": {
+      "product": 2,
+      "order": 43,
+      "quantity": 4.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 77,
+    "fields": {
+      "product": 14,
+      "order": 43,
+      "quantity": 2.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 78,
+    "fields": {
+      "product": 8,
+      "order": 44,
+      "quantity": 1.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 79,
+    "fields": {
+      "product": 14,
+      "order": 44,
+      "quantity": 1.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 80,
+    "fields": {
+      "product": 2,
+      "order": 44,
+      "quantity": 1.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 81,
+    "fields": {
+      "product": 19,
+      "order": 44,
+      "quantity": 1.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 82,
+    "fields": {
+      "product": 2,
+      "order": 45,
+      "quantity": 1.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 83,
+    "fields": {
+      "product": 14,
+      "order": 45,
+      "quantity": 1.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 84,
+    "fields": {
+      "product": 19,
+      "order": 45,
+      "quantity": 1.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 85,
+    "fields": {
+      "product": 6,
+      "order": 45,
+      "quantity": 1.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 86,
+    "fields": {
+      "product": 7,
+      "order": 45,
+      "quantity": 1.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 87,
+    "fields": {
+      "product": 4,
+      "order": 45,
+      "quantity": 1.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 88,
+    "fields": {
+      "product": 2,
+      "order": 46,
+      "quantity": 4.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 89,
+    "fields": {
+      "product": 19,
+      "order": 46,
+      "quantity": 2.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 90,
+    "fields": {
+      "product": 14,
+      "order": 46,
+      "quantity": 1.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 91,
+    "fields": {
+      "product": 11,
+      "order": 47,
+      "quantity": 1.0
+    }
+  },
+  {
+    "model": "store.orderitem",
+    "pk": 92,
+    "fields": {
+      "product": 9,
+      "order": 47,
+      "quantity": 9.0
+    }
+  },
+  {
+    "model": "store.review",
+    "pk": 1,
+    "fields": {
+      "customer": 1,
+      "product": 16,
+      "created_at": "2024-09-19T14:41:43.003Z",
+      "content": "Very tasty ketchup! I liked it."
+    }
+  },
+  {
+    "model": "store.review",
+    "pk": 2,
+    "fields": {
+      "customer": 2,
+      "product": 1,
+      "created_at": "2024-09-19T15:08:13.733Z",
+      "content": "Very good!"
+    }
+  },
+  {
+    "model": "store.review",
+    "pk": 3,
+    "fields": {
+      "customer": 1,
+      "product": 16,
+      "created_at": "2024-09-19T19:06:01.923Z",
+      "content": "I am impressed!"
+    }
+  },
+  {
+    "model": "store.review",
+    "pk": 4,
+    "fields": {
+      "customer": 1,
+      "product": 2,
+      "created_at": "2024-09-19T19:10:04.649Z",
+      "content": "Too much sugar!"
+    }
+  },
+  {
+    "model": "store.review",
+    "pk": 5,
+    "fields": {
+      "customer": 2,
+      "product": 16,
+      "created_at": "2024-09-19T19:25:42.895Z",
+      "content": "50/50..."
+    }
+  },
+  {
+    "model": "store.review",
+    "pk": 6,
+    "fields": {
+      "customer": 1,
+      "product": 2,
+      "created_at": "2024-09-19T19:33:37.866Z",
+      "content": "My sister's favourite drink!"
+    }
+  },
+  {
+    "model": "store.review",
+    "pk": 7,
+    "fields": {
+      "customer": 1,
+      "product": 2,
+      "created_at": "2024-09-21T17:00:19.501Z",
+      "content": "Wow!"
+    }
+  },
+  {
+    "model": "store.review",
+    "pk": 8,
+    "fields": {
+      "customer": 1,
+      "product": 2,
+      "created_at": "2024-09-23T04:56:29.046Z",
+      "content": "I am impressed!"
+    }
+  },
+  {
+    "model": "store.review",
+    "pk": 9,
+    "fields": {
+      "customer": 3,
+      "product": 14,
+      "created_at": "2024-09-23T08:35:38.719Z",
+      "content": "Wow!"
+    }
+  },
+  {
+    "model": "store.review",
+    "pk": 10,
+    "fields": {
+      "customer": 3,
+      "product": 19,
+      "created_at": "2024-09-23T08:35:56.880Z",
+      "content": "I am impressed by the taste!"
+    }
+  },
+  {
+    "model": "store.shoppingcart",
+    "pk": 1,
+    "fields": {
+      "customer": 1
+    }
+  },
+  {
+    "model": "store.shoppingcart",
+    "pk": 2,
+    "fields": {
+      "customer": 2
+    }
+  },
+  {
+    "model": "store.shoppingcart",
+    "pk": 3,
+    "fields": {
+      "customer": 3
+    }
+  },
+  {
+    "model": "store.shoppingcart",
+    "pk": 4,
+    "fields": {
+      "customer": 4
+    }
+  },
+  {
+    "model": "store.shoppingcart",
+    "pk": 5,
+    "fields": {
+      "customer": 5
+    }
+  },
+  {
+    "model": "store.customer",
+    "pk": 1,
+    "fields": {
+      "password": "ppbkdf2_sha256$870000$4R4AkAo5Es4KMINFD7uYXV$8hGMCLty3TYA9GK8FjhsyPmDpL7HiySJQKg0BJS3jSU=",
+      "last_login": "2024-09-23T08:51:59.745Z",
+      "is_superuser": true,
+      "email": "admin@admin.com",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2024-09-19T14:01:17Z",
+      "username": "admin",
+      "phone_number": "+380349123456",
+      "address": "Kyiv, Danchenka st., 28",
+      "first_name": "Vladyslav",
+      "last_name": "Tsybuliak",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "store.customer",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$870000$6oUpg5WJ4JgAUvMolaUi90$/u7F9lyUKx8xwwTY846EutG3ZqxGOADQZ9Tt3DEVUr4=",
+      "last_login": "2024-09-21T14:19:18.702Z",
+      "is_superuser": false,
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-09-19T15:02:18Z",
+      "username": "john_doe",
+      "phone_number": "+380349123423",
+      "address": "Kyiv, Vyshorodska st., 34",
+      "first_name": "John",
+      "last_name": "Doee",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "store.customer",
+    "pk": 3,
+    "fields": {
+      "password": "pbkdf2_sha256$870000$vti3zF4fBFY1BNp9YBR3Qz$zjZ5464/l3qeGXuPb53kscFAHXhPxe2KqSui20x6pL0=",
+      "last_login": "2024-09-23T08:32:36.049Z",
+      "is_superuser": false,
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-09-23T08:32:08.162Z",
+      "username": "daria_tsyb",
+      "phone_number": "+380569643452",
+      "address": "Kyiv, Danchenka st., 28",
+      "first_name": "Daria",
+      "last_name": "Tsybuliak",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "store.customer",
+    "pk": 4,
+    "fields": {
+      "password": "pbkdf2_sha256$870000$ibDPOmRiMaI5EJrr3Nie1x$uKZ5QIbnL4wWe/UQg1nO3IfAx/E7S1fwgWG12YfX2SQ=",
+      "last_login": "2024-09-23T08:37:20.679Z",
+      "is_superuser": false,
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-09-23T08:37:00.527Z",
+      "username": "matthew_host",
+      "phone_number": "+380582351234",
+      "address": "Kyiv, Danchenka st., 32",
+      "first_name": "Matthew",
+      "last_name": "Host",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "store.customer",
+    "pk": 5,
+    "fields": {
+      "password": "pbkdf2_sha256$870000$k8JAwpR1oDkCHgoPoWtV9y$yl3v+jQM5mDp/ZtSt2pG1Luv5FzGXjVAuJ+B7u51WiU=",
+      "last_login": "2024-09-23T08:50:34.551Z",
+      "is_superuser": false,
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-09-23T08:50:00.112Z",
+      "username": "marin_dheil",
+      "phone_number": "+380683492485",
+      "address": "Kyiv, Vyshorodska st., 34",
+      "first_name": "Marin",
+      "last_name": "Dheil",
+      "groups": [],
+      "user_permissions": []
+    }
+  }
+]
