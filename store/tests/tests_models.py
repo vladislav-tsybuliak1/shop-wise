@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 
 from store.models import Category, Brand, Product, Order, OrderItem, Review, ShoppingCart, CartItem
@@ -126,3 +127,13 @@ class TestShoppingCartModel(FixtureMixin, TestCase):
             self.shopping_cart.total_cost,
             round(sum(cart_item.total_cost for cart_item in self.shopping_cart.cart_items.all()), 2)
         )
+
+
+class TestCustomerModel(FixtureMixin, TestCase):
+    def test_str(self) -> None:
+        customer = get_user_model().objects.get(pk=1)
+        self.assertEqual(
+            str(customer),
+            f"{customer.username} ({customer.get_full_name()})"
+        )
+

@@ -213,4 +213,4 @@ class Customer(AbstractUser):
         ordering = ("username", )
 
     def __str__(self) -> str:
-        return f"{self.username} ({self.first_name} {self.last_name})"
+        return f"{self.username} ({self.get_full_name()})"
