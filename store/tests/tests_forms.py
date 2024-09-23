@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
-from store.forms import ReviewForm, CustomerCreationForm, SearchForm
+from store.forms import ReviewForm, CustomerCreationForm, SearchForm, OrderStatusForm
 from store.models import Product
 from store.tests.mixins import FixtureMixin
 
@@ -33,7 +33,7 @@ class TestReviewForm(FixtureMixin, TestCase):
         self.assertFalse(form.is_valid())
 
 
-class TestCustomerCreationForm(FixtureMixin, TestCase):
+class TestCustomerCreationForm(TestCase):
     def setUp(self) -> None:
         self.form_data = {
             "username": "Testuser",
@@ -106,10 +106,18 @@ class TestCustomerCreationForm(FixtureMixin, TestCase):
         self.assertFalse(form.is_valid())
 
 
-class TestSearchForm(FixtureMixin, TestCase):
-    def test_search_form(self) -> None:
+class TestSearchForm(TestCase):
+    def test_form_valid(self) -> None:
         form_data = {"name": "test name"}
         form = SearchForm(data=form_data)
+        self.assertTrue(form.is_valid())
+        self.assertEqual(form.cleaned_data, form_data)
+
+
+class TestOrderStatusForm(TestCase):
+    def test_form_valid(self) -> None:
+        form_data = {"status": "RETURNED"}
+        form = OrderStatusForm(data=form_data)
         self.assertTrue(form.is_valid())
         self.assertEqual(form.cleaned_data, form_data)
 
