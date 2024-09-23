@@ -200,7 +200,25 @@ class CategoryDeleteView(LoginRequiredMixin, generic.DeleteView):
 class BrandListView(LoginRequiredMixin, generic.ListView):
     model = Brand
     paginate_by = 5
-    queryset = Brand.objects.prefetch_related("products")
+
+    def get_context_data(self, *, object_list=None, **kwargs) -> dict:
+        context = super().get_context_data(**kwargs)
+        name = self.request.GET.get("name", "")
+        context["search_form"] = SearchForm(self.request.GET,
+            initial={
+                "name": name,
+            }
+        )
+        return context
+
+    def get_queryset(self) -> QuerySet:
+        queryset = Brand.objects.prefetch_related("products")
+        search_form = SearchForm(self.request.GET)
+        if search_form.is_valid():
+            queryset = queryset.filter(
+                name__icontains=search_form.cleaned_data["name"]
+            )
+        return queryset
 
 
 class BrandCreateView(LoginRequiredMixin, generic.CreateView):
