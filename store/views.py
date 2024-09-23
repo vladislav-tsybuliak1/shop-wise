@@ -68,7 +68,7 @@ class ProductListView(LoginRequiredMixin, generic.ListView):
                 default=0,
                 output_field=IntegerField(),
             )
-        ).select_related("brand", "category").order_by("-available", "name")
+        ).select_related("brand", "category").prefetch_related("reviews").order_by("-available", "name")
 
         search_form = SearchForm(self.request.GET)
         filter_form = ProductFilterForm(self.request.GET)

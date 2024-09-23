@@ -47,8 +47,7 @@
           </div>
         </div>
         <a class="btn btn-light" href="{% url 'store:cart-detail' %}">
-          <img src="{% static 'img/shopping_cart.png' %}" width="30" height="22" class="d-inline-block align-top" alt="shopping_cart">
-          ({{ user.shopping_cart.cart_items.count }})
+          <i class="bi bi-basket"></i> ({{ user.shopping_cart.cart_items.count }})
         </a>
       {% else %}
         <a class="btn btn-secondary" href="{% url 'login' %}">Login</a>
