@@ -39,12 +39,27 @@ class TestProductModel(TestCase):
 class TestOrderModel(TestCase):
     fixtures = ["store/fixtures/shop_wise_db_data.json", ]
 
+    def setUp(self) -> None:
+        self.order = Order.objects.get(pk=1)
+
     def test_str(self) -> None:
-        order = Order.objects.get(pk=1)
         self.assertEqual(
-            str(order),
-            str(order.id)
+            str(self.order),
+            str(self.order.id)
         )
+
+    def test_total_cost(self) -> None:
+        self.assertEqual(
+            self.order.total_cost,
+            round(sum(
+                order_item.total_cost
+                for order_item
+                in self.order.order_items.all()
+            ),
+                2
+            )
+        )
+
 
 
 
