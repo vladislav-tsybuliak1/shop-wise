@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from store.models import Category, Brand, Product, Order, OrderItem, Review
+from store.models import Category, Brand, Product, Order, OrderItem, Review, ShoppingCart, CartItem
 from store.tests.mixins import FixtureMixin
 
 
@@ -82,3 +82,27 @@ class TestReviewModel(FixtureMixin, TestCase):
             str(review),
             f"By {review.customer} on {review.product}"
         )
+
+
+class TestShoppingCartModel(FixtureMixin, TestCase):
+    def setUp(self) -> None:
+        self.shopping_cart = ShoppingCart.objects.get(pk=1)
+        self.cart_item = CartItem.objects.create(
+            shopping_cart=self.shopping_cart,
+            product_id=1,
+            quantity=3
+        )
+
+    def test_str(self) -> None:
+        self.assertEqual(
+            str(self.cart_item),
+            f"{self.cart_item.product}: {self.cart_item.quantity}"
+        )
+
+    def test_total_cost(self) -> None:
+        self.assertEqual(
+            self.cart_item.total_cost,
+            round(float(self.cart_item.product.price) * self.cart_item.quantity, 2)
+        )
+
+
