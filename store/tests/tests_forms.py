@@ -1,8 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
-from store.forms import ReviewForm, CustomerCreationForm, SearchForm, OrderStatusForm
-from store.models import Product
+from store.forms import ReviewForm, CustomerCreationForm, SearchForm, OrderStatusForm, ProductFilterForm
+from store.models import Product, Brand, Category
 from store.tests.mixins import FixtureMixin
 
 
@@ -121,3 +121,31 @@ class TestOrderStatusForm(TestCase):
         self.assertTrue(form.is_valid())
         self.assertEqual(form.cleaned_data, form_data)
 
+
+class TestProductFilterForm(FixtureMixin, TestCase):
+    def test_form_valid_with_brand_only(self) -> None:
+        form_data = {
+            "brand": Brand.objects.get(pk=1),
+            "category": None
+        }
+        form = ProductFilterForm(data=form_data)
+        self.assertTrue(form.is_valid())
+        self.assertEqual(form.cleaned_data, form_data)
+
+    def test_form_valid_with_category_only(self) -> None:
+        form_data = {
+            "brand": None,
+            "category": Category.objects.get(pk=1)
+        }
+        form = ProductFilterForm(data=form_data)
+        self.assertTrue(form.is_valid())
+        self.assertEqual(form.cleaned_data, form_data)
+
+    def test_form_valid_with_brand_and_category(self) -> None:
+        form_data = {
+            "brand": Brand.objects.get(pk=1),
+            "category": Category.objects.get(pk=1)
+        }
+        form = ProductFilterForm(data=form_data)
+        self.assertTrue(form.is_valid())
+        self.assertEqual(form.cleaned_data, form_data)
