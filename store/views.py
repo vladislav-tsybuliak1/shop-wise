@@ -258,7 +258,29 @@ class BrandDeleteView(LoginRequiredMixin, generic.DeleteView):
 class CustomerListView(LoginRequiredMixin, generic.ListView):
     model = get_user_model()
     paginate_by = 5
-    queryset = get_user_model().objects.prefetch_related("orders")
+
+
+    def get_context_data(self, *, object_list=None, **kwargs) -> dict:
+        context = super().get_context_data(**kwargs)
+        name = self.request.GET.get("name", "")
+        context["search_form"] = SearchForm(
+            self.request.GET,
+            initial={
+                "name": name,
+            }
+        )
+        return context
+
+    def get_queryset(self) -> QuerySet:
+        queryset = get_user_model().objects.prefetch_related("orders")
+        search_form = SearchForm(self.request.GET)
+        if search_form.is_valid():
+            queryset = queryset.filter(
+                Q(username__icontains=search_form.cleaned_data["name"])
+                | Q(first_name__icontains=search_form.cleaned_data["name"])
+                | Q(last_name__icontains=search_form.cleaned_data["name"])
+            )
+        return queryset
 
 
 class CustomerDetailView(LoginRequiredMixin, generic.DetailView):
