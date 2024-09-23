@@ -9,12 +9,14 @@ from store.validators import validate_phone_number, validate_address
 class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
-        fields = ("content", )
+        fields = ("content",)
         widgets = {
-            "content": forms.Textarea(attrs={
-                "rows": 2,
-                "placeholder": "Write your review here...",
-            }),
+            "content": forms.Textarea(
+                attrs={
+                    "rows": 2,
+                    "placeholder": "Write your review here...",
+                }
+            ),
         }
 
     def __init__(self, *args, **kwargs) -> None:
@@ -26,13 +28,13 @@ class CustomerCreationForm(UserCreationForm):
     phone_number = forms.CharField(
         validators=[validate_phone_number],
         max_length=13,
-        widget=forms.TextInput(attrs={"placeholder": "+380XXXXXXXXX"})
+        widget=forms.TextInput(attrs={"placeholder": "+380XXXXXXXXX"}),
     )
 
     address = forms.CharField(
         validators=[validate_address],
         max_length=255,
-        widget=forms.TextInput(attrs={'placeholder': 'Enter address'})
+        widget=forms.TextInput(attrs={"placeholder": "Enter address"}),
     )
 
     class Meta:
@@ -66,11 +68,7 @@ class SearchForm(forms.Form):
         max_length=255,
         required=False,
         label="",
-        widget=forms.TextInput(
-            attrs={
-                "placeholder": "Search by name..."
-            }
-        )
+        widget=forms.TextInput(attrs={"placeholder": "Search by name..."}),
     )
 
 

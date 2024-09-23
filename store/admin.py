@@ -1,9 +1,17 @@
-from itertools import product
-
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from store.models import Product, Category, Brand, Customer, Order, OrderItem, Review, ShoppingCart, CartItem
+from store.models import (
+    Product,
+    Category,
+    Brand,
+    Customer,
+    Order,
+    OrderItem,
+    Review,
+    ShoppingCart,
+    CartItem,
+)
 
 
 @admin.register(Product)
@@ -17,8 +25,13 @@ class ProductAdmin(admin.ModelAdmin):
         "price",
         "category",
     ]
-    list_filter = ["brand", "category", ]
-    search_fields = ["name", ]
+    list_filter = [
+        "brand",
+        "category",
+    ]
+    search_fields = [
+        "name",
+    ]
     list_per_page = 10
 
 
@@ -28,19 +41,54 @@ class CustomerAdmin(UserAdmin):
         "phone_number",
         "address",
     )
-    fieldsets = UserAdmin.fieldsets + (("Additional info", {"fields": ("phone_number", "address",)}),)
-    add_fieldsets = UserAdmin.add_fieldsets + (("Additional info", {"fields": ("phone_number", "address",)}),)
+    fieldsets = UserAdmin.fieldsets + (
+        (
+            "Additional info",
+            {
+                "fields": (
+                    "phone_number",
+                    "address",
+                )
+            },
+        ),
+    )
+    add_fieldsets = UserAdmin.add_fieldsets + (
+        (
+            "Additional info",
+            {
+                "fields": (
+                    "phone_number",
+                    "address",
+                )
+            },
+        ),
+    )
 
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ["pk", "customer", "total_cost", "created_at", "status", ]
-    search_fields = ["customer__username", "customer__first_name", "customer__last_name", ]
+    list_display = [
+        "pk",
+        "customer",
+        "total_cost",
+        "created_at",
+        "status",
+    ]
+    search_fields = [
+        "customer__username",
+        "customer__first_name",
+        "customer__last_name",
+    ]
 
 
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
-    list_display = ["customer", "product", "content", "created_at", ]
+    list_display = [
+        "customer",
+        "product",
+        "content",
+        "created_at",
+    ]
 
 
 admin.site.register(Category)

@@ -11,7 +11,7 @@ class Category(models.Model):
     description = models.TextField(null=True, blank=True)
 
     class Meta:
-        ordering = ("name", )
+        ordering = ("name",)
         verbose_name_plural = "categories"
 
     def __str__(self) -> str:
@@ -23,7 +23,7 @@ class Brand(models.Model):
     description = models.TextField(null=True, blank=True)
 
     class Meta:
-        ordering = ("name", )
+        ordering = ("name",)
 
     def __str__(self) -> str:
         return self.name
@@ -36,15 +36,22 @@ class Product(models.Model):
         ("L", "liters"),
         ("ML", "Milliliters"),
         ("PCS", "pieces"),
-        ("BOX", "box")
+        ("BOX", "box"),
     )
 
     name = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
     unit_value = models.FloatField(validators=[MinValueValidator(0)])
     unit_name = models.CharField(max_length=3, choices=UNITS)
-    stock_quantity = models.FloatField(default=0, validators=[MinValueValidator(0)])
-    price = models.DecimalField(max_digits=9, decimal_places=2, validators=[MinValueValidator(0)])
+    stock_quantity = models.FloatField(
+        default=0,
+        validators=[MinValueValidator(0)]
+    )
+    price = models.DecimalField(
+        max_digits=9,
+        decimal_places=2,
+        validators=[MinValueValidator(0)]
+    )
     brand = models.ForeignKey(
         to=Brand,
         on_delete=models.CASCADE,
@@ -57,7 +64,7 @@ class Product(models.Model):
     )
 
     class Meta:
-        ordering = ("name", )
+        ordering = ("name",)
 
     def __str__(self) -> str:
         return f"{self.name} - {self.unit_value} {self.unit_name}"
@@ -70,7 +77,7 @@ class Order(models.Model):
         ("SHIPPED", "The order is on the way to the customer"),
         ("DELIVERED", "The order has been delivered"),
         ("RETURNED", "The order was returned"),
-        ("CANCELED", "The order was canceled")
+        ("CANCELED", "The order was canceled"),
     ]
     customer = models.ForeignKey(
         to=settings.AUTH_USER_MODEL,
@@ -90,19 +97,19 @@ class Order(models.Model):
     )
 
     class Meta:
-        ordering = ("-created_at", )
+        ordering = ("-created_at",)
 
     def __str__(self) -> str:
         return str(self.id)
 
     @property
     def total_cost(self) -> float:
-        return round(sum(
-            order_item.total_cost
-            for order_item
-            in self.order_items.all()
-        ),
-            2
+        return round(
+            sum(
+                order_item.total_cost
+                for order_item
+                in self.order_items.all()
+            ), 2
         )
 
 
@@ -150,7 +157,7 @@ class Review(models.Model):
     content = models.TextField()
 
     class Meta:
-        ordering = ("-created_at", )
+        ordering = ("-created_at",)
 
     def __str__(self) -> str:
         return f"By {self.customer} on {self.product}"
@@ -160,7 +167,7 @@ class ShoppingCart(models.Model):
     customer = models.OneToOneField(
         to=settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name="shopping_cart"
+        related_name="shopping_cart",
     )
 
     def __str__(self) -> str:
@@ -168,7 +175,9 @@ class ShoppingCart(models.Model):
 
     @property
     def total_cost(self) -> float:
-        return round(sum(cart_item.total_cost for cart_item in self.cart_items.all()), 2)
+        return round(
+            sum(cart_item.total_cost for cart_item in self.cart_items.all()), 2
+        )
 
 
 class CartItem(models.Model):
@@ -202,7 +211,9 @@ class CartItem(models.Model):
 
 class Customer(AbstractUser):
     username = models.CharField(
-        max_length=50, unique=True, validators=[validate_username]
+        max_length=50,
+        unique=True,
+        validators=[validate_username]
     )
     phone_number = models.CharField(max_length=15)
     address = models.CharField(max_length=255)
@@ -210,7 +221,7 @@ class Customer(AbstractUser):
     last_name = models.CharField(max_length=50, validators=[validate_name])
 
     class Meta:
-        ordering = ("username", )
+        ordering = ("username",)
 
     def __str__(self) -> str:
         return f"{self.username} ({self.get_full_name()})"

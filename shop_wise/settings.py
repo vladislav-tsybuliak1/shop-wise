@@ -139,7 +139,7 @@ AUTH_USER_MODEL = "store.Customer"
 
 LOGIN_REDIRECT_URL = "/"
 
-#Crispy forms
+# Crispy forms
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 
 CRISPY_TEMPLATE_PACK = "bootstrap5"

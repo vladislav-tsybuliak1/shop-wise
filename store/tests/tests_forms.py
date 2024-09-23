@@ -1,7 +1,13 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
-from store.forms import ReviewForm, CustomerCreationForm, SearchForm, OrderStatusForm, ProductFilterForm
+from store.forms import (
+    ReviewForm,
+    CustomerCreationForm,
+    SearchForm,
+    OrderStatusForm,
+    ProductFilterForm,
+)
 from store.models import Product, Brand, Category
 from store.tests.mixins import FixtureMixin
 
@@ -15,14 +21,11 @@ class TestReviewForm(FixtureMixin, TestCase):
         form_data = {
             "customer": self.customer,
             "product": self.product,
-            "content": "Some content"
+            "content": "Some content",
         }
         form = ReviewForm(data=form_data)
         self.assertTrue(form.is_valid())
-        self.assertEqual(
-            form.cleaned_data["content"],
-            form_data["content"]
-        )
+        self.assertEqual(form.cleaned_data["content"], form_data["content"])
 
     def test_form_invalid_no_content(self) -> None:
         form_data = {
@@ -42,7 +45,7 @@ class TestCustomerCreationForm(TestCase):
             "phone_number": "+380123456789",
             "address": "Some address",
             "password1": "test123test",
-            "password2": "test123test"
+            "password2": "test123test",
         }
 
     def test_form_valid(self) -> None:
@@ -70,8 +73,10 @@ class TestCustomerCreationForm(TestCase):
         form = CustomerCreationForm(data=self.form_data)
         self.assertFalse(form.is_valid())
 
-    def test_form_invalid_username_contains_non_eng_letters_other_than_underscore(self) -> None:
-        self.form_data["username"] = "Test test"
+    def test_form_invalid_username_contains_non_eng_letters(
+        self,
+    ) -> None:
+        self.form_data["username"] = "Test test1"
         form = CustomerCreationForm(data=self.form_data)
         self.assertFalse(form.is_valid())
 
@@ -124,19 +129,13 @@ class TestOrderStatusForm(TestCase):
 
 class TestProductFilterForm(FixtureMixin, TestCase):
     def test_form_valid_with_brand_only(self) -> None:
-        form_data = {
-            "brand": Brand.objects.get(pk=1),
-            "category": None
-        }
+        form_data = {"brand": Brand.objects.get(pk=1), "category": None}
         form = ProductFilterForm(data=form_data)
         self.assertTrue(form.is_valid())
         self.assertEqual(form.cleaned_data, form_data)
 
     def test_form_valid_with_category_only(self) -> None:
-        form_data = {
-            "brand": None,
-            "category": Category.objects.get(pk=1)
-        }
+        form_data = {"brand": None, "category": Category.objects.get(pk=1)}
         form = ProductFilterForm(data=form_data)
         self.assertTrue(form.is_valid())
         self.assertEqual(form.cleaned_data, form_data)
@@ -144,7 +143,7 @@ class TestProductFilterForm(FixtureMixin, TestCase):
     def test_form_valid_with_brand_and_category(self) -> None:
         form_data = {
             "brand": Brand.objects.get(pk=1),
-            "category": Category.objects.get(pk=1)
+            "category": Category.objects.get(pk=1),
         }
         form = ProductFilterForm(data=form_data)
         self.assertTrue(form.is_valid())

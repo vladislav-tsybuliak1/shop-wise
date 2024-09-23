@@ -9,14 +9,21 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views import generic
 
-from store.forms import ReviewForm, CustomerCreationForm, OrderStatusForm, SearchForm, ProductFilterForm
+from store.forms import (
+    ReviewForm,
+    CustomerCreationForm,
+    OrderStatusForm,
+    SearchForm,
+    ProductFilterForm,
+)
 from store.models import (
     Product,
     Order,
     Brand,
     ShoppingCart,
     CartItem,
-    Category, OrderItem,
+    Category,
+    OrderItem,
 )
 
 
@@ -48,12 +55,15 @@ class ProductListView(LoginRequiredMixin, generic.ListView):
         context = super().get_context_data(**kwargs)
         name = self.request.GET.get("name", "")
 
-        shopping_cart, created = ShoppingCart.objects.get_or_create(customer=self.request.user)
+        shopping_cart, created = ShoppingCart.objects.get_or_create(
+            customer=self.request.user
+        )
 
-        context["search_form"] = SearchForm(self.request.GET,
+        context["search_form"] = SearchForm(
+            self.request.GET,
             initial={
                 "name": name,
-            }
+            },
         )
         context["filter_form"] = ProductFilterForm(self.request.GET)
         context["cart_items"] = {
@@ -65,13 +75,18 @@ class ProductListView(LoginRequiredMixin, generic.ListView):
         return context
 
     def get_queryset(self) -> QuerySet:
-        queryset = Product.objects.annotate(
-            available=Case(
-                When(stock_quantity__gt=0, then=1),
-                default=0,
-                output_field=IntegerField(),
+        queryset = (
+            Product.objects.annotate(
+                available=Case(
+                    When(stock_quantity__gt=0, then=1),
+                    default=0,
+                    output_field=IntegerField(),
+                )
             )
-        ).select_related("brand", "category").prefetch_related("reviews").order_by("-available", "name")
+            .select_related("brand", "category")
+            .prefetch_related("reviews")
+            .order_by("-available", "name")
+        )
 
         search_form = SearchForm(self.request.GET)
         filter_form = ProductFilterForm(self.request.GET)
@@ -95,13 +110,19 @@ class ProductListView(LoginRequiredMixin, generic.ListView):
 
 class ProductDetailView(LoginRequiredMixin, generic.DetailView):
     model = Product
-    queryset = Product.objects.select_related("brand", "category").prefetch_related("reviews__customer")
+    queryset = Product.objects.select_related(
+        "brand", "category"
+    ).prefetch_related(
+        "reviews__customer"
+    )
 
     def get_context_data(self, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
         if self.request.user.is_authenticated:
             context["review_form"] = ReviewForm()
-        shopping_cart, created = ShoppingCart.objects.get_or_create(customer=self.request.user)
+        shopping_cart, created = ShoppingCart.objects.get_or_create(
+            customer=self.request.user
+        )
         context["cart_items"] = {
             item.product_id: item.quantity
             for item
@@ -155,26 +176,38 @@ class OrderListView(LoginRequiredMixin, generic.ListView):
             self.request.GET,
             initial={
                 "name": name,
-            }
+            },
         )
         context["status_form"] = OrderStatusForm()
         return context
 
     def get_queryset(self) -> QuerySet:
-        queryset = Order.objects.prefetch_related("order_items__product", "customer")
+        queryset = Order.objects.prefetch_related(
+            "order_items__product",
+            "customer"
+        )
         search_form = SearchForm(self.request.GET)
         if search_form.is_valid():
             queryset = queryset.filter(
-                Q(customer__username__icontains=search_form.cleaned_data["name"])
-                | Q(customer__first_name__icontains=search_form.cleaned_data["name"])
-                | Q(customer__last_name__icontains=search_form.cleaned_data["name"])
+                Q(customer__username__icontains=(
+                    search_form.cleaned_data["name"]
+                ))
+                | Q(customer__first_name__icontains=(
+                    search_form.cleaned_data["name"]
+                ))
+                | Q(customer__last_name__icontains=(
+                    search_form.cleaned_data["name"]
+                ))
             )
         return queryset
 
 
 class OrderDetailView(LoginRequiredMixin, generic.DetailView):
     model = Order
-    queryset = Order.objects.prefetch_related("order_items__product", "customer")
+    queryset = Order.objects.prefetch_related(
+        "order_items__product",
+        "customer"
+    )
 
 
 class CategoryListView(LoginRequiredMixin, generic.ListView):
@@ -184,10 +217,11 @@ class CategoryListView(LoginRequiredMixin, generic.ListView):
     def get_context_data(self, *, object_list=None, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
         name = self.request.GET.get("name", "")
-        context["search_form"] = SearchForm(self.request.GET,
+        context["search_form"] = SearchForm(
+            self.request.GET,
             initial={
                 "name": name,
-            }
+            },
         )
         return context
 
@@ -225,10 +259,11 @@ class BrandListView(LoginRequiredMixin, generic.ListView):
     def get_context_data(self, *, object_list=None, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
         name = self.request.GET.get("name", "")
-        context["search_form"] = SearchForm(self.request.GET,
+        context["search_form"] = SearchForm(
+            self.request.GET,
             initial={
                 "name": name,
-            }
+            },
         )
         return context
 
@@ -263,7 +298,6 @@ class CustomerListView(LoginRequiredMixin, generic.ListView):
     model = get_user_model()
     paginate_by = 5
 
-
     def get_context_data(self, *, object_list=None, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
         name = self.request.GET.get("name", "")
@@ -271,7 +305,7 @@ class CustomerListView(LoginRequiredMixin, generic.ListView):
             self.request.GET,
             initial={
                 "name": name,
-            }
+            },
         )
         return context
 
@@ -280,9 +314,15 @@ class CustomerListView(LoginRequiredMixin, generic.ListView):
         search_form = SearchForm(self.request.GET)
         if search_form.is_valid():
             queryset = queryset.filter(
-                Q(username__icontains=search_form.cleaned_data["name"])
-                | Q(first_name__icontains=search_form.cleaned_data["name"])
-                | Q(last_name__icontains=search_form.cleaned_data["name"])
+                Q(username__icontains=(
+                    search_form.cleaned_data["name"]
+                ))
+                | Q(first_name__icontains=(
+                    search_form.cleaned_data["name"]
+                ))
+                | Q(last_name__icontains=(
+                    search_form.cleaned_data["name"]
+                ))
             )
         return queryset
 
@@ -290,10 +330,13 @@ class CustomerListView(LoginRequiredMixin, generic.ListView):
 class CustomerDetailView(LoginRequiredMixin, generic.DetailView):
     model = get_user_model()
 
-
     def get_context_data(self, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
-        context["order_list"] = self.get_object().orders.select_related("customer").prefetch_related("order_items__product")
+        context["order_list"] = (
+            self.get_object()
+            .orders.select_related("customer")
+            .prefetch_related("order_items__product")
+        )
         return context
 
 
@@ -320,9 +363,15 @@ class CustomerDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 @login_required
 def cart_detail(request: HttpRequest) -> HttpResponse:
-    shopping_cart, created = ShoppingCart.objects.get_or_create(customer=request.user)
+    shopping_cart, created = ShoppingCart.objects.get_or_create(
+        customer=request.user
+    )
     cart_items = shopping_cart.cart_items.select_related("product")
-    total_cost = sum(item.quantity * float(item.product.price) for item in cart_items)
+    total_cost = sum(
+        item.quantity * float(item.product.price)
+        for item
+        in cart_items
+    )
     context = {
         "shopping_cart": shopping_cart,
         "cart_items": cart_items,
@@ -334,29 +383,50 @@ def cart_detail(request: HttpRequest) -> HttpResponse:
 @login_required
 def add_to_cart(request: HttpRequest, product_id: int) -> HttpResponse:
     product = get_object_or_404(Product, id=product_id)
-    shopping_cart, created = ShoppingCart.objects.get_or_create(customer=request.user)
-    cart_item = CartItem.objects.filter(shopping_cart=shopping_cart, product=product).first()
+    shopping_cart, created = ShoppingCart.objects.get_or_create(
+        customer=request.user
+    )
+    cart_item = CartItem.objects.filter(
+        shopping_cart=shopping_cart,
+        product=product
+    ).first()
     if cart_item:
         if cart_item.quantity < product.stock_quantity:
             cart_item.quantity += 1
             cart_item.save()
-            messages.success(request, "Product quantity updated in the cart.")
+            messages.success(
+                request,
+                "Product quantity updated in the cart."
+            )
         else:
-            messages.warning(request, "Cannot add more of this product; not enough stock available.")
+            messages.warning(
+                request,
+                "Cannot add more of this product; not enough stock available."
+            )
     else:
         if product.stock_quantity > 0:
-            CartItem.objects.create(shopping_cart=shopping_cart, product=product, quantity=1)
+            CartItem.objects.create(
+                shopping_cart=shopping_cart,
+                product=product,
+                quantity=1
+            )
             messages.success(request, "Product added to cart.")
         else:
             messages.warning(request, "This product is out of stock.")
-    return redirect(request.META.get("HTTP_REFERER", reverse_lazy("store:index")))
+    return redirect(request.META.get(
+        "HTTP_REFERER",
+        reverse_lazy("store:index"))
+    )
 
 
 @login_required
 def delete_from_cart(request: HttpRequest, product_id: int) -> HttpResponse:
     product = get_object_or_404(Product, id=product_id)
     shopping_cart = ShoppingCart.objects.get(customer=request.user)
-    cart_item = CartItem.objects.get(shopping_cart=shopping_cart, product=product)
+    cart_item = CartItem.objects.get(
+        shopping_cart=shopping_cart,
+        product=product
+    )
 
     full_delete = request.GET.get("full_delete")
 
@@ -371,7 +441,10 @@ def delete_from_cart(request: HttpRequest, product_id: int) -> HttpResponse:
         else:
             cart_item.save()
             messages.success(request, "Product quantity updated in the cart.")
-    return redirect(request.META.get("HTTP_REFERER", reverse_lazy("store:index")))
+    return redirect(request.META.get(
+        "HTTP_REFERER",
+        reverse_lazy("store:index"))
+    )
 
 
 @login_required
@@ -397,9 +470,14 @@ def update_order_status(request: HttpRequest, pk: int) -> HttpResponse:
 @login_required
 def create_order_from_cart(request: HttpRequest) -> HttpResponse:
     shopping_cart = get_object_or_404(ShoppingCart, customer=request.user)
-    cart_items = CartItem.objects.prefetch_related("product").filter(shopping_cart=shopping_cart)
+    cart_items = CartItem.objects.prefetch_related("product").filter(
+        shopping_cart=shopping_cart
+    )
     if not cart_items.exists():
-        messages.warning(request, "Your cart is empty. Please add items to your cart before placing an order.")
+        messages.warning(
+            request,
+            "Your cart is empty. Please add items to your cart before order",
+        )
         return redirect("store:cart")
 
     with transaction.atomic():
@@ -408,7 +486,11 @@ def create_order_from_cart(request: HttpRequest) -> HttpResponse:
         for cart_item in cart_items:
             if cart_item.quantity > cart_item.product.stock_quantity:
                 cart_item.quantity = cart_item.product.stock_quantity
-                messages.warning(request, f"The quantity {cart_item.quantity} of {cart_item.product.name} is available.")
+                messages.warning(
+                    request,
+                    f"The quantity {cart_item.quantity} "
+                    f"of {cart_item.product.name} is available.",
+                )
             if cart_item.quantity > 0:
                 OrderItem.objects.create(
                     order=order,
@@ -421,7 +503,10 @@ def create_order_from_cart(request: HttpRequest) -> HttpResponse:
         cart_items.delete()
         if added_items == 0:
             order.delete()
-            messages.warning(request, f"Order wasn't placed because no product from the list is available is stock.")
+            messages.warning(
+                request,
+                "Order wasn't placed: no product from the list is available.",
+            )
             return redirect("store:cart-detail")
     messages.success(request, "Order is placed.")
     return redirect("store:order-detail", pk=order.id)

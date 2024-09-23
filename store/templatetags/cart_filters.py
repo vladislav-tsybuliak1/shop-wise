@@ -2,8 +2,6 @@ from typing import Any
 
 from django import template
 
-from store.models import Product, ShoppingCart
-
 
 register = template.Library()
 
