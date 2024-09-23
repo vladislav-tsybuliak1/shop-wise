@@ -9,7 +9,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views import generic
 
-from store.forms import ReviewForm, CustomerCreationForm, OrderStatusForm, ProductSearchForm, ProductFilterForm
+from store.forms import ReviewForm, CustomerCreationForm, OrderStatusForm, SearchForm, ProductFilterForm
 from store.models import (
     Product,
     Order,
@@ -47,7 +47,7 @@ class ProductListView(LoginRequiredMixin, generic.ListView):
     def get_context_data(self, *, object_list=None, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
         name = self.request.GET.get("name", "")
-        context["search_form"] = ProductSearchForm(self.request.GET,
+        context["search_form"] = SearchForm(self.request.GET,
             initial={
                 "name": name,
             }
@@ -70,7 +70,7 @@ class ProductListView(LoginRequiredMixin, generic.ListView):
             )
         ).select_related("brand", "category").order_by("-available", "name")
 
-        search_form = ProductSearchForm(self.request.GET)
+        search_form = SearchForm(self.request.GET)
         filter_form = ProductFilterForm(self.request.GET)
 
         if search_form.is_valid():
@@ -159,6 +159,25 @@ class OrderDetailView(LoginRequiredMixin, generic.DetailView):
 class CategoryListView(LoginRequiredMixin, generic.ListView):
     model = Category
     paginate_by = 5
+
+    def get_context_data(self, *, object_list=None, **kwargs) -> dict:
+        context = super().get_context_data(**kwargs)
+        name = self.request.GET.get("name", "")
+        context["search_form"] = SearchForm(self.request.GET,
+            initial={
+                "name": name,
+            }
+        )
+        return context
+
+    def get_queryset(self) -> QuerySet:
+        queryset = Category.objects.all()
+        search_form = SearchForm(self.request.GET)
+        if search_form.is_valid():
+            queryset = queryset.filter(
+                name__icontains=search_form.cleaned_data["name"]
+            )
+        return queryset
 
 
 class CategoryCreateView(LoginRequiredMixin, generic.CreateView):

@@ -61,7 +61,7 @@ class OrderStatusForm(forms.ModelForm):
         fields = ("status",)
 
 
-class ProductSearchForm(forms.Form):
+class SearchForm(forms.Form):
     name = forms.CharField(
         max_length=255,
         required=False,
