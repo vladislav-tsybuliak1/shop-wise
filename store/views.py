@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
-from django.db.models import Case, When, IntegerField, QuerySet
+from django.db.models import Case, When, IntegerField, QuerySet, Q
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
@@ -161,7 +161,9 @@ class OrderListView(LoginRequiredMixin, generic.ListView):
         search_form = SearchForm(self.request.GET)
         if search_form.is_valid():
             queryset = queryset.filter(
-                customer__username__icontains=search_form.cleaned_data["name"]
+                Q(customer__username__icontains=search_form.cleaned_data["name"])
+                | Q(customer__first_name__icontains=search_form.cleaned_data["name"])
+                | Q(customer__last_name__icontains=search_form.cleaned_data["name"])
             )
         return queryset
 
