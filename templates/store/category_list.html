@@ -1,22 +1,28 @@
 {% extends "base_list.html" %}
+{% load crispy_forms_filters %}
 {% block search_filter %}
-<form method="get" action="" class="form-control">
+  <nav class="nav flex-column">
+    <form method="get" action="" class="form-control">
     <div>
-      {{ search_form.name }}
+      {{ search_form|crispy }}
     </div>
-    <input type="submit" value="🔍" class="btn btn-secondary">
-    <a href="{% url "store:category-list" %}" class="btn btn-secondary">Reset</a>
-  </form>
+      <button type="submit" class="btn btn-outline-success container mb-1">Search</button>
+    <div>
+      <a href="{% url "store:category-list" %}" class="btn btn-outline-danger container">Reset</a>
+    </div>
+    </form>
+  </nav>
+
 {% endblock %}
 
 {% block list %}
-  <h1>
-    Category list
-    <a href="{% url 'store:category-create' %}" class="btn btn-primary link-to-page">
-      Create
-    </a>
-  </h1>
-        {% include "includes/pagination.html" %}
+  <div class="d-flex justify-content-between align-items-center">
+    <h1>Category list</h1>
+      <a class="btn btn-primary" href="{% url 'store:category-create' %}" >
+        Add a new category
+      </a>
+  </div>
+  {% include "includes/pagination.html" %}
   {% if category_list %}
     <table class="table">
       <tr>
