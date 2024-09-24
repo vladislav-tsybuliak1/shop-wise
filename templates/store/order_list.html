@@ -3,13 +3,13 @@
 {% block search_filter %}
   <nav class="nav flex-column">
     <form method="get" action="" class="form-control">
-    <div>
-      {{ search_form|crispy }}
-    </div>
+      <div>
+        {{ search_form|crispy }}
+      </div>
       <button type="submit" class="btn btn-outline-success container mb-1">Search</button>
-    <div>
-      <a href="{% url "store:order-list" %}" class="btn btn-outline-danger container">Reset</a>
-    </div>
+      <div>
+        <a href="{% url "store:order-list" %}" class="btn btn-outline-danger container">Reset</a>
+      </div>
     </form>
   </nav>
 {% endblock %}
@@ -29,27 +29,27 @@
         <th>Total cost</th>
         <th>Details</th>
       </tr>
-    {% for order in order_list %}
-      <tr>
-        <td>{{ order.id }}</td>
-        <td>{{ order.customer.username }}({{ order.customer.get_full_name }})</td>
-        <td>{{ order.status }}</td>
-        <td>
-          <form method="post" action="{% url 'store:order-update' order.id %}">
-            {% csrf_token %}
+      {% for order in order_list %}
+        <tr>
+          <td>{{ order.id }}</td>
+          <td>{{ order.customer.username }}({{ order.customer.get_full_name }})</td>
+          <td>{{ order.status }}</td>
+          <td>
+            <form method="post" action="{% url 'store:order-update' order.id %}">
+              {% csrf_token %}
               {{ status_form.status }}
-            <button type="submit" class="btn btn-outline-primary">Update</button>
-          </form>
-            </td>
-        <td>{{ order.created_at }}</td>
-        <td>{{ order.total_cost|floatformat:2 }}</td>
-        <td><a href="{% url 'store:order-detail' order.id %}">
-          <i class="bi-card-list h3"></i>
-        </a></td>
-      </tr>
-    {% endfor %}
+              <button type="submit" class="btn btn-outline-primary">Update</button>
+            </form>
+          </td>
+          <td>{{ order.created_at }}</td>
+          <td>{{ order.total_cost|floatformat:2 }}</td>
+          <td><a href="{% url 'store:order-detail' order.id %}">
+            <i class="bi-card-list h3"></i>
+          </a></td>
+        </tr>
+      {% endfor %}
     </table>
-    {% else %}
-      <p>There are no orders.</p>
-    {% endif %}
+  {% else %}
+    <p>There are no orders.</p>
+  {% endif %}
 {% endblock %}

@@ -8,17 +8,17 @@
 
       <h1>Login</h1>
       {% if next %}
-      <p>Please log in to see this page.</p>
+        <p>Please log in to see this page.</p>
       {% endif %}
 
       <form method="post" action="{% url 'login' %}" novalidate>
         {% csrf_token %}
         {{ form|crispy }}
-        <input type="submit" value="Login" class="btn btn-primary btn-lg" />
-        <input type="hidden" name="next" value="{{ next }}" />
+        <input type="submit" value="Login" class="btn btn-primary btn-lg"/>
+        <input type="hidden" name="next" value="{{ next }}"/>
       </form>
       <p class="small fw-bold mt-2 pt-1 mb-0">Not a customer yet? <a href="{% url 'store:customer-create' %}"
-                class="link-danger">Register</a></p>
+                                                                     class="link-danger">Register</a></p>
 
     </div>
   </div>

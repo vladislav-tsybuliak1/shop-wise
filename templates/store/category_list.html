@@ -3,13 +3,13 @@
 {% block search_filter %}
   <nav class="nav flex-column">
     <form method="get" action="" class="form-control">
-    <div>
-      {{ search_form|crispy }}
-    </div>
+      <div>
+        {{ search_form|crispy }}
+      </div>
       <button type="submit" class="btn btn-outline-success container mb-1">Search</button>
-    <div>
-      <a href="{% url "store:category-list" %}" class="btn btn-outline-danger container">Reset</a>
-    </div>
+      <div>
+        <a href="{% url "store:category-list" %}" class="btn btn-outline-danger container">Reset</a>
+      </div>
     </form>
   </nav>
 
@@ -18,9 +18,9 @@
 {% block list %}
   <div class="d-flex justify-content-between align-items-center">
     <h1>Category list</h1>
-      <a class="btn btn-primary" href="{% url 'store:category-create' %}" >
-        Add a new category
-      </a>
+    <a class="btn btn-primary" href="{% url 'store:category-create' %}">
+      Add a new category
+    </a>
   </div>
   {% include "includes/pagination.html" %}
   {% if category_list %}
@@ -31,25 +31,25 @@
         <th>Update</th>
         <th>Delete</th>
       </tr>
-    {% for category in category_list %}
-      <tr>
-        <td>{{ category.name }}</td>
-        <td>{{ category.description }}</td>
-        <td>
-          <a href="{% url 'store:category-update' category.id %}">
-            <i class="bi-pen h3"></i>
-          </a>
-        </td>
-        <td>
-          <a style="color: red"
-            href="{% url 'store:category-delete' category.id %}">
-            <i class="bi-trash h3"></i>
-          </a>
-        </td>
-      </tr>
-    {% endfor %}
+      {% for category in category_list %}
+        <tr>
+          <td>{{ category.name }}</td>
+          <td>{{ category.description }}</td>
+          <td>
+            <a href="{% url 'store:category-update' category.id %}">
+              <i class="bi-pen h3"></i>
+            </a>
+          </td>
+          <td>
+            <a style="color: red"
+               href="{% url 'store:category-delete' category.id %}">
+              <i class="bi-trash h3"></i>
+            </a>
+          </td>
+        </tr>
+      {% endfor %}
     </table>
-    {% else %}
-      <p>There are no categories.</p>
-    {% endif %}
+  {% else %}
+    <p>There are no categories.</p>
+  {% endif %}
 {% endblock %}

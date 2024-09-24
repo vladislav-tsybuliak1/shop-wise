@@ -29,11 +29,12 @@
       </ul>
     </div>
 
-    <div class="d-lg-inline-flex mr-2" >
+    <div class="d-lg-inline-flex mr-2">
       {% if user.is_authenticated %}
         <div class="dropdown">
-          <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-           {{ user.get_full_name }}
+          <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton"
+                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{ user.get_full_name }}
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <a class="dropdown-item" href="{% url 'store:customer-detail' user.id %}">My orders</a>

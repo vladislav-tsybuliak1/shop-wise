@@ -39,9 +39,11 @@
                         <p>{{ cart_item.product.price }}</p>
                       </div>
                       <div class="col-md-4 col-lg-3">
-                        <a href="{% url 'store:cart-delete-product' cart_item.product.id %}" class="btn btn-outline-primary">➖</a>
+                        <a href="{% url 'store:cart-delete-product' cart_item.product.id %}"
+                           class="btn btn-outline-primary">➖</a>
                         {{ cart_item.quantity|floatformat }}
-                        <a href="{% url 'store:cart-add-product' cart_item.product.id %}" class="btn btn-outline-primary">➕</a>
+                        <a href="{% url 'store:cart-add-product' cart_item.product.id %}"
+                           class="btn btn-outline-primary">➕</a>
                         <a href="{% url 'store:cart-delete-product' cart_item.product.id %}?full_delete=true"
                            class="btn btn-outline-danger">❌</a>
                       </div>
@@ -61,7 +63,8 @@
                 </div>
                 <div class="d-flex justify-content-between align-items-center">
                   <a href="{% url 'store:order-create' %}" class="btn btn-success">Order</a>
-                  <a href="{% url 'store:cart-empty' %}" class="btn btn-outline-danger" style="float: right">Empty cart</a>
+                  <a href="{% url 'store:cart-empty' %}" class="btn btn-outline-danger" style="float: right">
+                    Empty cart</a>
                 </div>
               {% else %}
                 <p>No added items.

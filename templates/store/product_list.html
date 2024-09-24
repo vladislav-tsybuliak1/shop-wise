@@ -32,7 +32,8 @@
           <div class="col-md-7">
             <div class="row">
               <a href="{% url 'store:product-detail' product.id %}" class="h5 title">{{ product.name }}</a>
-              <p><i class="bi bi-chat-square-dots"></i> {{ product.reviews.count }} review{{ product.reviews.count|pluralize }}</p>
+              <p><i class="bi bi-chat-square-dots"></i> {{ product.reviews.count }}
+                review{{ product.reviews.count|pluralize }}</p>
               <p>ID: {{ product.id }}</p>
               <p>Unit: {{ product.unit_value|floatformat }} {{ product.unit_name }}</p>
               <p>Stock quantity: {{ product.stock_quantity|floatformat }}</p>
