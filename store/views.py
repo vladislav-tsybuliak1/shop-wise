@@ -481,8 +481,12 @@ def update_order_status(request: HttpRequest, pk: int) -> HttpResponse:
         if form.is_valid():
             form.save()
             messages.success(request, "Order status updated.")
-            return redirect("store:order-list")
-    return redirect("store:order-list")
+    return redirect(
+        request.META.get(
+            "HTTP_REFERER",
+            reverse_lazy("store:index")
+        )
+    )
 
 
 @login_required
