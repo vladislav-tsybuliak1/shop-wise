@@ -3,7 +3,12 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator
 from django.db import models
 
-from store.validators import validate_username, validate_name, validate_phone_number, validate_address
+from store.validators import (
+    validate_username,
+    validate_name,
+    validate_phone_number,
+    validate_address
+)
 
 
 class Category(models.Model):
@@ -216,7 +221,10 @@ class Customer(AbstractUser):
         unique=True,
         validators=[validate_username]
     )
-    phone_number = models.CharField(max_length=15, validators=[validate_phone_number])
+    phone_number = models.CharField(
+        max_length=15,
+        validators=[validate_phone_number]
+    )
     address = models.CharField(max_length=255, validators=[validate_address])
     first_name = models.CharField(max_length=50, validators=[validate_name])
     last_name = models.CharField(max_length=50, validators=[validate_name])

@@ -353,19 +353,25 @@ class PrivateProductTest(LoginUserMixin, FixtureMixin, TestCase):
         self.form_data["price"] = Decimal("-1")
         response = self.client.post(PRODUCT_CREATE_URL, data=self.form_data)
         self.assertEqual(response.status_code, 200)
-        self.assertFalse(Product.objects.filter(name=self.form_data["name"]).exists())
+        self.assertFalse(
+            Product.objects.filter(name=self.form_data["name"]).exists()
+        )
 
     def test_create_with_negative_unit_value(self) -> None:
         self.form_data["unit_value"] = -1
         response = self.client.post(PRODUCT_CREATE_URL, data=self.form_data)
         self.assertEqual(response.status_code, 200)
-        self.assertFalse(Product.objects.filter(name=self.form_data["name"]).exists())
+        self.assertFalse(
+            Product.objects.filter(name=self.form_data["name"]).exists()
+        )
 
     def test_create_with_negative_stock_quantity(self) -> None:
         self.form_data["stock_quantity"] = -1
         response = self.client.post(PRODUCT_CREATE_URL, data=self.form_data)
         self.assertEqual(response.status_code, 200)
-        self.assertFalse(Product.objects.filter(name=self.form_data["name"]).exists())
+        self.assertFalse(
+            Product.objects.filter(name=self.form_data["name"]).exists()
+        )
 
     def test_update(self) -> None:
         form_data = {
@@ -470,7 +476,7 @@ class PrivateOrderTest(LoginUserMixin, FixtureMixin, TestCase):
                     Q(customer__username__icontains=search_str)
                     | Q(customer__first_name__icontains=search_str)
                     | Q(customer__last_name__icontains=search_str)
-                )
+                )[:PAGINATION]
             )
         )
 
@@ -478,8 +484,14 @@ class PrivateOrderTest(LoginUserMixin, FixtureMixin, TestCase):
         order = Order.objects.get(id=ID)
         response = self.client.get(ORDER_DETAIL_URL)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context["order"].created_at, order.created_at)
-        self.assertEqual(response.context["order"].total_cost, order.total_cost)
+        self.assertEqual(
+            response.context["order"].created_at,
+            order.created_at
+        )
+        self.assertEqual(
+            response.context["order"].total_cost,
+            order.total_cost
+        )
         self.assertEqual(response.context["order"].customer, order.customer)
         self.assertEqual(response.context["order"].status, order.status)
         self.assertEqual(response.context["order"].products, order.products)
@@ -590,3 +602,177 @@ class PrivateBrandTest(LoginUserMixin, FixtureMixin, TestCase):
         response = self.client.post(BRAND_DELETE_URL)
         self.assertEqual(response.status_code, 302)
         self.assertFalse(Brand.objects.filter(id=ID).exists())
+
+
+class PrivateCustomerTest(LoginUserMixin, FixtureMixin, TestCase):
+    def setUp(self) -> None:
+        super().setUp()
+        self.form_data = {
+            "username": "new_user",
+            "password1": "test123test",
+            "password2": "test123test",
+            "first_name": "Test",
+            "last_name": "Test",
+            "phone_number": "+380563442312",
+            "address": "Test address"
+        }
+
+    def test_list_pagination(self) -> None:
+        response = self.client.get(CUSTOMER_LIST_URL)
+        self.assertEqual(len(response.context["customer_list"]), PAGINATION)
+
+    def test_list_retrieve_data(self) -> None:
+        response = self.client.get(CUSTOMER_LIST_URL)
+        customers = get_user_model().objects.all()[:PAGINATION]
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            list(response.context["customer_list"]),
+            list(customers)
+        )
+
+    def test_search(self) -> None:
+        search_str = "ts"
+        response = self.client.get(CUSTOMER_LIST_URL + f"?name={search_str}")
+        self.assertEqual(
+            list(response.context["customer_list"]),
+            list(
+                get_user_model().objects.filter(
+                    Q(username__icontains=search_str)
+                    | Q(first_name__icontains=search_str)
+                    | Q(last_name__icontains=search_str)
+                )[:PAGINATION]
+            )
+        )
+
+    def test_detail(self) -> None:
+        customer = get_user_model().objects.get(id=ID)
+        response = self.client.get(CUSTOMER_DETAIL_URL)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.context["customer"].username,
+            customer.username
+        )
+        self.assertEqual(
+            response.context["customer"].get_full_name(),
+            customer.get_full_name()
+        )
+        self.assertEqual(
+            response.context["customer"].phone_number,
+            customer.phone_number
+        )
+        self.assertEqual(
+            response.context["customer"].address,
+            customer.address
+        )
+        self.assertEqual(
+            list(response.context["customer"].orders.all()),
+            list(customer.orders.all())
+        )
+
+    def test_create(self) -> None:
+        response = self.client.post(CUSTOMER_CREATE_URL, data=self.form_data)
+        new_customer = (
+            get_user_model().objects.filter(
+                username=self.form_data["username"]
+            ).first()
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(new_customer.username, self.form_data["username"])
+        self.assertEqual(
+            new_customer.get_full_name(),
+            f'{self.form_data["first_name"]} {self.form_data["last_name"]}'
+        )
+        self.assertEqual(
+            new_customer.phone_number,
+            self.form_data["phone_number"]
+        )
+        self.assertEqual(new_customer.address, self.form_data["address"])
+        self.assertTrue(
+            new_customer.check_password(self.form_data["password1"])
+        )
+
+    def test_create_invalid_first_name(self) -> None:
+        self.form_data["first_name"] = "Test 1"
+        response = self.client.post(CUSTOMER_CREATE_URL, data=self.form_data)
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(
+            get_user_model().objects.filter(
+                username=self.form_data["username"]
+            ).exists()
+        )
+
+    def test_create_invalid_last_name(self) -> None:
+        self.form_data["last_name"] = "Test 1"
+        response = self.client.post(CUSTOMER_CREATE_URL, data=self.form_data)
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(
+            get_user_model().objects.filter(
+                username=self.form_data["username"]
+            ).exists()
+        )
+
+    def test_create_invalid_phone_number(self) -> None:
+        self.form_data["phone_number"] = "+38068095923"
+        response = self.client.post(CUSTOMER_CREATE_URL, data=self.form_data)
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(
+            get_user_model().objects.filter(
+                username=self.form_data["username"]
+            ).exists()
+        )
+
+    def test_create_invalid_address(self) -> None:
+        self.form_data["address"] = "Test address!"
+        response = self.client.post(CUSTOMER_CREATE_URL, data=self.form_data)
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(
+            get_user_model().objects.filter(
+                username=self.form_data["username"]
+            ).exists()
+        )
+
+    def test_update(self) -> None:
+        response = self.client.post(CUSTOMER_UPDATE_URL, data=self.form_data)
+        updated_customer = get_user_model().objects.get(pk=ID)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(
+            updated_customer.first_name,
+            self.form_data["first_name"]
+        )
+        self.assertEqual(
+            updated_customer.last_name,
+            self.form_data["last_name"]
+        )
+        self.assertEqual(
+            updated_customer.phone_number,
+            self.form_data["phone_number"]
+        )
+        self.assertEqual(
+            updated_customer.address,
+            self.form_data["address"]
+        )
+
+    def test_update_with_invalid_first_name(self) -> None:
+        self.form_data["first_name"] = "Test 1"
+        response = self.client.post(CUSTOMER_UPDATE_URL, data=self.form_data)
+        self.assertEqual(response.status_code, 200)
+
+    def test_update_with_invalid_last_name(self) -> None:
+        self.form_data["last_name"] = "Test 1"
+        response = self.client.post(CUSTOMER_UPDATE_URL, data=self.form_data)
+        self.assertEqual(response.status_code, 200)
+
+    def test_update_with_invalid_phone_number(self) -> None:
+        self.form_data["phone_number"] = "+38068095923"
+        response = self.client.post(CUSTOMER_UPDATE_URL, data=self.form_data)
+        self.assertEqual(response.status_code, 200)
+
+    def test_update_with_invalid_address(self) -> None:
+        self.form_data["address"] = "Test!"
+        response = self.client.post(CUSTOMER_UPDATE_URL, data=self.form_data)
+        self.assertEqual(response.status_code, 200)
+
+    def test_delete(self) -> None:
+        response = self.client.post(CUSTOMER_DELETE_URL)
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(get_user_model().objects.filter(id=ID).exists())
