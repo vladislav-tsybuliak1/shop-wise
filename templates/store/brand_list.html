@@ -16,9 +16,11 @@
 {% block list %}
   <div class="d-flex justify-content-between align-items-center">
     <h1>Brand list</h1>
-    <a class="btn btn-primary" href="{% url 'store:brand-create' %}">
-      Add a new brand
-    </a>
+    {% if user.is_staff %}
+      <a class="btn btn-primary" href="{% url 'store:brand-create' %}">
+        Add a new brand
+      </a>
+    {% endif %}
   </div>
   {% include "includes/pagination.html" %}
   {% if brand_list %}
@@ -27,25 +29,29 @@
         <th>Name</th>
         <th>Description</th>
         <th>Listed positions</th>
-        <th>Update</th>
-        <th>Delete</th>
+        {% if user.is_staff %}
+          <th>Update</th>
+          <th>Delete</th>
+        {% endif %}  
       </tr>
       {% for brand in brand_list %}
         <tr>
           <td>{{ brand.name }}</td>
           <td>{% if brand.description %}{{ brand.description }}{% else %}No description{% endif %}</td>
           <td>{{ brand.products.count }}</td>
-          <td>
-            <a href="{% url 'store:brand-update' brand.id %}">
-              <i class="bi-pen h3"></i>
-            </a>
-          </td>
-          <td>
-            <a style="color: red"
-               href="{% url 'store:brand-delete' brand.id %}">
-              <i class="bi-trash h3"></i>
-            </a>
-          </td>
+          {% if user.is_staff %}
+            <td>
+              <a href="{% url 'store:brand-update' brand.id %}">
+                <i class="bi-pen h3"></i>
+              </a>
+            </td>
+            <td>
+              <a style="color: red"
+                 href="{% url 'store:brand-delete' brand.id %}">
+                <i class="bi-trash h3"></i>
+              </a>
+            </td>
+          {% endif %}
         </tr>
       {% endfor %}
     </table>

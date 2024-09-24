@@ -18,9 +18,11 @@
 {% block list %}
   <div class="d-flex justify-content-between align-items-center">
     <h1>Category list</h1>
-    <a class="btn btn-primary" href="{% url 'store:category-create' %}">
-      Add a new category
-    </a>
+    {% if user.is_staff %}
+      <a class="btn btn-primary" href="{% url 'store:category-create' %}">
+        Add a new category
+      </a>
+    {% endif %}
   </div>
   {% include "includes/pagination.html" %}
   {% if category_list %}
@@ -28,24 +30,28 @@
       <tr>
         <th>Name</th>
         <th>Description</th>
-        <th>Update</th>
-        <th>Delete</th>
+        {% if user.is_staff %}
+          <th>Update</th>
+          <th>Delete</th>
+        {% endif %}  
       </tr>
       {% for category in category_list %}
         <tr>
           <td>{{ category.name }}</td>
           <td>{{ category.description }}</td>
-          <td>
-            <a href="{% url 'store:category-update' category.id %}">
-              <i class="bi-pen h3"></i>
-            </a>
-          </td>
-          <td>
-            <a style="color: red"
-               href="{% url 'store:category-delete' category.id %}">
-              <i class="bi-trash h3"></i>
-            </a>
-          </td>
+          {% if user.is_staff %}
+            <td>
+              <a href="{% url 'store:category-update' category.id %}">
+                <i class="bi-pen h3"></i>
+              </a>
+            </td>
+            <td>
+              <a style="color: red"
+                 href="{% url 'store:category-delete' category.id %}">
+                <i class="bi-trash h3"></i>
+              </a>
+            </td>
+          {% endif %}
         </tr>
       {% endfor %}
     </table>

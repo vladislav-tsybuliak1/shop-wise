@@ -16,9 +16,11 @@
 {% block list %}
   <div class="d-flex justify-content-between align-items-center">
     <h1>Customer list</h1>
-    <a class="btn btn-primary" href="{% url 'store:customer-create' %}">
-      Add a new customer
-    </a>
+    {% if user.is_staff %}
+      <a class="btn btn-primary" href="{% url 'store:customer-create' %}">
+        Add a new customer
+      </a>
+    {% endif %}
   </div>
   {% include "includes/pagination.html" %}
 

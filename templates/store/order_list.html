@@ -24,7 +24,9 @@
         <th>ID</th>
         <th>Customer</th>
         <th>Status</th>
-        <th>Update order status</th>
+        {% if user.is_staff %}
+          <th>Update order status</th>
+        {% endif %}
         <th>Date of creation</th>
         <th>Total cost</th>
         <th>Details</th>
@@ -34,13 +36,15 @@
           <td>{{ order.id }}</td>
           <td>{{ order.customer.username }}({{ order.customer.get_full_name }})</td>
           <td>{{ order.status }}</td>
-          <td>
-            <form method="post" action="{% url 'store:order-update' order.id %}">
-              {% csrf_token %}
-              {{ status_form.status }}
-              <button type="submit" class="btn btn-outline-primary">Update</button>
-            </form>
-          </td>
+          {% if user.is_staff %}
+            <td>
+              <form method="post" action="{% url 'store:order-update' order.id %}">
+                {% csrf_token %}
+                {{ status_form.status }}
+                <button type="submit" class="btn btn-outline-primary">Update</button>
+              </form>
+            </td>
+          {% endif %}
           <td>{{ order.created_at }}</td>
           <td>{{ order.total_cost|floatformat:2 }}</td>
           <td><a href="{% url 'store:order-detail' order.id %}">

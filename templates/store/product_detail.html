@@ -17,14 +17,16 @@
                 <p class="lead fw-bold fs-2">
                   {{ product.name }}, {{ product.unit_value|floatformat }} {{ product.unit_name }}
                 </p>
-                <div>
-                  <a href="{% url 'store:product-update' product.id %}" class="btn" style="color: dodgerblue">
-                    <i class="bi-pen fs-2"></i>
-                  </a>
-                  <a href="{% url 'store:product-delete' product.id %}" class="btn" style="color: red">
-                    <i class="bi-trash fs-2"></i>
-                  </a>
-                </div>
+                {% if user.is_staff %}
+                  <div>
+                    <a href="{% url 'store:product-update' product.id %}" class="btn" style="color: dodgerblue">
+                      <i class="bi-pen fs-2"></i>
+                    </a>
+                    <a href="{% url 'store:product-delete' product.id %}" class="btn" style="color: red">
+                      <i class="bi-trash fs-2"></i>
+                    </a>
+                  </div>
+                {% endif %}
               </div>
 
               <div class="mx-n5 px-5 py-4" style="background-color: #f2f2f2;">
