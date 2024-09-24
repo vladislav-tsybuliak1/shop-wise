@@ -10,7 +10,7 @@
       {% if next %}
         <p>Please log in to see this page.</p>
       {% endif %}
-
+      <p>Testing user: test / test123test</p>
       <form method="post" action="{% url 'login' %}" novalidate>
         {% csrf_token %}
         {{ form|crispy }}
