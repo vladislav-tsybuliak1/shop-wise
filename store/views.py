@@ -359,6 +359,10 @@ class CustomerCreateView(generic.CreateView):
     form_class = CustomerCreationForm
 
     def get_success_url(self) -> str:
+        messages.success(
+            self.request,
+            "Customer is created. Now, can use it's credentials to login."
+        )
         return reverse("store:customer-detail", args=[self.object.pk])
 
 
