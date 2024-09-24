@@ -503,3 +503,53 @@ class PrivateCategoryTest(LoginUserMixin, FixtureMixin, TestCase):
         response = self.client.post(CATEGORY_DELETE_URL)
         self.assertEqual(response.status_code, 302)
         self.assertFalse(Category.objects.filter(id=ID).exists())
+
+
+class PrivateBrandTest(LoginUserMixin, FixtureMixin, TestCase):
+    def test_list_pagination(self) -> None:
+        response = self.client.get(BRAND_LIST_URL)
+        self.assertEqual(len(response.context["brand_list"]), PAGINATION)
+
+    def test_list_retrieve_data(self) -> None:
+        response = self.client.get(BRAND_LIST_URL)
+        brands = Brand.objects.all()[:PAGINATION]
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            list(response.context["brand_list"]),
+            list(brands)
+        )
+
+    def test_search(self) -> None:
+        search_str = "ch"
+        response = self.client.get(BRAND_LIST_URL + f"?name={search_str}")
+        self.assertEqual(
+            list(response.context["brand_list"]),
+            list(
+                Brand.objects.filter(
+                    name__icontains=search_str
+                )[:PAGINATION]
+            )
+        )
+
+    def test_create(self) -> None:
+        form_data = {
+            "name": "Test name"
+        }
+        response = self.client.post(BRAND_CREATE_URL, data=form_data)
+        new_brand = Brand.objects.filter(name=form_data["name"]).first()
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(new_brand.name, form_data["name"])
+
+    def test_update(self) -> None:
+        form_data = {
+            "name": "Updated test name"
+        }
+        response = self.client.post(BRAND_UPDATE_URL, data=form_data)
+        updated_brand = Brand.objects.get(pk=ID)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(updated_brand.name, form_data["name"])
+
+    def test_delete(self) -> None:
+        response = self.client.post(BRAND_DELETE_URL)
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(Brand.objects.filter(id=ID).exists())
