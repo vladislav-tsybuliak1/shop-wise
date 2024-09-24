@@ -194,6 +194,18 @@ class PrivateIndexTest(LoginUserMixin, FixtureMixin, TestCase):
 
 
 class PrivateProductTest(LoginUserMixin, FixtureMixin, TestCase):
+    def setUp(self) -> None:
+        super().setUp()
+        self.form_data = {
+            "name": "Test name",
+            "unit_value": 1,
+            "unit_name": "KG",
+            "stock_quantity": 10,
+            "price": Decimal("9.99"),
+            "brand": 1,
+            "category": 1,
+        }
+
     def test_list_pagination(self) -> None:
         response = self.client.get(PRODUCT_LIST_URL)
         self.assertEqual(len(response.context["product_list"]), PAGINATION)
@@ -273,7 +285,7 @@ class PrivateProductTest(LoginUserMixin, FixtureMixin, TestCase):
             )
         )
 
-    def test_filter_and_category(self) -> None:
+    def test_filter_brand_and_category(self) -> None:
         brand = Brand.objects.get(pk=1)
         category = Category.objects.get(pk=2)
         response = self.client.get(
@@ -325,26 +337,35 @@ class PrivateProductTest(LoginUserMixin, FixtureMixin, TestCase):
         )
 
     def test_create(self) -> None:
-        form_data = {
-            "name": "Test name",
-            "unit_value": 1,
-            "unit_name": "KG",
-            "stock_quantity": 10,
-            "price": Decimal("9.99"),
-            "brand": 1,
-            "category": 1,
-        }
-        response = self.client.post(PRODUCT_CREATE_URL, data=form_data)
-        new_product = Product.objects.filter(name=form_data["name"]).first()
+        response = self.client.post(PRODUCT_CREATE_URL, data=self.form_data)
+        new_product = Product.objects.get(name=self.form_data["name"])
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(new_product.name, form_data["name"])
+        self.assertEqual(new_product.name, self.form_data["name"])
         self.assertEqual(
             new_product.stock_quantity,
-            form_data["stock_quantity"]
+            self.form_data["stock_quantity"]
         )
-        self.assertEqual(new_product.price, form_data["price"])
-        self.assertEqual(new_product.brand.id, form_data["brand"])
-        self.assertEqual(new_product.category.id, form_data["category"])
+        self.assertEqual(new_product.price, self.form_data["price"])
+        self.assertEqual(new_product.brand.id, self.form_data["brand"])
+        self.assertEqual(new_product.category.id, self.form_data["category"])
+
+    def test_create_with_negative_price(self) -> None:
+        self.form_data["price"] = Decimal("-1")
+        response = self.client.post(PRODUCT_CREATE_URL, data=self.form_data)
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(Product.objects.filter(name=self.form_data["name"]).exists())
+
+    def test_create_with_negative_unit_value(self) -> None:
+        self.form_data["unit_value"] = -1
+        response = self.client.post(PRODUCT_CREATE_URL, data=self.form_data)
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(Product.objects.filter(name=self.form_data["name"]).exists())
+
+    def test_create_with_negative_stock_quantity(self) -> None:
+        self.form_data["stock_quantity"] = -1
+        response = self.client.post(PRODUCT_CREATE_URL, data=self.form_data)
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(Product.objects.filter(name=self.form_data["name"]).exists())
 
     def test_update(self) -> None:
         form_data = {
@@ -359,6 +380,22 @@ class PrivateProductTest(LoginUserMixin, FixtureMixin, TestCase):
             updated_product.stock_quantity,
             form_data["stock_quantity"]
         )
+
+    def test_update_with_negative_stock_quantity(self) -> None:
+        form_data = {
+            "stock_quantity": -1,
+            "price": Decimal("10.99"),
+        }
+        response = self.client.post(PRODUCT_UPDATE_URL, data=form_data)
+        self.assertEqual(response.status_code, 200)
+
+    def test_update_with_negative_price(self) -> None:
+        form_data = {
+            "stock_quantity": 1,
+            "price": Decimal("-1"),
+        }
+        response = self.client.post(PRODUCT_UPDATE_URL, data=form_data)
+        self.assertEqual(response.status_code, 200)
 
     def test_delete(self) -> None:
         response = self.client.post(PRODUCT_DELETE_URL)
