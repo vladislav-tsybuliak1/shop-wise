@@ -214,19 +214,41 @@ class PrivateProductTest(LoginUserMixin, FixtureMixin, TestCase):
         )
 
     def test_search(self) -> None:
-        search_str = "milka"
+        search_str = "ch"
         response = self.client.get(PRODUCT_LIST_URL + f"?name={search_str}")
         self.assertEqual(
-            len(response.context["product_list"]),
-            len(Product.objects.filter(name__icontains=search_str)),
+            list(response.context["product_list"]),
+            list(
+                Product.objects
+                .filter(name__icontains=search_str)
+                .annotate(
+                    available=Case(
+                        When(stock_quantity__gt=0, then=1),
+                        default=0,
+                        output_field=IntegerField(),
+                    )
+                )
+                .order_by("-available", "name")[:PAGINATION]
+            )
         )
 
     def test_filter_brand_only(self) -> None:
         brand = Brand.objects.get(pk=ID)
         response = self.client.get(PRODUCT_LIST_URL + f"?brand={brand.id}")
         self.assertEqual(
-            len(response.context["product_list"]),
-            len(Product.objects.filter(brand=brand)),
+            list(response.context["product_list"]),
+            list(
+                Product.objects
+                .filter(brand=brand)
+                .annotate(
+                    available=Case(
+                        When(stock_quantity__gt=0, then=1),
+                        default=0,
+                        output_field=IntegerField(),
+                    )
+                )
+                .order_by("-available", "name")[:PAGINATION]
+            )
         )
 
     def test_filter_category_only(self) -> None:
@@ -236,8 +258,19 @@ class PrivateProductTest(LoginUserMixin, FixtureMixin, TestCase):
             + f"?category={category.id}"
         )
         self.assertEqual(
-            len(response.context["product_list"]),
-            len(Product.objects.filter(category=category)),
+            list(response.context["product_list"]),
+            list(
+                Product.objects
+                .filter(category=category)
+                .annotate(
+                    available=Case(
+                        When(stock_quantity__gt=0, then=1),
+                        default=0,
+                        output_field=IntegerField(),
+                    )
+                )
+                .order_by("-available", "name")[:PAGINATION]
+            )
         )
 
     def test_filter_and_category(self) -> None:
@@ -250,7 +283,18 @@ class PrivateProductTest(LoginUserMixin, FixtureMixin, TestCase):
         )
         self.assertEqual(
             list(response.context["product_list"]),
-            list(Product.objects.filter(category=category, brand=brand)),
+            list(
+                Product.objects
+                .filter(category=category, brand=brand)
+                .annotate(
+                    available=Case(
+                        When(stock_quantity__gt=0, then=1),
+                        default=0,
+                        output_field=IntegerField(),
+                    )
+                )
+                .order_by("-available", "name")[:PAGINATION]
+            ),
         )
 
     def test_detail(self) -> None:
