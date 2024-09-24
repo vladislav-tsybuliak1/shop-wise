@@ -1,5 +1,4 @@
 from decimal import Decimal
-from http.client import responses
 
 from django.contrib.auth import get_user_model
 from django.db.models import Case, When, IntegerField, Q
@@ -311,6 +310,18 @@ class PrivateProductTest(LoginUserMixin, FixtureMixin, TestCase):
         self.assertEqual(
             response.context["product"].stock_quantity,
             product.stock_quantity
+        )
+
+    def test_add_review(self) -> None:
+        form_data = {
+            "content": "Test review",
+        }
+        response = self.client.post(PRODUCT_DETAIL_URL, data=form_data)
+        product_with_review = Product.objects.get(id=ID)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn(
+            form_data["content"],
+            product_with_review.reviews.values_list("content", flat=True)
         )
 
     def test_create(self) -> None:
