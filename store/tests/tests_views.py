@@ -453,3 +453,53 @@ class PrivateOrderTest(LoginUserMixin, FixtureMixin, TestCase):
         updated_order = Order.objects.get(id=ID)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(updated_order.status, form_data["status"])
+
+
+class PrivateCategoryTest(LoginUserMixin, FixtureMixin, TestCase):
+    def test_list_pagination(self) -> None:
+        response = self.client.get(CATEGORY_LIST_URL)
+        self.assertEqual(len(response.context["category_list"]), PAGINATION)
+
+    def test_list_retrieve_data(self) -> None:
+        response = self.client.get(CATEGORY_LIST_URL)
+        categories = Category.objects.all()[:PAGINATION]
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            list(response.context["category_list"]),
+            list(categories)
+        )
+
+    def test_search(self) -> None:
+        search_str = "er"
+        response = self.client.get(CATEGORY_LIST_URL + f"?name={search_str}")
+        self.assertEqual(
+            list(response.context["category_list"]),
+            list(
+                Category.objects.filter(
+                    name__icontains=search_str
+                )[:PAGINATION]
+            )
+        )
+
+    def test_create(self) -> None:
+        form_data = {
+            "name": "Test name"
+        }
+        response = self.client.post(CATEGORY_CREATE_URL, data=form_data)
+        new_category = Category.objects.filter(name=form_data["name"]).first()
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(new_category.name, form_data["name"])
+
+    def test_update(self) -> None:
+        form_data = {
+            "name": "Updated test name"
+        }
+        response = self.client.post(CATEGORY_UPDATE_URL, data=form_data)
+        updated_category = Category.objects.get(pk=ID)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(updated_category.name, form_data["name"])
+
+    def test_delete(self) -> None:
+        response = self.client.post(CATEGORY_DELETE_URL)
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(Category.objects.filter(id=ID).exists())
