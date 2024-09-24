@@ -1,7 +1,8 @@
 from decimal import Decimal
+from http.client import responses
 
 from django.contrib.auth import get_user_model
-from django.db.models import Case, When, IntegerField
+from django.db.models import Case, When, IntegerField, Q
 from django.test import TestCase
 from django.urls import reverse
 
@@ -395,3 +396,49 @@ class PrivateProductTest(LoginUserMixin, FixtureMixin, TestCase):
                 )
             ),
         )
+
+
+class PrivateOrderTest(LoginUserMixin, FixtureMixin, TestCase):
+    def test_list_pagination(self) -> None:
+        response = self.client.get(ORDER_LIST_URL)
+        self.assertEqual(len(response.context["order_list"]), PAGINATION)
+
+    def test_list_retrieve_data(self) -> None:
+        response = self.client.get(ORDER_LIST_URL)
+        orders = Order.objects.all()[:PAGINATION]
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            list(response.context["order_list"]),
+            list(orders)
+        )
+
+    def test_search(self) -> None:
+        search_str = "dar"
+        response = self.client.get(ORDER_LIST_URL + f"?name={search_str}")
+        self.assertEqual(
+            list(response.context["order_list"]),
+            list(
+                Order.objects.filter(
+                    Q(customer__username__icontains=search_str)
+                    | Q(customer__first_name__icontains=search_str)
+                    | Q(customer__last_name__icontains=search_str)
+                )
+            )
+        )
+
+    def test_detail(self) -> None:
+        order = Order.objects.get(id=ID)
+        response = self.client.get(ORDER_DETAIL_URL)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["order"].created_at, order.created_at)
+        self.assertEqual(response.context["order"].total_cost, order.total_cost)
+        self.assertEqual(response.context["order"].customer, order.customer)
+        self.assertEqual(response.context["order"].status, order.status)
+        self.assertEqual(response.context["order"].products, order.products)
+
+    def test_update_status(self) -> None:
+        form_data = {"status": "PROCESSING"}
+        response = self.client.post(ORDER_UPDATE_URL, data=form_data)
+        updated_order = Order.objects.get(id=ID)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(updated_order.status, form_data["status"])
