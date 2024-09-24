@@ -776,3 +776,80 @@ class PrivateCustomerTest(LoginUserMixin, FixtureMixin, TestCase):
         response = self.client.post(CUSTOMER_DELETE_URL)
         self.assertEqual(response.status_code, 302)
         self.assertFalse(get_user_model().objects.filter(id=ID).exists())
+
+
+class PrivateCartTest(LoginUserMixin, FixtureMixin, TestCase):
+    def setUp(self) -> None:
+        super().setUp()
+        self.products = [
+            product
+            for product
+            in Product.objects.filter(pk__in=[1, 2, 3, 4])
+        ]
+        self.shopping_cart = self.user.shopping_cart
+        self.quantity_for_each_product_in_cart = 3
+
+        self.products[0].stock_quantity = 3
+        self.products[1].stock_quantity = 10
+        self.products[2].stock_quantity = 0
+        self.products[3].stock_quantity = 1
+
+        for product in self.products:
+            product.save()
+            CartItem.objects.create(
+                shopping_cart=self.shopping_cart,
+                product=product,
+                quantity=self.quantity_for_each_product_in_cart
+            )
+
+        self.products_with_positive_stock = len(
+            [
+                product
+                for product
+                in self.products
+                if product.stock_quantity > 0
+            ]
+        )
+        self.total_quantity_that_should_be_added = sum(
+            self.quantity_for_each_product_in_cart
+            if self.quantity_for_each_product_in_cart < product.stock_quantity
+            else product.stock_quantity
+            for product
+            in self.products
+        )
+
+    def test_detail(self) -> None:
+        response = self.client.get(CART_DETAIL_URL)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.context["shopping_cart"],
+            self.shopping_cart
+        )
+        self.assertEqual(
+            list(response.context["shopping_cart"].cart_items.all()),
+            list(self.shopping_cart.cart_items.all())
+        )
+        self.assertEqual(
+            response.context["shopping_cart"].total_cost,
+            self.shopping_cart.total_cost
+        )
+
+    def test_empty_cart(self) -> None:
+        response = self.client.get(CART_EMPTY_URL)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(self.shopping_cart.cart_items.count(), 0)
+
+    def test_create_order_from_cart(self) -> None:
+        response = self.client.post(ORDER_CREATE_URL)
+        order = Order.objects.first()
+        self.assertEqual(response.status_code, 302)
+        self.assertIsNotNone(order)
+        self.assertEqual(
+            order.order_items.count(),
+            self.products_with_positive_stock
+        )
+        self.assertEqual(
+            sum(order_item.quantity for order_item in order.order_items.all()),
+            self.total_quantity_that_should_be_added
+        )
+        self.assertEqual(self.shopping_cart.cart_items.count(), 0)

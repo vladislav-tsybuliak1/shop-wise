@@ -41,6 +41,7 @@ class TestProductModel(FixtureMixin, TestCase):
 
 class TestOrderModel(FixtureMixin, TestCase):
     def setUp(self) -> None:
+        super().setUp()
         self.order = Order.objects.get(pk=1)
 
     def test_str(self) -> None:
@@ -62,6 +63,7 @@ class TestOrderModel(FixtureMixin, TestCase):
 
 class TestOrderItemModel(FixtureMixin, TestCase):
     def setUp(self) -> None:
+        super().setUp()
         self.order_item = OrderItem.objects.get(pk=1)
 
     def test_str(self) -> None:
@@ -92,6 +94,7 @@ class TestReviewModel(FixtureMixin, TestCase):
 
 class TestCartItemModel(FixtureMixin, TestCase):
     def setUp(self) -> None:
+        super().setUp()
         self.shopping_cart = ShoppingCart.objects.get(pk=1)
         self.cart_item = CartItem.objects.create(
             shopping_cart=self.shopping_cart,
@@ -118,6 +121,7 @@ class TestCartItemModel(FixtureMixin, TestCase):
 
 class TestShoppingCartModel(FixtureMixin, TestCase):
     def setUp(self) -> None:
+        super().setUp()
         self.shopping_cart = ShoppingCart.objects.get(pk=1)
         self.cart_item = CartItem.objects.create(
             shopping_cart=self.shopping_cart,

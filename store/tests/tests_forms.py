@@ -14,6 +14,7 @@ from store.tests.mixins import FixtureMixin
 
 class TestReviewForm(FixtureMixin, TestCase):
     def setUp(self) -> None:
+        super().setUp()
         self.customer = get_user_model().objects.get(pk=1)
         self.product = Product.objects.get(pk=1)
 
