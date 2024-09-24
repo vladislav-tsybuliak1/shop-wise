@@ -73,9 +73,7 @@ class TestCustomerCreationForm(TestCase):
         form = CustomerCreationForm(data=self.form_data)
         self.assertFalse(form.is_valid())
 
-    def test_form_invalid_username_contains_non_eng_letters(
-        self,
-    ) -> None:
+    def test_form_invalid_username_contains_non_eng_letters(self) -> None:
         self.form_data["username"] = "Test test1"
         form = CustomerCreationForm(data=self.form_data)
         self.assertFalse(form.is_valid())
@@ -106,7 +104,7 @@ class TestCustomerCreationForm(TestCase):
         self.assertFalse(form.is_valid())
 
     def test_form_invalid_address(self) -> None:
-        self.form_data["address"] = "Test adress!"
+        self.form_data["address"] = "Test address!"
         form = CustomerCreationForm(data=self.form_data)
         self.assertFalse(form.is_valid())
 

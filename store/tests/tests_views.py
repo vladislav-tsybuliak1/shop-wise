@@ -317,7 +317,8 @@ class PrivateProductTest(LoginUserMixin, FixtureMixin, TestCase):
             product.name,
             list(
                 self.user.shopping_cart.cart_items.values_list(
-                    "product__name", flat=True
+                    "product__name",
+                    flat=True
                 )
             ),
         )
@@ -325,13 +326,16 @@ class PrivateProductTest(LoginUserMixin, FixtureMixin, TestCase):
     def test_delete_from_cart(self) -> None:
         product = Product.objects.get(pk=ID)
         CartItem.objects.create(
-            shopping_cart=self.user.shopping_cart, product=product, quantity=1
+            shopping_cart=self.user.shopping_cart,
+            product=product,
+            quantity=1
         )
         self.assertIn(
             product.name,
             list(
                 self.user.shopping_cart.cart_items.values_list(
-                    "product__name", flat=True
+                    "product__name",
+                    flat=True
                 )
             ),
         )
@@ -342,7 +346,8 @@ class PrivateProductTest(LoginUserMixin, FixtureMixin, TestCase):
             product.name,
             list(
                 self.user.shopping_cart.cart_items.values_list(
-                    "product__name", flat=True
+                    "product__name",
+                    flat=True
                 )
             ),
         )

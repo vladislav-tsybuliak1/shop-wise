@@ -12,12 +12,12 @@ def validate_name(name: str) -> None:
 def validate_username(username: str) -> None:
     if re.search(r"^[a-zA-Z_]*$", username) is None:
         raise ValidationError(
-            f"{username} contains non-english letters "
+            f"'{username}' contains non-english letters "
             f"or characters other than underscore"
         )
     if username.startswith("_") or username.endswith("_"):
         raise ValidationError(
-            f"{username} cannot start or end with an underscore"
+            f"'{username}' cannot start or end with an underscore"
         )
 
 

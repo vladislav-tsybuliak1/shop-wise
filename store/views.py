@@ -76,7 +76,8 @@ class ProductListView(LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self) -> QuerySet:
         queryset = (
-            Product.objects.annotate(
+            Product.objects
+            .annotate(
                 available=Case(
                     When(stock_quantity__gt=0, then=1),
                     default=0,
@@ -110,10 +111,10 @@ class ProductListView(LoginRequiredMixin, generic.ListView):
 
 class ProductDetailView(LoginRequiredMixin, generic.DetailView):
     model = Product
-    queryset = Product.objects.select_related(
-        "brand", "category"
-    ).prefetch_related(
-        "reviews__customer"
+    queryset = (
+        Product.objects
+        .select_related("brand", "category")
+        .prefetch_related("reviews__customer")
     )
 
     def get_context_data(self, **kwargs) -> dict:
@@ -189,15 +190,21 @@ class OrderListView(LoginRequiredMixin, generic.ListView):
         search_form = SearchForm(self.request.GET)
         if search_form.is_valid():
             queryset = queryset.filter(
-                Q(customer__username__icontains=(
-                    search_form.cleaned_data["name"]
-                ))
-                | Q(customer__first_name__icontains=(
-                    search_form.cleaned_data["name"]
-                ))
-                | Q(customer__last_name__icontains=(
-                    search_form.cleaned_data["name"]
-                ))
+                Q(
+                    customer__username__icontains=(
+                        search_form.cleaned_data["name"]
+                    )
+                )
+                | Q(
+                    customer__first_name__icontains=(
+                        search_form.cleaned_data["name"]
+                    )
+                )
+                | Q(
+                    customer__last_name__icontains=(
+                        search_form.cleaned_data["name"]
+                    )
+                )
             )
         return queryset
 
@@ -314,15 +321,21 @@ class CustomerListView(LoginRequiredMixin, generic.ListView):
         search_form = SearchForm(self.request.GET)
         if search_form.is_valid():
             queryset = queryset.filter(
-                Q(username__icontains=(
-                    search_form.cleaned_data["name"]
-                ))
-                | Q(first_name__icontains=(
-                    search_form.cleaned_data["name"]
-                ))
-                | Q(last_name__icontains=(
-                    search_form.cleaned_data["name"]
-                ))
+                Q(
+                    username__icontains=(
+                        search_form.cleaned_data["name"]
+                    )
+                )
+                | Q(
+                    first_name__icontains=(
+                        search_form.cleaned_data["name"]
+                    )
+                )
+                | Q(
+                    last_name__icontains=(
+                        search_form.cleaned_data["name"]
+                    )
+                )
             )
         return queryset
 
@@ -334,7 +347,8 @@ class CustomerDetailView(LoginRequiredMixin, generic.DetailView):
         context = super().get_context_data(**kwargs)
         context["order_list"] = (
             self.get_object()
-            .orders.select_related("customer")
+            .orders
+            .select_related("customer")
             .prefetch_related("order_items__product")
         )
         return context
@@ -413,9 +427,11 @@ def add_to_cart(request: HttpRequest, product_id: int) -> HttpResponse:
             messages.success(request, "Product added to cart.")
         else:
             messages.warning(request, "This product is out of stock.")
-    return redirect(request.META.get(
-        "HTTP_REFERER",
-        reverse_lazy("store:index"))
+    return redirect(
+        request.META.get(
+            "HTTP_REFERER",
+            reverse_lazy("store:index")
+        )
     )
 
 
@@ -441,9 +457,11 @@ def delete_from_cart(request: HttpRequest, product_id: int) -> HttpResponse:
         else:
             cart_item.save()
             messages.success(request, "Product quantity updated in the cart.")
-    return redirect(request.META.get(
-        "HTTP_REFERER",
-        reverse_lazy("store:index"))
+    return redirect(
+        request.META.get(
+            "HTTP_REFERER",
+            reverse_lazy("store:index")
+        )
     )
 
 

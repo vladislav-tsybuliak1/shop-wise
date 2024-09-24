@@ -109,7 +109,8 @@ class Order(models.Model):
                 order_item.total_cost
                 for order_item
                 in self.order_items.all()
-            ), 2
+            ),
+            2
         )
 
 
