@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center">
+    <h1>Customer: {{ customer }}</h1>
+    {% if user == customer or user.is_staff %}
+      <div>
+        <a href="{% url 'store:customer-update' customer.id %}" class="btn" style="color: dodgerblue">
+          <i class="bi-pen h3"></i>
+        </a>
+        <a href="{% url 'store:customer-delete' customer.id %}" class="btn" style="color: red">
+          <i class="bi-trash h3"></i>
+        </a>
+      </div>
+    {% endif %}  
+  </div>
+
+  <div class="container-fluid bg-light">
+    <p>Total orders: {{ order_list.count }}</p>
+    <p>Address: {{ customer.address }}</p>
+    <p>Phone: {{ customer.phone_number }}</p>
+  </div>
+  <h1>Orders</h1>
+  {% if order_list %}
+    <table class="table table-hover table-light">
+      <tr>
+        <th>ID</th>
+        <th>Status</th>
+        <th>Date of creation</th>
+        <th>Total cost</th>
+        <th>Details</th>
+      </tr>
+      {% for order in order_list %}
+        <tr>
+          <td>{{ order.id }}</td>
+          <td>{{ order.status }}</td>
+          <td>{{ order.created_at|timesince }} ago</td>
+          <td>{{ order.total_cost|floatformat:2 }}</td>
+          <td><a href="{% url 'store:order-detail' order.id %}"><i class="bi-card-list h3"></i></a></td>
+        </tr>
+      {% endfor %}
+    </table>
+  {% else %}
+    <p>There are no orders.</p>
+  {% endif %}
+
+{% endblock %}

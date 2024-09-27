@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+{% load cart_filters %}
+
+{% block content %}
+  <section>
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-lg-8 col-xl-10">
+          <div class="card border-top border-bottom border-3">
+            <div class="card-body p-5">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <p>Product card</p>
+                <a class="btn btn-close" href="{% url 'store:product-list' %}"></a>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mb-5">
+                <p class="lead fw-bold fs-2">
+                  {{ product.name }}, {{ product.unit_value|floatformat }} {{ product.unit_name }}
+                </p>
+                {% if user.is_staff %}
+                  <div>
+                    <a href="{% url 'store:product-update' product.id %}" class="btn" style="color: dodgerblue">
+                      <i class="bi-pen fs-2"></i>
+                    </a>
+                    <a href="{% url 'store:product-delete' product.id %}" class="btn" style="color: red">
+                      <i class="bi-trash fs-2"></i>
+                    </a>
+                  </div>
+                {% endif %}
+              </div>
+
+              <div class="mx-n5 px-5 py-4" style="background-color: #f2f2f2;">
+                <div class="row fs-4">
+                  <div class="col-md-8 col-lg-12 flex-fill ">
+                    <span class="text-muted ">Category:</span>
+                    <span class="fw-bold">{{ product.category }}</span>
+                  </div>
+                  <div class="col-md-8 col-lg-12 flex-fill">
+                    <span class="text-muted">Brand:</span>
+                    <span class="fw-bold">{{ product.brand }}</span>
+                  </div>
+                  <div class="col-md-8 col-lg-12 flex-fill">
+                    <span class="text-muted">Stock quantity:</span>
+                    <span class="fw-bold">{{ product.stock_quantity|floatformat }}</span>
+                  </div>
+                  {% if product.description %}
+                    <div class="col-md-8 col-lg-12 flex-fill">
+                      <span class="text-muted">Description:</span>
+                      <span class="fw-bold">{{ product.description }}</span>
+                    </div>
+                  {% endif %}
+                  <div class="col-md-8 col-lg-12 flex-fill">
+                    {% with cart_item=cart_items|get_item:product.id %}
+                      {% if cart_item %}
+                        <a href="{% url 'store:cart-delete-product' product.id %}" class="btn btn-outline-primary">➖</a>
+                        {{ cart_item|floatformat }}
+                        <a href="{% url 'store:cart-add-product' product.id %}" class="btn btn-outline-primary">➕</a>
+                        <a href="{% url 'store:cart-delete-product' product.id %}?full_delete=true"
+                           class="btn btn-outline-danger">❌</a>
+                      {% else %}
+                        <a href="{% url 'store:cart-add-product' product.id %}" class="btn btn-success">
+                          <i class="bi bi-basket"></i>
+                        </a>
+                      {% endif %}
+                    {% endwith %}
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <div class="card-body p-5">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <p class="lead fw-light fs-2">
+                  {{ product.reviews.count }} review{{ product.reviews.count|pluralize }}
+                </p>
+              </div>
+              {% if product.reviews.all %}
+                {% for review in product.reviews.all %}
+                  <div class="card mb-4">
+                    <div class="card-body">
+                      <p>{{ review.content }}</p>
+
+                      <div class="d-flex justify-content-between">
+                        <div class="d-flex flex-row align-items-center">
+                          <p class="small fw-bold mb-0 ms-2">{{ review.customer }} {{ review.created_at|timesince }}
+                            ago</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+              {% else %}
+                <p><i>No reviews yet.</i></p>
+              {% endif %}
+              {% if user.is_authenticated %}
+                <hr>
+                <p>Add a new review:</p>
+                <form action="" method="post" novalidate>
+                  {% csrf_token %}
+                  {{ review_form|crispy }}
+                  <input class="btn btn-primary" type="submit" value="Add comment">
+                </form>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% endblock %}

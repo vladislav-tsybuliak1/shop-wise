@@ -1,0 +1,57 @@
+{% extends "base_list.html" %}
+{% load crispy_forms_filters %}
+{% block search_filter %}
+  <nav class="nav flex-column">
+    <form method="get" action="" class="form-control">
+      <div>
+        {{ search_form|crispy }}
+      </div>
+      <button type="submit" class="btn btn-outline-success container mb-1">Search</button>
+      <div>
+        <a href="{% url "store:customer-list" %}" class="btn btn-outline-danger container">Reset</a>
+      </div>
+    </form>
+  </nav>
+{% endblock %}
+{% block list %}
+  <div class="d-flex justify-content-between align-items-center">
+    <h1>Customer list</h1>
+    {% if user.is_staff %}
+      <a class="btn btn-primary" href="{% url 'store:customer-create' %}">
+        Add a new customer
+      </a>
+    {% endif %}
+  </div>
+  {% include "includes/pagination.html" %}
+
+  {% if customer_list %}
+    <table class="table table-hover">
+      <tr>
+        <th>Username</th>
+        <th>Full name</th>
+        <th>Is staff</th>
+        <th>Phone number</th>
+        <th>Address</th>
+        <th>Orders</th>
+        <th>Details</th>
+      </tr>
+      {% for customer in customer_list %}
+        <tr>
+          <td>{{ customer.get_username }}</td>
+          <td>{{ customer.get_full_name }}</td>
+          <td>{{ customer.is_staff }}</td>
+          <td>{{ customer.phone_number }}</td>
+          <td>{{ customer.address }}</td>
+          <td>{{ customer.orders.count }}</td>
+          <td>
+            <a href="{% url 'store:customer-detail' customer.id %}">
+              <i class="bi-card-list h3"></i>
+            </a>
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+  {% else %}
+    <p>There are no customers.</p>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends "base_list.html" %}
+{% load cart_filters %}
+{% load crispy_forms_filters %}
+{% block search_filter %}
+  <nav class="nav flex-column">
+    <form method="get" action="" class="form-control">
+      <div>
+        {{ search_form|crispy }}
+      </div>
+      <div>
+        {{ filter_form|crispy }}
+      </div>
+      <button type="submit" class="btn btn-outline-success container mb-1">Search</button>
+      <div>
+        <a href="{% url "store:product-list" %}" class="btn btn-outline-danger container">Reset</a>
+      </div>
+    </form>
+  </nav>
+{% endblock %}
+{% block list %}
+  <div class="d-flex justify-content-between align-items-center">
+    <h1>Product list</h1>
+    {% if user.is_staff %}
+      <a class="btn btn-primary" href="{% url 'store:product-create' %}">
+        Add a new product
+      </a>
+    {% endif %}
+  </div>
+  {% include "includes/pagination.html" %}
+  {% if product_list %}
+    {% for product in product_list %}
+      <div class="card shadow p-3 m-2">
+        <div class="row align-items-center">
+          <div class="col-md-7">
+            <div class="row">
+              <a href="{% url 'store:product-detail' product.id %}" class="h5 title">{{ product.name }}</a>
+              <p><i class="bi bi-chat-square-dots"></i> {{ product.reviews.count }}
+                review{{ product.reviews.count|pluralize }}</p>
+              <p>ID: {{ product.id }}</p>
+              <p>Unit: {{ product.unit_value|floatformat }} {{ product.unit_name }}</p>
+              <p>Stock quantity: {{ product.stock_quantity|floatformat }}</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="d-flex align-items-center">
+                <span class="h5 mb-0 text-gray text-through me-2">
+                    Price: {{ product.price }}
+                </span>
+            </div> <!-- info-price-detail // -->
+            <div class="d-grid gap-2 mt-4">
+              <a class="btn btn-outline-primary btn-sm" href="{% url 'store:product-detail' product.id %}">
+                Details
+              </a>
+              <div>
+                {% with cart_item=cart_items|get_item:product.id %}
+                  {% if cart_item %}
+                    <a href="{% url 'store:cart-delete-product' product.id %}" class="btn btn-outline-primary">➖</a>
+                    {{ cart_item|floatformat }}
+                    <a href="{% url 'store:cart-add-product' product.id %}" class="btn btn-outline-primary">➕</a>
+                    <a href="{% url 'store:cart-delete-product' product.id %}?full_delete=true"
+                       class="btn btn-outline-danger">❌</a>
+                  {% else %}
+                    <a href="{% url 'store:cart-add-product' product.id %}" class="btn btn-success">
+                      <i class="bi bi-basket"></i>
+                    </a>
+                  {% endif %}
+                  </div>
+                {% endwith %}
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>There are no products.</p>
+  {% endif %}
+{% endblock %}
